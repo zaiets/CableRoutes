@@ -144,7 +144,7 @@ public class IOExcelForAnalyser {
         }
         File targetFile = new File(targetFileName);
         if (extraEquip != null) {
-            Workbook workbook = getWorkbook(new File(buildFileName(equipmentsPathName, null, equipmentsFileName, null, fileExtension)));
+            Workbook workbook = getWorkbook(new File(buildFileName(equipmentsPathName, projectName, equipmentsFileName, null, fileExtension)));
             Sheet sheet = workbook.getSheetAt(0);
             int num = sheet.getLastRowNum();
             for (int i = 0; i < extraEquip.size(); i++) {
@@ -183,12 +183,13 @@ public class IOExcelForAnalyser {
             if (o.getJoinPoint() == null) targetEquipment.add(o);
         });
         for (Equipment equipment : targetEquipment) {
+            double reserveRatio = propertiesHolder.get("reserveRatio.approximateDeterminationOfTrace", Double.class);
             JoinPoint joinPointDefined = null;
             int extraLength = 0;
             List<JoinPoint> shorterList = new ArrayList<>();
             Collections.copy(shorterList, joinPointDao.getAll());
             while (joinPointDefined == null || !shorterList.isEmpty()) {
-                Object[] result = TracingHelper.defineNearestPoint(equipment.getXyz(), shorterList);
+                Object[] result = TracingHelper.defineNearestPoint(equipment.getXyz(), shorterList, reserveRatio);
                 joinPointDefined = ((JoinPoint) result[0]);
                 extraLength = (int) result[1];
             }

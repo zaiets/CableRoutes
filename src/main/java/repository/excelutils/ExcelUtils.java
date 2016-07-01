@@ -108,7 +108,7 @@ public final class ExcelUtils {
     public static String buildFileName(String path, String project, String target, String suffix, String type) {
         StringBuilder targetFileName = new StringBuilder();
         if (path != null) targetFileName.append(path);
-        if (targetFileName.length() > 0 && targetFileName.charAt(targetFileName.length()) != '/') targetFileName.append('/');
+        if (targetFileName.length() > 0 && targetFileName.charAt(targetFileName.length()-1) != '/') targetFileName.append('/');
         if (project != null) targetFileName.append(project).append(" - ");
         if (target != null) targetFileName.append(target);
         if (suffix != null) targetFileName.append('_').append(suffix);

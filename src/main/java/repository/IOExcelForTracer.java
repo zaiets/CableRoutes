@@ -24,7 +24,7 @@ public class IOExcelForTracer {
      * Writing info from Journal 'j' in to new Excel file named
      */
     public void writeToFileTracedJournal(String objectName, Journal journal, File targetPath) {
-
+System.out.println(objectName + " " + journal.getKksName() + " " + targetPath.getName());
         String targetFileName;
         String newMessage = propertiesHolder.get("output.suffix.tracedJournals");
         String fileExtension = propertiesHolder.get("default.excelFileType");

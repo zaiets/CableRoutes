@@ -16,7 +16,7 @@ import static repository.excelutils.ExcelUtils.buildFileName;
 
 @Service
 @Scope(value = "singleton")
-public final class DBInitManager {
+public final class DBManager {
     @Autowired
     private PropertiesHolder propertiesHolder;
     @Autowired
@@ -31,18 +31,24 @@ public final class DBInitManager {
     private IDao<Route> routeDao;
 
 
-    public boolean init() {
-        String equipmentsFileName = propertiesHolder.get("default.equipmentsFileName");
-        String joinPointsFileName = propertiesHolder.get("default.joinPointsFileName");
-        String routesFileName = propertiesHolder.get("default.routesFileName");
-        String journalsPathName = propertiesHolder.get("input.journalsPath");
+    public boolean init(String projectName, String equipmentsFileName, String joinPointsFileName, String routesFileName, String journalsPathName) {
+        if (equipmentsFileName  == null) equipmentsFileName = propertiesHolder.get("default.equipmentsFileName");
+        if (joinPointsFileName == null) joinPointsFileName = propertiesHolder.get("default.joinPointsFileName");
+        if (routesFileName == null) routesFileName = propertiesHolder.get("default.routesFileName");
+        if (journalsPathName == null) journalsPathName = propertiesHolder.get("input.journalsPath");
         String path = propertiesHolder.get("default.inputPathName");
         String fileExtension = propertiesHolder.get("default.excelFileType");
-        File joinPointsFile = new File(buildFileName(path, null, joinPointsFileName, null, fileExtension));
-        File equipmentsFile = new File(buildFileName(path, null, equipmentsFileName, null, fileExtension));
-        File routesFile = new File(buildFileName(path, null, routesFileName, null, fileExtension));
-        File[] journals = new File(path.concat("/").concat(journalsPathName)).listFiles();
-        if (!joinPointsFile.canRead() || !equipmentsFile.canRead() || !routesFile.canRead() || journals == null) return false;
+        File joinPointsFile = new File(buildFileName(path, projectName, joinPointsFileName, null, fileExtension));
+        File equipmentsFile = new File(buildFileName(path, projectName, equipmentsFileName, null, fileExtension));
+        File routesFile = new File(buildFileName(path, projectName, routesFileName, null, fileExtension));
+        File[] journals;
+        File jou = new File(journalsPathName);
+//TODO test
+System.out.println(jou.getAbsolutePath());
+            journals = jou.isDirectory()? jou.listFiles() : new File[] {jou};
+//TODO test
+System.out.println(joinPointsFile + "\n" + equipmentsFile + "\n" + routesFile + "\n" + journals);
+        if (journals == null) return false;
         List<File> journalsFiles = Arrays.asList(journals);
         return initDatabase(joinPointsFile, equipmentsFile, routesFile, journalsFiles);
     }

@@ -1,8 +1,5 @@
-package app;
+package config;
 
-
-import config.AppConfig;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,56 +15,70 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import servises.Analyser;
-import servises.DBInitManager;
+import servises.DBManager;
 import servises.Tracer;
 
 import java.io.File;
 import java.util.Arrays;
 
-public class AppView extends Application {
+@Configuration
+@Lazy
+public class ScreenConfig {
+    final static String DEFAULT_PATH = "files/journals";
     final static String DEFAULT_OBJECT = "MAYAK";
-
-    @Autowired
-    private Tracer tracer;
-    @Autowired
+    private Stage stage;
+    private Scene scene;
+    GridPane pane;
     private Analyser analyser;
-    @Autowired
-    private DBInitManager dbInitManager;
+    private Tracer tracer;
+    private DBManager dbManager;
 
-    @Override
-    public void start(Stage primaryStage) {
+    public void setPrimaryStage(Stage primaryStage) {
+        this.stage = primaryStage;
+    }
 
+    public void setAnalyser(Analyser analyser) {
+        this.analyser = analyser;
+    }
+
+    public void setTracer(Tracer tracer) {
+        this.tracer = tracer;
+    }
+
+    public void setDbManager(DBManager dbManager) {
+        this.dbManager = dbManager;
+    }
+
+    public void showMainScreen () {
         final Text actiontarget = new Text();
+        pane = new GridPane();
+        pane.setAlignment(Pos.CENTER);
+        pane.setHgap(10);
+        pane.setVgap(20);
+        pane.setPadding(new Insets(30, 30, 30, 30));
 
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(20);
-        grid.setPadding(new Insets(30, 30, 30, 30));
-
-        Scene scene = new Scene(grid, 500, 350);
+        scene = new Scene(pane, 500, 350);
         Text scenetitle = new Text("Для начала работы скопируйте данные \nв папки согласно указаниям README:");
         scenetitle.setFont(Font.font("Times new roman", FontWeight.NORMAL, 13));
-        grid.add(scenetitle, 0, 0, 2, 1);
+        pane.add(scenetitle, 0, 0, 2, 1);
 
         try {
             Label objLabel1 = new Label("1. Укажите название объекта:");
             objLabel1.setAlignment(Pos.CENTER_LEFT);
-            grid.add(objLabel1, 0, 1);
+            pane.add(objLabel1, 0, 1);
             TextField inpObject1 = new TextField();
             inpObject1.setAlignment(Pos.CENTER_RIGHT);
             inpObject1.setMinWidth(220);
             inpObject1.setMaxWidth(220);
             inpObject1.setText(DEFAULT_OBJECT);
-            grid.add(inpObject1, 1, 1);
+            pane.add(inpObject1, 1, 1);
 
             Label objLabel2 = new Label("2. Выберите действие:");
             objLabel2.setAlignment(Pos.CENTER_LEFT);
-            grid.add(objLabel2, 0, 3);
+            pane.add(objLabel2, 0, 3);
 
             Button btn_analyse_EquipsInJournals = new Button();
             btn_analyse_EquipsInJournals.setText("Прошерстить журнал");
@@ -77,7 +88,7 @@ public class AppView extends Application {
                 public void handle(ActionEvent event) {
                     try {
                         analyser.setProjectName(DEFAULT_OBJECT);
-                        String pathName = inpObject1.getText();
+                        String pathName = DEFAULT_PATH;
                         File path;
                         if (pathName != null) {
                             path = new File(pathName);
@@ -98,7 +109,7 @@ public class AppView extends Application {
             HBox hbBtn_analyse_EquipsInJournals = new HBox(10);
             hbBtn_analyse_EquipsInJournals.setAlignment(Pos.BOTTOM_LEFT);
             hbBtn_analyse_EquipsInJournals.getChildren().add(btn_analyse_EquipsInJournals);
-            grid.add(hbBtn_analyse_EquipsInJournals, 0, 4);
+            pane.add(hbBtn_analyse_EquipsInJournals, 0, 4);
 
 
             Button btn_tracer = new Button();
@@ -109,7 +120,7 @@ public class AppView extends Application {
                 public void handle(ActionEvent event) {
                     try {
                         analyser.setProjectName(DEFAULT_OBJECT);
-                        String pathName = inpObject1.getText();
+                        String pathName = DEFAULT_PATH;
                         File path;
                         if (pathName != null) {
                             path = new File(pathName);
@@ -131,7 +142,7 @@ public class AppView extends Application {
             HBox hbBtn_tracer = new HBox(10);
             hbBtn_tracer.setAlignment(Pos.BOTTOM_RIGHT);
             hbBtn_tracer.getChildren().add(btn_tracer);
-            grid.add(hbBtn_tracer, 1, 4);
+            pane.add(hbBtn_tracer, 1, 4);
 
 
             Button btn_calc = new Button();
@@ -158,7 +169,7 @@ public class AppView extends Application {
             HBox hbBtn_calc = new HBox(10);
             hbBtn_calc.setAlignment(Pos.BOTTOM_LEFT);
             hbBtn_calc.getChildren().add(btn_calc);
-            grid.add(hbBtn_calc, 0, 5);
+            pane.add(hbBtn_calc, 0, 5);
 
             Button btn_defaults = new Button();
             btn_defaults.setText("> INIT DB");
@@ -168,7 +179,12 @@ public class AppView extends Application {
                 @Override
                 public void handle(ActionEvent event) {
                     try {
-                        dbInitManager.init();
+
+System.out.println(
+//TODO TEST
+                        dbManager.init(DEFAULT_OBJECT, null, null, null, "files/input_data/journals/")
+
+);
                         inpObject1.setText(DEFAULT_OBJECT);
                         actiontarget.setText(" ");
                     } catch (Exception e) {
@@ -180,24 +196,20 @@ public class AppView extends Application {
             HBox hbBtn_defaults = new HBox(10);
             hbBtn_defaults.setAlignment(Pos.BOTTOM_RIGHT);
             hbBtn_defaults.getChildren().add(btn_defaults);
-            grid.add(hbBtn_defaults, 1, 7);
+            pane.add(hbBtn_defaults, 1, 7);
 
             Label resultLabel = new Label("3. Результат работы программы:");
             resultLabel.setAlignment(Pos.CENTER_LEFT);
-            grid.add(resultLabel, 0, 6);
-            grid.add(actiontarget, 1, 6);
+            pane.add(resultLabel, 0, 6);
+            pane.add(actiontarget, 1, 6);
         } catch (Throwable e) {
             e.printStackTrace();
             actiontarget.setText("Error! " + e.getLocalizedMessage());
         }
-        primaryStage.setTitle("Cableroutes v.0.9.9 by Zaiets A.Y.");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(true);
-        primaryStage.show();
+        stage.setTitle("Cableroutes v.0.9.9 by Zaiets A.Y.");
+        stage.setScene(scene);
+        stage.setResizable(true);
+        stage.show();
     }
 
-    public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class, AppView.class);
-        launch(args);
-    }
 }

@@ -3,7 +3,6 @@ package model.db.impl;
 import model.db.IDao;
 import model.db.InMemoryDB;
 import model.entities.Cable;
-import model.entities.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -16,18 +15,16 @@ public class CableDao implements IDao<Cable> {
     @Autowired
     InMemoryDB inMemoryDB;
 
-    List<Cable> cables = inMemoryDB.getCables();
-
 
     @Override
     public boolean create(Cable cable) {
         if (cable == null) return false;
-        for (Cable o : cables) {
+        for (Cable o : inMemoryDB.getCables()) {
             if (o.getKksName().equals(cable.getKksName())) {
                 throw new RuntimeException("Duplicates in cables list");
             }
         }
-        return cables.add(cable);
+        return inMemoryDB.getCables().add(cable);
     }
 
     @Override
@@ -45,7 +42,7 @@ public class CableDao implements IDao<Cable> {
     @Override
     public Cable read(String uniqueName) {
         Cable cable = null;
-        for (Cable o : cables) {
+        for (Cable o : inMemoryDB.getCables()) {
             if (o.getKksName().equals(uniqueName)) {
                 if (cable == null) {cable = o;}
                 else throw new RuntimeException("Duplicates in cables list");
@@ -57,14 +54,19 @@ public class CableDao implements IDao<Cable> {
     @Override
     public boolean update(Cable cable) {
         if (cable == null) return false;
-        for (Cable o : cables) {
+        for (Cable o : inMemoryDB.getCables()) {
             if (o.getKksName().equals(cable.getKksName())) {
-                if (o.isTraced()) {
-                    List<Route> existingTracing = o.getRoutesList();
-                    cable.setRoutesList(existingTracing);
+                o.setCableType(cable.getCableType());
+                o.setStart(cable.getStart());
+                o.setLength(cable.getLength());
+                o.setEnd(cable.getEnd());
+                o.setJournalName(cable.getJournalName());
+                o.setNumberInJournal(cable.getNumberInJournal());
+                o.setReserving(cable.getReserving());
+                if (!o.isTraced()) {
+                    o.setRoutesList(cable.getRoutesList());
+                    o.setTraced(cable.isTraced());
                 }
-                cables.remove(o);
-                cables.add(cable);
             } else {
                 throw new RuntimeException("Can't find cables in list:" + cable.getKksName());
             }
@@ -75,17 +77,17 @@ public class CableDao implements IDao<Cable> {
     @Override
     public boolean delete(String uniqueName) {
         Cable cable = null;
-        for (Cable o : cables) {
+        for (Cable o : inMemoryDB.getCables()) {
             if (o.getKksName().equals(uniqueName)) {
                 if (cable == null) {cable = o;}
                 else throw new RuntimeException("Duplicates in cables list");
             }
         }
-        return cables.remove(cable);
+        return inMemoryDB.getCables().remove(cable);
     }
 
     @Override
     public List<Cable> getAll(){
-        return cables;
+        return inMemoryDB.getCables();
     }
 }

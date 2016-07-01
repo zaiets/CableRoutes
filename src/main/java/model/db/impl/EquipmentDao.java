@@ -13,20 +13,18 @@ import java.util.List;
 @Scope(value = "prototype")
 public class EquipmentDao implements IDao<Equipment> {
     @Autowired
-    InMemoryDB database;
-
-    List<Equipment> equipments = database.getEquipments();
+    InMemoryDB inMemoryDB;
 
 
     @Override
     public boolean create(Equipment equipment) {
         if (equipment == null) return false;
-        for (Equipment o : equipments) {
+        for (Equipment o : inMemoryDB.getEquipments()) {
             if (o.getEquipmentName().equals(equipment.getEquipmentName())) {
                 throw new RuntimeException("Duplicates in equipment list");
             }
         }
-        return equipments.add(equipment);
+        return inMemoryDB.getEquipments().add(equipment);
     }
 
     @Override
@@ -44,7 +42,7 @@ public class EquipmentDao implements IDao<Equipment> {
     @Override
     public Equipment read(String uniqueName) {
         Equipment equipment = null;
-        for (Equipment o : equipments) {
+        for (Equipment o : inMemoryDB.getEquipments()) {
             if (o.getEquipmentName().equals(uniqueName)) {
                 if (equipment == null) {equipment = o;}
                 else throw new RuntimeException("Duplicates in equipment list");
@@ -56,10 +54,12 @@ public class EquipmentDao implements IDao<Equipment> {
     @Override
     public boolean update(Equipment equipment) {
         if (equipment == null) return false;
-        for (Equipment o : equipments) {
+        for (Equipment o : inMemoryDB.getEquipments()) {
             if (o.getEquipmentName().equals(equipment.getEquipmentName())) {
-                equipments.remove(o);
-                equipments.add(equipment);
+                o.setJoinPoint(equipment.getJoinPoint());
+                o.setKksName(equipment.getKksName());
+                o.setXyz(equipment.getXyz());
+                o.setCableConnectionAddLength(equipment.getCableConnectionAddLength());
             } else {
                 throw new RuntimeException("Can't find equipment in list:" + equipment.getKksName());
             }
@@ -70,17 +70,17 @@ public class EquipmentDao implements IDao<Equipment> {
     @Override
     public boolean delete(String uniqueName) {
         Equipment equipment = null;
-        for (Equipment o : equipments) {
+        for (Equipment o : inMemoryDB.getEquipments()) {
             if (o.getEquipmentName().equals(uniqueName)) {
                 if (equipment == null) {equipment = o;}
                 else throw new RuntimeException("Duplicates in equipment list");
             }
         }
-        return equipments.remove(equipment);
+        return inMemoryDB.getEquipments().remove(equipment);
     }
 
     @Override
     public List<Equipment> getAll(){
-        return equipments;
+        return inMemoryDB.getEquipments();
     }
 }

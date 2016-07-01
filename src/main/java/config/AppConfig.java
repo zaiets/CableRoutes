@@ -1,32 +1,34 @@
 package config;
 
+import app.MainApp;
 import model.db.InMemoryDB;
-import model.db.impl.CableDao;
-import model.db.impl.EquipmentDao;
-import model.db.impl.JoinPointDao;
-import model.db.impl.RouteDao;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import model.db.impl.*;
+import org.springframework.context.annotation.*;
 import properties.PropertiesHolder;
 import repository.IOExcelForAnalyser;
 import repository.IOExcelForTracer;
 import servises.Analyser;
-import servises.DBInitManager;
+import servises.DBManager;
 import servises.Tracer;
 import servises.tracerlogic.TracingHelper;
 
 
 @Configuration
+@Import({ScreenConfig.class, PropertiesHolder.class})
 @ComponentScan(basePackages = "java.*")
 public class AppConfig {
+	@Bean
+	MainApp appView() {
+		return new MainApp();
+	}
 	@Bean
 	PropertiesHolder propertiesHolder () {
 		return new PropertiesHolder();
 	}
+
 	@Bean
 	InMemoryDB getInMemoryDB() {
-		return new InMemoryDB();
+		return InMemoryDB.INSTANCE;
 	}
 
 	@Bean
@@ -38,8 +40,12 @@ public class AppConfig {
 		return new EquipmentDao();
 	}
 	@Bean
-	JoinPointDao joinPoint() {
+	JoinPointDao joinPointDao() {
 		return new JoinPointDao();
+	}
+	@Bean
+	JournalDao journalDao() {
+		return new JournalDao();
 	}
 	@Bean
 	RouteDao routeDao() {
@@ -54,8 +60,8 @@ public class AppConfig {
 		return new Analyser();
 	}
 	@Bean
-	DBInitManager dbInitManager () {
-		return new DBInitManager();
+	DBManager dbInitManager () {
+		return new DBManager();
 	}
 	@Bean
 	TracingHelper tracingHelper () {

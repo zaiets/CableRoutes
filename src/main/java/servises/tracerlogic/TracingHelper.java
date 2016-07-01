@@ -96,7 +96,7 @@ public class TracingHelper {
         return Math.abs(sX - eX) + Math.abs(sY - eY) + Math.abs(sZ - eZ);
     }
 
-    public static Object [] defineNearestPoint(double[] equipXyz, List<JoinPoint> shorterPointList) {
+    public static Object [] defineNearestPoint(double[] equipXyz, List<JoinPoint> shorterPointList, double reserveRatio) {
         double a = equipXyz[0];
         double b = equipXyz[1];
         double c = equipXyz[2];
@@ -124,7 +124,7 @@ public class TracingHelper {
                 points.set(i, temp);
             }
         }
-        Integer extraLength = length.get(length.size() - 1);
+        Integer extraLength = (int)((length.get(length.size() - 1))*reserveRatio);
         JoinPoint closestPoint = points.get(points.size() - 1);
         return new Object []{closestPoint, extraLength};
     }

@@ -13,20 +13,18 @@ import java.util.List;
 @Scope(value = "prototype")
 public class RouteDao implements IDao<Route> {
     @Autowired
-    InMemoryDB database;
-
-    List<Route> routes = database.getRoutes();
+    InMemoryDB inMemoryDB;
 
 
     @Override
     public boolean create(Route route) {
         if (route == null) return false;
-        for (Route o : routes) {
+        for (Route o : inMemoryDB.getRoutes()) {
             if (o.getKksName().equals(route.getKksName())) {
                 throw new RuntimeException("Duplicates in route list");
             }
         }
-        return routes.add(route);
+        return inMemoryDB.getRoutes().add(route);
     }
 
     @Override
@@ -44,7 +42,7 @@ public class RouteDao implements IDao<Route> {
     @Override
     public Route read(String uniqueName) {
         Route route = null;
-        for (Route r : routes) {
+        for (Route r : inMemoryDB.getRoutes()) {
             if (r.getKksName().equals(uniqueName)) {
                 if (route == null) {route = r;}
                 else throw new RuntimeException("Duplicates in route list");
@@ -56,10 +54,15 @@ public class RouteDao implements IDao<Route> {
     @Override
     public boolean update(Route route) {
         if (route == null) return false;
-        for (Route r : routes) {
-            if (r.getKksName().equals(route.getKksName())) {
-                routes.remove(r);
-                routes.add(route);
+        for (Route o : inMemoryDB.getRoutes()) {
+            if (o.getKksName().equals(route.getKksName())) {
+                o.setRouteType(route.getRouteType());
+                o.setFirstEnd(route.getFirstEnd());
+                o.setSecondEnd(route.getSecondEnd());
+                o.setHeight(route.getHeight());
+                o.setLength(route.getLength());
+                o.setShelvesCount(route.getShelvesCount());
+                o.setCablesList(route.getCablesList());
             } else {
                 throw new RuntimeException("Can't find route in list:" + route.getKksName());
             }
@@ -70,17 +73,17 @@ public class RouteDao implements IDao<Route> {
     @Override
     public boolean delete(String uniqueName) {
         Route route = null;
-        for (Route r : routes) {
+        for (Route r : inMemoryDB.getRoutes()) {
             if (r.getKksName().equals(uniqueName)) {
                 if (route == null) {route = r;}
                 else throw new RuntimeException("Duplicates in route list");
             }
         }
-        return routes.remove(route);
+        return inMemoryDB.getRoutes().remove(route);
     }
 
     @Override
     public List<Route> getAll(){
-        return routes;
+        return inMemoryDB.getRoutes();
     }
 }

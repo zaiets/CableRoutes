@@ -13,20 +13,18 @@ import java.util.List;
 @Scope(value = "prototype")
 public class JoinPointDao implements IDao<JoinPoint> {
     @Autowired
-    InMemoryDB database;
-
-    List<JoinPoint> joinPoints = database.getJoinPoints();
+    InMemoryDB inMemoryDB;
 
 
     @Override
     public boolean create(JoinPoint joinPoint) {
         if (joinPoint == null) return false;
-        for (JoinPoint o : joinPoints) {
+        for (JoinPoint o : inMemoryDB.getJoinPoints()) {
             if (o.getKksName().equals(joinPoint.getKksName())) {
                 throw new RuntimeException("Duplicates in joinPoint list");
             }
         }
-        return joinPoints.add(joinPoint);
+        return inMemoryDB.getJoinPoints().add(joinPoint);
     }
 
     @Override
@@ -44,7 +42,7 @@ public class JoinPointDao implements IDao<JoinPoint> {
     @Override
     public JoinPoint read(String uniqueName) {
         JoinPoint joinPoint = null;
-        for (JoinPoint o : joinPoints) {
+        for (JoinPoint o : inMemoryDB.getJoinPoints()) {
             if (o.getKksName().equals(uniqueName)) {
                 if (joinPoint == null) {joinPoint = o;}
                 else throw new RuntimeException("Duplicates in joinPoint list");
@@ -56,10 +54,9 @@ public class JoinPointDao implements IDao<JoinPoint> {
     @Override
     public boolean update(JoinPoint joinPoint) {
         if (joinPoint == null) return false;
-        for (JoinPoint o : joinPoints) {
+        for (JoinPoint o : inMemoryDB.getJoinPoints()) {
             if (o.getKksName().equals(joinPoint.getKksName())) {
-                joinPoints.remove(o);
-                joinPoints.add(joinPoint);
+                o.setXyz(joinPoint.getXyz());
             } else {
                 throw new RuntimeException("Can't find joinPoint in list:" + joinPoint.getKksName());
             }
@@ -70,17 +67,17 @@ public class JoinPointDao implements IDao<JoinPoint> {
     @Override
     public boolean delete(String uniqueName) {
         JoinPoint joinPoint = null;
-        for (JoinPoint o : joinPoints) {
+        for (JoinPoint o : inMemoryDB.getJoinPoints()) {
             if (o.getKksName().equals(uniqueName)) {
                 if (joinPoint == null) {joinPoint = o;}
                 else throw new RuntimeException("Duplicates in joinPoint list");
             }
         }
-        return joinPoints.remove(joinPoint);
+        return inMemoryDB.getJoinPoints().remove(joinPoint);
     }
 
     @Override
     public List<JoinPoint> getAll(){
-        return joinPoints;
+        return inMemoryDB.getJoinPoints();
     }
 }

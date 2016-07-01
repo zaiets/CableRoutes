@@ -13,20 +13,18 @@ import java.util.List;
 @Scope(value = "prototype")
 public class JournalDao implements IDao<Journal> {
     @Autowired
-    InMemoryDB database;
-
-    List<Journal> journals = database.getJournals();
+    InMemoryDB inMemoryDB;
 
 
     @Override
     public boolean create(Journal journal) {
         if (journal == null) return false;
-        for (Journal o : journals) {
+        for (Journal o : inMemoryDB.getJournals()) {
             if (o.getKksName().equals(journal.getKksName())) {
                 throw new RuntimeException("Duplicates in journal list");
             }
         }
-        return journals.add(journal);
+        return inMemoryDB.getJournals().add(journal);
     }
 
     @Override
@@ -44,7 +42,7 @@ public class JournalDao implements IDao<Journal> {
     @Override
     public Journal read(String uniqueName) {
         Journal journal = null;
-        for (Journal o : journals) {
+        for (Journal o : inMemoryDB.getJournals()) {
             if (o.getKksName().equals(uniqueName)) {
                 if (journal == null) {journal = o;}
                 else throw new RuntimeException("Duplicates in journal list");
@@ -56,10 +54,10 @@ public class JournalDao implements IDao<Journal> {
     @Override
     public boolean update(Journal journal) {
         if (journal == null) return false;
-        for (Journal o : journals) {
+        for (Journal o : inMemoryDB.getJournals()) {
             if (o.getKksName().equals(journal.getKksName())) {
-                journals.remove(o);
-                journals.add(journal);
+                o.setFileName(journal.getFileName());
+                o.setCables(journal.getCables());
             } else {
                 throw new RuntimeException("Can't find journal in list:" + journal.getKksName());
             }
@@ -70,17 +68,17 @@ public class JournalDao implements IDao<Journal> {
     @Override
     public boolean delete(String uniqueName) {
         Journal journal = null;
-        for (Journal o : journals) {
+        for (Journal o : inMemoryDB.getJournals()) {
             if (o.getKksName().equals(uniqueName)) {
                 if (journal == null) {journal = o;}
                 else throw new RuntimeException("Duplicates in journal list");
             }
         }
-        return journals.remove(journal);
+        return inMemoryDB.getJournals().remove(journal);
     }
 
     @Override
     public List<Journal> getAll(){
-        return journals;
+        return inMemoryDB.getJournals();
     }
 }
