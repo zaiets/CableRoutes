@@ -13,7 +13,6 @@ import servises.tracerlogic.TracingHelper;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -160,69 +159,76 @@ public class IOExcelForAnalyser {
         }
     }
 
-    public void analyseAndDefineClosestPointsOfEquipment(File equipmentFile, File targetPath, IDao<JoinPoint> joinPointDao) {
-        String equipmentsFileName = propertiesHolder.get("default.equipmentsFileName");
-        String fileExtension = propertiesHolder.get("default.excelFileType");
-        String newMessage = propertiesHolder.get("output.suffix.pointsForEquipmentDefined");
-        String equipmentPath = propertiesHolder.get("default.inputPathName");
-        if (equipmentFile == null) {
-            equipmentFile = new File(buildFileName(equipmentPath, null, equipmentsFileName, null, fileExtension));
-        }
-        String targetFileName;
-        if (targetPath == null || !targetPath.isDirectory()) {
-            String journalPathName = propertiesHolder.get("output.path");
-            targetFileName = buildFileName(journalPathName, null, equipmentsFileName, newMessage, fileExtension);
-        } else {
-            targetFileName = buildFileName(targetPath.getAbsolutePath(), null, equipmentsFileName, newMessage, fileExtension);
-        }
-        File targetFile = new File(targetFileName);
-        List<Equipment> allEquipment = ExcelDBServices.readEquipments(equipmentFile, joinPointDao);
-        if (allEquipment == null) return;
-        List<Equipment> targetEquipment = new ArrayList<>();
-        allEquipment.forEach(o -> {
-            if (o.getJoinPoint() == null) targetEquipment.add(o);
-        });
-        for (Equipment equipment : targetEquipment) {
-            double reserveRatio = propertiesHolder.get("reserveRatio.approximateDeterminationOfTrace", Double.class);
-            JoinPoint joinPointDefined = null;
-            int extraLength = 0;
-            List<JoinPoint> shorterList = new ArrayList<>();
-            Collections.copy(shorterList, joinPointDao.getAll());
-            while (joinPointDefined == null || !shorterList.isEmpty()) {
-                Object[] result = TracingHelper.defineNearestPoint(equipment.getXyz(), shorterList, reserveRatio);
-                joinPointDefined = ((JoinPoint) result[0]);
-                extraLength = (int) result[1];
+    public void analyseAndDefineClosestPointsOfEquipment(String projectName, File equipmentFile, File targetPath, IDao<JoinPoint> joinPointDao) {
+        try {
+            String equipmentsFileName = propertiesHolder.get("default.equipmentsFileName");
+
+            String fileExtension = propertiesHolder.get("default.excelFileType");
+            String newMessage = propertiesHolder.get("output.suffix.pointsForEquipmentDefined");
+            String equipmentPath = propertiesHolder.get("default.inputPathName");
+            if (equipmentFile == null) {
+                equipmentFile = new File(buildFileName(equipmentPath, projectName, equipmentsFileName, null, fileExtension));
             }
-            equipment.setJoinPoint(joinPointDefined);
-            equipment.setCableConnectionAddLength(equipment.getCableConnectionAddLength() + extraLength);
-        }
-
-        Workbook workbook = getWorkbook(equipmentFile);
-        CellStyle pointAddedStyle = workbook.createCellStyle();
-        pointAddedStyle.setAlignment(CellStyle.ALIGN_CENTER);
-        pointAddedStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-        pointAddedStyle.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
-        Font font = workbook.createFont();
-        font.setColor(IndexedColors.DARK_BLUE.getIndex());
-        font.setFontHeightInPoints((short) 11);
-        pointAddedStyle.setFont(font);
-
-        Sheet sheet = workbook.getSheetAt(FIRST_SHEET_INDEX);
-        Iterator<Row> it = sheet.rowIterator();
-        while (it.hasNext()) {
-            Row row = it.next();
-            String cellB = getStringCellValue(row.getCell(1));
+            String targetFileName;
+            if (targetPath == null || !targetPath.isDirectory()) {
+                String journalPathName = propertiesHolder.get("output.path");
+                targetFileName = buildFileName(journalPathName, null, equipmentsFileName, newMessage, fileExtension);
+            } else {
+                targetFileName = buildFileName(targetPath.getAbsolutePath(), null, equipmentsFileName, newMessage, fileExtension);
+            }
+            File targetFile = new File(targetFileName);
+            List<Equipment> allEquipment = ExcelDBServices.readEquipments(equipmentFile, joinPointDao);
+            if (allEquipment == null) return;
+            List<Equipment> targetEquipment = new ArrayList<>();
+            allEquipment.forEach(o -> {
+                if (o.getJoinPoint() == null) targetEquipment.add(o);
+            });
             for (Equipment equipment : targetEquipment) {
-                if (cellB.equals(equipment.getEquipmentName())) {
-                    Cell cellG = row.getCell(5);
-                    cellG.setCellStyle(pointAddedStyle);
-                    cellG.setCellValue(equipment.getCableConnectionAddLength());
-                    Cell cellF = row.getCell(4);
-                    cellF.setCellStyle(pointAddedStyle);
-                    cellF.setCellValue(equipment.getJoinPoint().getKksName());
+                double reserveRatio = propertiesHolder.get("reserveRatio.approximateDeterminationOfTrace", Double.class);
+                JoinPoint joinPointDefined = null;
+                int extraLength = 0;
+                List<JoinPoint> shorterList = new ArrayList<>();
+                shorterList.addAll(joinPointDao.getAll());
+                while (joinPointDefined == null || shorterList.size() == 1) {
+                    Object[] result = TracingHelper.defineNearestPoint(equipment.getXyz(), shorterList, reserveRatio);
+                    joinPointDefined = ((JoinPoint) result[0]);
+                    extraLength = (int) result[1];
+                    shorterList.remove(joinPointDefined);
+                }
+                equipment.setJoinPoint(joinPointDefined);
+                equipment.setCableConnectionAddLength(equipment.getCableConnectionAddLength() + extraLength);
+            }
+
+            Workbook workbook = getWorkbook(equipmentFile);
+            CellStyle pointAddedStyle = workbook.createCellStyle();
+            pointAddedStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            pointAddedStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+            pointAddedStyle.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
+            Font font = workbook.createFont();
+            font.setColor(IndexedColors.DARK_BLUE.getIndex());
+            font.setFontHeightInPoints((short) 11);
+            pointAddedStyle.setFont(font);
+
+            Sheet sheet = workbook.getSheetAt(FIRST_SHEET_INDEX);
+            Iterator<Row> it = sheet.rowIterator();
+            while (it.hasNext()) {
+                Row row = it.next();
+                String cellB = getStringCellValue(row.getCell(1));
+                for (Equipment equipment : targetEquipment) {
+                    if (cellB.equals(equipment.getEquipmentName())) {
+                        Cell cellF = row.getCell(5);
+                        cellF.setCellStyle(pointAddedStyle);
+                        cellF.setCellValue(equipment.getJoinPoint().getKksName());
+                        Cell cellG = row.getCell(6);
+                        cellG.setCellStyle(pointAddedStyle);
+                        cellG.setCellValue(equipment.getCableConnectionAddLength());
+                    }
                 }
             }
+            writeWorkbook(workbook, targetFile);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        writeWorkbook(workbook, targetFile);
+
     }
 }

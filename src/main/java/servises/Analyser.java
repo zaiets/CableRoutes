@@ -63,8 +63,8 @@ public final class Analyser {
 		//TODO
 	}
 
-	public void defineEquipmentsClosestPoints(File equipmentsFile, File targetFile) {
-		ioExcelForAnalyser.analyseAndDefineClosestPointsOfEquipment(equipmentsFile, targetFile, joinPointDao);
+	public void defineEquipmentsClosestPoints(String projectName, File equipmentsFile, File targetPath) {
+		ioExcelForAnalyser.analyseAndDefineClosestPointsOfEquipment(projectName, equipmentsFile, targetPath, joinPointDao);
 	}
 
 	public void findNewEquipmentsInJournals(List<File> journals, File targetPath) {

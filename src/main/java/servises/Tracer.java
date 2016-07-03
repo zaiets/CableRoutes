@@ -11,7 +11,6 @@ import servises.tracerlogic.TracingHelper;
 import servises.tracerlogic.TracingLogicUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -52,11 +51,7 @@ public final class Tracer {
                 !joinPointDao.getAll().isEmpty();
     }
 
-    /**
-     * Main action of program Writes journals into files then job is done
-     * @throws IOException
-     */
-    public void traceJournals(File targetPath) throws IOException {
+    public void traceJournals(File targetPath) {
         for (Journal journal : traceJournals(journalDao.getAll())) {
             ioExcelForTracer.writeToFileTracedJournal(getProjectName(), journal, targetPath);
         }

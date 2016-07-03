@@ -67,7 +67,7 @@ public final class ExcelDBServices {
                     int extraCableLength = 0;
                     if (cellF != null) {
                         try {
-                            extraCableLength = Integer.parseInt(getStringCellValue(cellG));
+                            extraCableLength = getIntCellValue(cellG);
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }

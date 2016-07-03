@@ -1,6 +1,7 @@
 package config;
 
 import app.MainApp;
+import controllers.ScreenController;
 import model.db.InMemoryDB;
 import model.db.impl.*;
 import org.springframework.context.annotation.*;
@@ -14,7 +15,7 @@ import servises.tracerlogic.TracingHelper;
 
 
 @Configuration
-@Import({ScreenConfig.class, PropertiesHolder.class})
+@Import({ScreenController.class, PropertiesHolder.class})
 @ComponentScan(basePackages = "java.*")
 public class AppConfig {
 	@Bean
