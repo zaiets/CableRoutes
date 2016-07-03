@@ -21,7 +21,8 @@ public class CableDao implements IDao<Cable> {
         if (cable == null) return false;
         for (Cable o : inMemoryDB.getCables()) {
             if (o.getKksName().equals(cable.getKksName())) {
-                throw new RuntimeException("Duplicates in cables list");
+                //throw new RuntimeException("Duplicates in cables list");
+                return false;
             }
         }
         return inMemoryDB.getCables().add(cable);
@@ -34,6 +35,7 @@ public class CableDao implements IDao<Cable> {
                 return update(cable);
             }
         } catch (RuntimeException ex) {
+            ex.printStackTrace();
             return update(cable);
         }
         return true;
@@ -68,7 +70,7 @@ public class CableDao implements IDao<Cable> {
                     o.setTraced(cable.isTraced());
                 }
             } else {
-                throw new RuntimeException("Can't find cables in list:" + cable.getKksName());
+                create(o);
             }
         }
         return true;

@@ -4,7 +4,7 @@ import model.db.IDao;
 import model.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import properties.PropertiesHolder;
 
 import java.io.File;
@@ -14,7 +14,7 @@ import java.util.List;
 import static model.db.ExcelDBServices.*;
 import static repository.excelutils.ExcelUtils.buildFileName;
 
-@Service
+@Repository
 @Scope(value = "singleton")
 public final class DBManager {
     @Autowired
@@ -30,86 +30,91 @@ public final class DBManager {
     @Autowired
     private IDao<Route> routeDao;
 
-    public boolean initJoinPointDB (String projectName, String joinPointsFileName) {
-        if (joinPointsFileName == null) joinPointsFileName = propertiesHolder.get("default.joinPointsFileName");
-        String path = propertiesHolder.get("default.inputPathName");
-        String fileExtension = propertiesHolder.get("default.excelFileType");
-        File joinPointsFile = new File(buildFileName(path, projectName, joinPointsFileName, null, fileExtension));
+
+    public boolean initEquipments(String projectName, File equipmentsFile) {
+        if (equipmentsFile == null || !equipmentsFile.canRead()) {
+            String path = propertiesHolder.get("default.inputPathName");
+            String fileExtension = propertiesHolder.get("default.excelFileType");
+            String equipmentsFileName = propertiesHolder.get("default.equipmentsFileName");
+            equipmentsFile = new File(buildFileName(path, projectName, equipmentsFileName, null, fileExtension));
+        }
+        try {
+            List<Equipment> equipments = readEquipments(equipmentsFile, joinPointDao);
+            if (equipments != null && !equipments.isEmpty()) {
+                equipments.forEach(o -> equipmentDao.createOrUpdate(o));
+                return true;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean initJoinPoints(String projectName, File joinPointsFile) {
+        if (joinPointsFile == null || !joinPointsFile.canRead()) {
+            String path = propertiesHolder.get("default.inputPathName");
+            System.out.println(path);
+
+            String fileExtension = propertiesHolder.get("default.excelFileType");
+            String joinPointsFileName = propertiesHolder.get("default.joinPointsFileName");
+            joinPointsFile = new File(buildFileName(path, projectName, joinPointsFileName, null, fileExtension));
+        }
         try {
             List<JoinPoint> joinPoints = readJoinPoints(joinPointsFile);
             if (joinPoints != null && !joinPoints.isEmpty()) {
                 joinPoints.forEach(o -> joinPointDao.createOrUpdate(o));
+                return true;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            return false;
         }
-        return true;
+        return false;
     }
 
-    public boolean init(String projectName, String equipmentsFileName, String joinPointsFileName, String routesFileName, String journalsPathName) {
-        if (equipmentsFileName  == null) equipmentsFileName = propertiesHolder.get("default.equipmentsFileName");
-        if (routesFileName == null) routesFileName = propertiesHolder.get("default.routesFileName");
-        if (journalsPathName == null) journalsPathName = propertiesHolder.get("input.journalsPath");
-        String path = propertiesHolder.get("default.inputPathName");
-        String fileExtension = propertiesHolder.get("default.excelFileType");
-        File equipmentsFile = new File(buildFileName(path, projectName, equipmentsFileName, null, fileExtension));
-        File routesFile = new File(buildFileName(path, projectName, routesFileName, null, fileExtension));
-        File[] journals;
-        File jou = new File(journalsPathName);
-//TODO test
-System.out.println(jou.getAbsolutePath());
-            journals = jou.isDirectory()? jou.listFiles() : new File[] {jou};
-//TODO test
-System.out.println(equipmentsFile + "\n" + routesFile + "\n" + journals);
-        if (journals == null) return false;
-        List<File> journalsFiles = Arrays.asList(journals);
-        return initDatabase(equipmentsFile, routesFile, journalsFiles);
-    }
-
-
-    public boolean initDatabase(File equipmentsFile, File routesFile, List<File> journalsFiles) {
+    public boolean initRoutes(String projectName, File routesFile) {
+        if (routesFile == null || !routesFile.canRead()) {
+            String path = propertiesHolder.get("default.inputPathName");
+            String fileExtension = propertiesHolder.get("default.excelFileType");
+            String routesFileName = propertiesHolder.get("default.routesFileName");
+            routesFile = new File(buildFileName(path, projectName, routesFileName, null, fileExtension));
+        }
         try {
-            try {
-                List<Equipment> equipments = readEquipments(equipmentsFile, joinPointDao);
-                if (equipments != null && !equipments.isEmpty()) {
-                    equipments.forEach(o -> equipmentDao.createOrUpdate(o));
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new Exception("Cant init equipments db");
+            List<Route> routes = readRoutes(routesFile, joinPointDao);
+            if (routes != null && !routes.isEmpty()) {
+                routes.forEach(o -> routeDao.createOrUpdate(o));
+                return true;
             }
-
-            try {
-                List<Route> routes = readRoutes(routesFile, joinPointDao);
-                if (routes != null && !routes.isEmpty()) {
-                    routes.forEach(o -> routeDao.createOrUpdate(o));
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new Exception("Cant init routes db");
-            }
-
-
-            for (File file : journalsFiles) {
-                try {
-                    Journal journal = readJournal(file, equipmentDao, routeDao);
-                    if (journal != null) {
-                        List<Cable> cables = journal.getCables();
-                        if (cables != null && !cables.isEmpty()) {
-                            cables.forEach(o -> cableDao.createOrUpdate(o));
-                        }
-                        journalDao.createOrUpdate(journal);
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw new Exception("Something wrong with reading journal" + file.getName());
-                }
-            }
-            return true;
         } catch (Exception ex) {
             ex.printStackTrace();
-            return false;
         }
+        return false;
+    }
+
+    public boolean initJournals(String projectName, List<File> journals) {
+        File journalsPath;
+        if (journals == null || journals.isEmpty()) {
+            String journalsPathName = propertiesHolder.get("input.journalsPath").concat(projectName).concat("/");
+            journalsPath = new File(journalsPathName);
+            File[] journalMassive = journalsPath.listFiles();
+            if (journalMassive != null) {
+                journals = Arrays.asList(journalMassive);
+            } else return false;
+        }
+        for (File current : journals) {
+            try {
+                Journal journal = readJournal(current, equipmentDao, routeDao);
+                if (journal != null) {
+                    List<Cable> cables = journal.getCables();
+                    if (cables != null && !cables.isEmpty()) {
+                        cables.forEach(o -> cableDao.createOrUpdate(o));
+                    }
+                    journalDao.createOrUpdate(journal);
+                    return true;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return false;
     }
 }

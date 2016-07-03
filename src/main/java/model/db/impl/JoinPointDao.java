@@ -21,7 +21,8 @@ public class JoinPointDao implements IDao<JoinPoint> {
         if (joinPoint == null) return false;
         for (JoinPoint o : inMemoryDB.getJoinPoints()) {
             if (o.getKksName().equals(joinPoint.getKksName())) {
-                throw new RuntimeException("Duplicates in joinPoint list");
+                //throw new RuntimeException("Duplicates in joinPoint list");
+                return false;
             }
         }
         return inMemoryDB.getJoinPoints().add(joinPoint);
@@ -34,6 +35,7 @@ public class JoinPointDao implements IDao<JoinPoint> {
                 return update(joinPoint);
             }
         } catch (RuntimeException ex) {
+            ex.printStackTrace();
             return update(joinPoint);
         }
         return true;
@@ -58,7 +60,7 @@ public class JoinPointDao implements IDao<JoinPoint> {
             if (o.getKksName().equals(joinPoint.getKksName())) {
                 o.setXyz(joinPoint.getXyz());
             } else {
-                throw new RuntimeException("Can't find joinPoint in list:" + joinPoint.getKksName());
+                create(o);
             }
         }
         return true;

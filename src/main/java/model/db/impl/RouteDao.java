@@ -21,7 +21,8 @@ public class RouteDao implements IDao<Route> {
         if (route == null) return false;
         for (Route o : inMemoryDB.getRoutes()) {
             if (o.getKksName().equals(route.getKksName())) {
-                throw new RuntimeException("Duplicates in route list");
+                //throw new RuntimeException("Duplicates in route list");
+                return false;
             }
         }
         return inMemoryDB.getRoutes().add(route);
@@ -34,6 +35,7 @@ public class RouteDao implements IDao<Route> {
                 return update(route);
             }
         } catch (RuntimeException ex) {
+            ex.printStackTrace();
             return update(route);
         }
         return true;
@@ -64,7 +66,7 @@ public class RouteDao implements IDao<Route> {
                 o.setShelvesCount(route.getShelvesCount());
                 o.setCablesList(route.getCablesList());
             } else {
-                throw new RuntimeException("Can't find route in list:" + route.getKksName());
+                create(o);
             }
         }
         return true;

@@ -1,10 +1,12 @@
 package config;
 
-import app.MainApp;
 import controllers.ScreenController;
 import model.db.InMemoryDB;
 import model.db.impl.*;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import properties.PropertiesHolder;
 import repository.IOExcelForAnalyser;
 import repository.IOExcelForTracer;
@@ -15,66 +17,78 @@ import servises.tracerlogic.TracingHelper;
 
 
 @Configuration
-@Import({ScreenController.class, PropertiesHolder.class})
 @ComponentScan(basePackages = "java.*")
+@Import(PropertiesHolder.class)
 public class AppConfig {
+
 	@Bean
-	MainApp appView() {
-		return new MainApp();
-	}
-	@Bean
-	PropertiesHolder propertiesHolder () {
+	PropertiesHolder propertiesHolder() {
 		return new PropertiesHolder();
 	}
 
 	@Bean
-	InMemoryDB getInMemoryDB() {
+	InMemoryDB inMemoryDB() {
 		return InMemoryDB.INSTANCE;
 	}
 
 	@Bean
-	CableDao cableDao () {
+	CableDao cableDao() {
 		return new CableDao();
 	}
+
 	@Bean
 	EquipmentDao equipmentDao() {
 		return new EquipmentDao();
 	}
+
 	@Bean
 	JoinPointDao joinPointDao() {
 		return new JoinPointDao();
 	}
+
 	@Bean
 	JournalDao journalDao() {
 		return new JournalDao();
 	}
+
 	@Bean
 	RouteDao routeDao() {
 		return new RouteDao();
 	}
+
 	@Bean
 	Tracer tracer() {
 		return new Tracer();
 	}
+
 	@Bean
 	Analyser analyser() {
 		return new Analyser();
 	}
+
 	@Bean
-	DBManager dbInitManager () {
+	DBManager dBManager() {
 		return new DBManager();
 	}
+
 	@Bean
-	TracingHelper tracingHelper () {
+	TracingHelper tracingHelper() {
 		return new TracingHelper();
 	}
+
 	@Bean
-	IOExcelForTracer ioExcelForTracer () {
+	IOExcelForTracer iOExcelForTracer() {
 		return new IOExcelForTracer();
 	}
+
 	@Bean
-	IOExcelForAnalyser ioExcelForAnalyser () {
+	IOExcelForAnalyser iOExcelForAnalyser() {
 		return new IOExcelForAnalyser();
+	}
+
+	@Bean
+	ScreenController screenController() {
+		return new ScreenController();
 	}
 }
 

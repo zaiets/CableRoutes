@@ -1,13 +1,16 @@
 package controllers;
 
+import config.AppConfig;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.context.annotation.Import;
+import org.springframework.stereotype.Service;
 import servises.Analyser;
 import servises.DBManager;
 import servises.Tracer;
@@ -15,17 +18,22 @@ import servises.Tracer;
 import java.io.File;
 import java.util.List;
 
-@Controller
+import static controllers.Messages.*;
+
+@Service
+@Import(AppConfig.class)
+
 public class ScreenController {
-    public static final String DEFAULT_PATH = "files/journals";
-    public static final String DEFAULT_PROJECT = "MAYAK";
-    public static final String MESSAGE_SMTHN_WRONG = "Ошибка в программе!";
+
+    public static final int SMALL_FONT_SIZE = 9;
+    public static final int MEDIUM_FONT_SIZE = 15;
+    public static final int BIG_FONT_SIZE = 21;
     @Autowired
-    private Analyser analyser;
+    private static Analyser analyser;
     @Autowired
-    private Tracer tracer;
+    private static Tracer tracer;
     @Autowired
-    private DBManager dbManager;
+    private static DBManager dBManager;
 
     private String projectName;
     private Stage stage;
@@ -48,8 +56,8 @@ public class ScreenController {
     private Button buttonChooseFile1, buttonChooseFile2, buttonChooseFile3, buttonChooseFiles4;
     @FXML
     private CheckBox checkBox1, checkBox2, checkBox3, checkBox4;
-    private File equipments, joinPoints, routes = null;
-    private File[] journals = null;
+    private static File fileEquipments, fileJoinPoints, fileRoutes = null;
+    private static List<File> filesJournals = null;
 
     //Analyser page
     @FXML
@@ -58,8 +66,8 @@ public class ScreenController {
     private Button buttonChooseFilesAnalyser1, buttonChooseFileAnalyser2;
     @FXML
     private RadioButton radioAnalyser1, radioAnalyser2, radioAnalyser3;
-    private File equipmentsForAnalyse = null;
-    private File[] journalsForAnalyse = null;
+    private static File fileEquipmentsForAnalyse = null;
+    private static File[] filesJournalsForAnalyse = null;
 
     //Tracer page
     @FXML
@@ -68,7 +76,7 @@ public class ScreenController {
     private Button buttonChooseFilesTracer1;
     @FXML
     private RadioButton radioTracer1, radioTracer2;
-    private File[] journalsForTracing = null;
+    private static File[] filesJournalsForTracing = null;
 
     //Calculator page
     @FXML
@@ -77,8 +85,7 @@ public class ScreenController {
     private Button buttonChooseFilesCalculator1;
     @FXML
     private RadioButton radioCalculator1, radioCalculator2;
-    private File[] journalsForCalculating = null;
-
+    private static File[] filesJournalsForCalculating = null;
 
     @FXML
     public void setNewProjectName(ActionEvent event) {
@@ -92,23 +99,132 @@ public class ScreenController {
     @FXML
     protected void press_ButtonActions(ActionEvent event) {
         progressBar.setProgress(0.2);
-        if (checkBox1.isSelected()) textArea1.setText("Done...");
-        progressBar.setProgress(0.4);
-        if (checkBox2.isSelected()) textArea2.setText("Done...");
-        progressBar.setProgress(0.6);
-        if (checkBox3.isSelected()) textArea3.setText("Done...");
-        progressBar.setProgress(0.8);
-        if (checkBox4.isSelected()) textArea4.setText("Done...");
-        progressBar.setProgress(1.0);
+        try {
+            if (checkBox1.isSelected()) {
+                if (dBManager.initJoinPoints(projectName, fileJoinPoints)) {
+                    textArea1.setText(INIT_DONE_OK.getMessage());
+                } else {
+                    textArea1.setText(JP_INIT_ERROR.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            textArea1.setText(JP_INIT_ERROR.getMessage());
+        }
+        try {
+            progressBar.setProgress(0.4);
+            if (checkBox2.isSelected()) {
+                if (dBManager.initEquipments(projectName, fileEquipments)) {
+                    textArea2.setText(INIT_DONE_OK.getMessage());
+                } else {
+                    textArea2.setText(EQUIP_INIT_ERROR.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            textArea2.setText(EQUIP_INIT_ERROR.getMessage());
+        }
 
+        try {
+            progressBar.setProgress(0.6);
+            if (checkBox3.isSelected()) {
+                if (dBManager.initRoutes(projectName, fileRoutes)) {
+                    textArea3.setText(INIT_DONE_OK.getMessage());
+                } else {
+                    textArea3.setText(ROUTES_INIT_ERROR.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            textArea3.setText(ROUTES_INIT_ERROR.getMessage());
+        }
+        try {
+            progressBar.setProgress(0.8);
+            if (checkBox4.isSelected()) {
+                if (dBManager.initJournals(projectName, filesJournals)) {
+                    textArea4.setText(INIT_DONE_OK.getMessage());
+                } else {
+                    textArea4.setText(JOURNALS_INIT_ERROR.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            textArea4.setText(JOURNALS_INIT_ERROR.getMessage());
+        }
+        progressBar.setProgress(1.0);
+        checkBox1.setSelected(false);
+        checkBox2.setSelected(false);
+        checkBox3.setSelected(false);
+        checkBox4.setSelected(false);
     }
 
     @FXML
-    protected void setProgressBarsNull() {
+    protected void setDefaults() {
+        projectName = projectNameArea.getText();
         progressBar.setProgress(0.0);
         progressBarAnalyser.setProgress(0.0);
         progressBarCalculator.setProgress(0.0);
         progressBarTracer.setProgress(0.0);
+    }
+
+    @FXML
+    protected void setCheckBox1Defaults() {
+        if (fileJoinPoints == null) textArea1.setText(CHOOSE_YOUR_FILE.getMessage());
+    }
+
+    @FXML
+    protected void setCheckBox2Defaults() {
+        if (fileEquipments == null) textArea2.setText(CHOOSE_YOUR_FILE.getMessage());
+    }
+
+    @FXML
+    protected void setCheckBox3Defaults() {
+        if (fileRoutes == null) textArea3.setText(CHOOSE_YOUR_FILE.getMessage());
+    }
+
+    @FXML
+    protected void setCheckBox4Defaults() {
+        if (filesJournals == null) {
+            textArea4.setFont(Font.font(MEDIUM_FONT_SIZE));
+            textArea4.setText(CHOOSE_YOUR_FILE.getMessage());
+        }
+    }
+
+    @FXML
+    protected void chooseJoinPointsFile(ActionEvent event) {
+        fileJoinPoints = inputFile(JP_INPUT.getMessage());
+        textArea1.setText(defineFileMessage(fileJoinPoints));
+    }
+
+    @FXML
+    protected void chooseEquipmentsFile(ActionEvent event) {
+        fileEquipments = inputFile(EQUIP_INPUT.getMessage());
+        textArea2.setText(defineFileMessage(fileEquipments));
+    }
+
+    @FXML
+    protected void chooseRoutesFile(ActionEvent event) {
+        fileRoutes = inputFile(ROUTES_INPUT.getMessage());
+        textArea3.setText(defineFileMessage(fileRoutes));
+    }
+
+    @FXML
+    protected void chooseJournalsFiles(ActionEvent event) {
+        filesJournals = inputFiles(JOURNALS_INPUT.getMessage());
+        if (filesJournals != null) {
+            StringBuilder sb = new StringBuilder();
+            filesJournals.forEach(o -> sb.append(o.getAbsolutePath()).append("\n"));
+            if (sb.toString().length() > 80) textArea4.setFont(Font.font(SMALL_FONT_SIZE));
+            textArea4.setText(sb.toString());
+        } else {
+            textArea4.setFont(Font.font(MEDIUM_FONT_SIZE));
+            textArea4.setText(CHOSEN_DEFAULT_FILE.getMessage());
+        }
+    }
+
+
+    private String defineFileMessage(File file) {
+        return file == null? CHOSEN_DEFAULT_FILE.getMessage() : file.getAbsolutePath();
     }
 
     private File inputFile(String title) {
@@ -125,31 +241,15 @@ public class ScreenController {
         return fileChooser.showOpenMultipleDialog(stage);
     }
 
-    private Float[] getProgressValues(int step) {
-        Float[] progressValues = new Float[step + 1];
-        float f;
-        progressValues[0] = 0f;
-        progressValues[step] = 1f;
-        for (int i = 1; i < step; i++) {
-            f = Math.round(100f / (step - i)) * 0.01f;
-            progressValues[i] = f;
-        }
-        return progressValues;
-    }
-
-    public void setAnalyser(Analyser analyser) {
-        this.analyser = analyser;
-    }
-
-    public void setDbManager(DBManager dbManager) {
-        this.dbManager = dbManager;
-    }
-
-    public void setTracer(Tracer tracer) {
-        this.tracer = tracer;
-    }
-
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public void show() {
+        stage.show();
+    }
+
+    public void setdBManager(DBManager dBManager) {
+        ScreenController.dBManager = dBManager;
     }
 }

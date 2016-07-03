@@ -21,7 +21,8 @@ public class JournalDao implements IDao<Journal> {
         if (journal == null) return false;
         for (Journal o : inMemoryDB.getJournals()) {
             if (o.getKksName().equals(journal.getKksName())) {
-                throw new RuntimeException("Duplicates in journal list");
+                //throw new RuntimeException("Duplicates in journal list");
+                return false;
             }
         }
         return inMemoryDB.getJournals().add(journal);
@@ -34,6 +35,7 @@ public class JournalDao implements IDao<Journal> {
                 return update(journal);
             }
         } catch (RuntimeException ex) {
+            ex.printStackTrace();
             return update(journal);
         }
         return true;
@@ -59,7 +61,7 @@ public class JournalDao implements IDao<Journal> {
                 o.setFileName(journal.getFileName());
                 o.setCables(journal.getCables());
             } else {
-                throw new RuntimeException("Can't find journal in list:" + journal.getKksName());
+                create(o);
             }
         }
         return true;

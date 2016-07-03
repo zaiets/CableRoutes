@@ -21,7 +21,8 @@ public class EquipmentDao implements IDao<Equipment> {
         if (equipment == null) return false;
         for (Equipment o : inMemoryDB.getEquipments()) {
             if (o.getEquipmentName().equals(equipment.getEquipmentName())) {
-                throw new RuntimeException("Duplicates in equipment list");
+                //throw new RuntimeException("Duplicates in equipment list");
+                return false;
             }
         }
         return inMemoryDB.getEquipments().add(equipment);
@@ -34,6 +35,7 @@ public class EquipmentDao implements IDao<Equipment> {
                 return update(equipment);
             }
         } catch (RuntimeException ex) {
+            ex.printStackTrace();
             return update(equipment);
         }
         return true;
@@ -61,7 +63,7 @@ public class EquipmentDao implements IDao<Equipment> {
                 o.setXyz(equipment.getXyz());
                 o.setCableConnectionAddLength(equipment.getCableConnectionAddLength());
             } else {
-                throw new RuntimeException("Can't find equipment in list:" + equipment.getKksName());
+                create(o);
             }
         }
         return true;
