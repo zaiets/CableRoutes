@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import properties.PropertiesHolder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class TracingHelper {
@@ -96,36 +95,25 @@ public class TracingHelper {
         return Math.abs(sX - eX) + Math.abs(sY - eY) + Math.abs(sZ - eZ);
     }
 
-    public static Object [] defineNearestPoint(double[] equipXyz, List<JoinPoint> shorterPointList, double reserveRatio) {
+    public static Object [] defineNearestPoint(double[] equipXyz, List<JoinPoint> pointList, double reserveRatio) {
         double a = equipXyz[0];
         double b = equipXyz[1];
         double c = equipXyz[2];
-        List<Double> distance = new ArrayList<>(shorterPointList.size() - 1);
-        List<Integer> length = new ArrayList<>(shorterPointList.size() - 1);
-        List<JoinPoint> points = new ArrayList<>(shorterPointList.size() - 1);
-        for (int i = 1; i < shorterPointList.size() - 1; i++) {
-            points.add(shorterPointList.get(i));
-            double x = shorterPointList.get(i).getXyz()[0];
-            double y = shorterPointList.get(i).getXyz()[1];
-            double z = shorterPointList.get(i).getXyz()[2];
-            distance.add(Math.sqrt((x - a) * (x - a) + (y - b) * (y - b) + (z - c) * (z - c)));
-            length.add((int) (Math.abs(x - a) + Math.abs(y - b) + Math.abs(z - c)));
+        TreeMap<Double, JoinPoint> map = new TreeMap<>();
+        for (JoinPoint point : pointList) {
+            double x = point.getXyz()[0];
+            double y = point.getXyz()[1];
+            double z = point.getXyz()[2];
+            Double length = minus(x, a) + minus(y, b) + minus(z, c);
+            map.put(length, point);
         }
-        for (int i = 1; i < distance.size(); i++) {
-            if (distance.get(i) > distance.get(i - 1)) {
-                double tmp1 = distance.get(i - 1);
-                distance.set(i - 1, distance.get(i));
-                distance.set(i, tmp1);
-                int tmp2 = length.get(i - 1);
-                length.set(i - 1, length.get(i));
-                length.set(i, tmp2);
-                JoinPoint temp = points.get(i - 1);
-                points.set(i - 1, points.get(i));
-                points.set(i, temp);
-            }
-        }
-        Integer extraLength = (int)((length.get(length.size() - 1))*reserveRatio);
-        JoinPoint closestPoint = points.get(points.size() - 1);
+        Integer extraLength = (int)(map.firstEntry().getKey()*reserveRatio);
+        JoinPoint closestPoint = map.firstEntry().getValue();
         return new Object []{closestPoint, extraLength};
+    }
+
+    private static double minus (double m, double n) {
+        if (m > n) return Math.abs(m - n);
+        else return Math.abs(n - m);
     }
 }

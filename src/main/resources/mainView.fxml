@@ -236,6 +236,11 @@
                                         <Insets right="10.0" />
                                     </GridPane.margin>
                                 </Text>
+                        <Text fx:id="textAreaTracer11" strokeType="OUTSIDE" strokeWidth="0.0" text="NOTE: You need to init DB first. Second step - test DB is ready!" wrappingWidth="575.0" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </Text>
                             </children>
                             <columnConstraints>
                                 <ColumnConstraints hgrow="NEVER" maxWidth="258.0" minWidth="10.0" prefWidth="190.0" />

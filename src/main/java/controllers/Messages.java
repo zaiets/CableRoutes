@@ -19,7 +19,8 @@ public enum Messages {
     //defaults
     MESSAGE_SMTHN_WRONG ("При обработке произошла ошибка!"),
     MESSAGE_READY ("...result will be shown here"),
-    CHOOSE_YOUR_FILE ("...choose file"),
+    CHOOSE_FILE("...choose file"),
+    CHOOSE_TARGET_PATH ("...choose target path"),
     CHOSEN_DEFAULT_FILE ("chosen: default path or file"),
 
     //tracer

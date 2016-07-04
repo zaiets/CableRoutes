@@ -179,24 +179,24 @@ public class ScreenController {
 
     @FXML
     protected void setCheckBox1Defaults() {
-        if (fileJoinPoints == null) textArea1.setText(CHOOSE_YOUR_FILE.getMessage());
+        if (fileJoinPoints == null) textArea1.setText(CHOOSE_FILE.getMessage());
     }
 
     @FXML
     protected void setCheckBox2Defaults() {
-        if (fileEquipments == null) textArea2.setText(CHOOSE_YOUR_FILE.getMessage());
+        if (fileEquipments == null) textArea2.setText(CHOOSE_FILE.getMessage());
     }
 
     @FXML
     protected void setCheckBox3Defaults() {
-        if (fileRoutes == null) textArea3.setText(CHOOSE_YOUR_FILE.getMessage());
+        if (fileRoutes == null) textArea3.setText(CHOOSE_FILE.getMessage());
     }
 
     @FXML
     protected void setCheckBox4Defaults() {
         if (filesJournals == null) {
             textArea4.setFont(Font.font(MEDIUM_FONT_SIZE));
-            textArea4.setText(CHOOSE_YOUR_FILE.getMessage());
+            textArea4.setText(CHOOSE_FILE.getMessage());
         }
     }
 
@@ -244,12 +244,14 @@ public class ScreenController {
             result = true;
         } else if (radioAnalyser2.isSelected()) {
             result = analyser.findNewEquipmentsInJournals(projectName, filesJournalsForAnalyse, targetPath);
+            if (result) textAreaAnalyser2.setText(WORK_DONE_OK.getMessage());
+            else textAreaAnalyser2.setText(MESSAGE_SMTHN_WRONG.getMessage());
         } else if (radioAnalyser3.isSelected()) {
             result = analyser.defineEquipmentsClosestPoints(projectName, fileEquipmentsForAnalyse, targetPath);
+            if (result) textAreaAnalyser3.setText(WORK_DONE_OK.getMessage());
+            else textAreaAnalyser3.setText(MESSAGE_SMTHN_WRONG.getMessage());
         }
-        if (!result) textAreaAnalyser1.setText(MESSAGE_SMTHN_WRONG.getMessage());
         progressBarAnalyser.setProgress(MAX_BAR_VALUE);
-        textAreaAnalyser1.setText(WORK_DONE_OK.getMessage());
     }
 
     @FXML
@@ -276,8 +278,8 @@ public class ScreenController {
     @FXML
     protected void setRadioButtonsDefaultsAnalyser() {
         textAreaAnalyser1.setText(MESSAGE_READY.getMessage());
-        if (filesJournalsForAnalyse == null) textAreaAnalyser2.setText(CHOOSE_YOUR_FILE.getMessage());
-        if (fileEquipmentsForAnalyse == null) textAreaAnalyser3.setText(CHOOSE_YOUR_FILE.getMessage());
+        if (filesJournalsForAnalyse == null) textAreaAnalyser2.setText(CHOOSE_FILE.getMessage());
+        if (fileEquipmentsForAnalyse == null) textAreaAnalyser3.setText(CHOOSE_FILE.getMessage());
     }
 
     //TRACER
@@ -311,7 +313,7 @@ public class ScreenController {
     @FXML
     protected void setRadioButtonsDefaultsTracer() {
         textAreaTracer1.setText(MESSAGE_READY.getMessage());
-        if (targetPath == null) textAreaTracer2.setText(CHOOSE_YOUR_FILE.getMessage());
+        if (targetPath == null) textAreaTracer2.setText(CHOOSE_TARGET_PATH.getMessage());
     }
 
 
