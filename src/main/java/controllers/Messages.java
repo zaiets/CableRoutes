@@ -1,8 +1,9 @@
 package controllers;
 
 public enum Messages {
+
+    WORK_DONE_OK("working... success!"),
     //DB init
-    INIT_DONE_OK ("reading... success!"),
     JP_INIT_ERROR("can't read join points from file"),
     EQUIP_INIT_ERROR ("can't read equipments from file"),
     ROUTES_INIT_ERROR ("can't read routes from file"),
@@ -13,11 +14,16 @@ public enum Messages {
     EQUIP_INPUT ("choose equipments data file"),
     ROUTES_INPUT ("choose routes data file"),
     JOURNALS_INPUT ("choose journal files"),
+    ANY_INPUT ("choose files to work with!"),
+    PATH_INPUT ("choose output path to work with!"),
 
     //defaults
     MESSAGE_SMTHN_WRONG ("Ошибка в программе!"),
     CHOOSE_YOUR_FILE ("...choose file"),
-    CHOSEN_DEFAULT_FILE ("chosen: default path or file");
+    CHOSEN_DEFAULT_FILE ("chosen: default path or file"),
+
+    //tracer
+    TRACING_ERRORS ("Can't trace model");
 
 
     private String message;

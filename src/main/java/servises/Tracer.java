@@ -16,7 +16,6 @@ import java.util.List;
 @Service
 @Scope(value = "singleton")
 public final class Tracer {
-    private String projectName;
     @Autowired
     private PropertiesHolder propertiesHolder;
     //excel writer
@@ -36,14 +35,6 @@ public final class Tracer {
     private IDao<Route> routeDao;
 
 
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
     public boolean testModelIsReadyForTracing() {
         return !journalDao.getAll().isEmpty() ||
                 !equipmentDao.getAll().isEmpty() ||
@@ -51,11 +42,18 @@ public final class Tracer {
                 !joinPointDao.getAll().isEmpty();
     }
 
-    public void traceJournals(File targetPath) {
-        for (Journal journal : traceJournals(journalDao.getAll())) {
-            ioExcelForTracer.writeToFileTracedJournal(getProjectName(), journal, targetPath);
+    public boolean traceJournals(String projectName, File targetPath) {
+        try {
+            for (Journal journal : traceJournals(journalDao.getAll())) {
+                ioExcelForTracer.writeToFileTracedJournal(projectName, journal, targetPath);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
         }
+        return true;
     }
+
 
     private List<Journal> traceJournals(List<Journal> journalList) {
         for (Journal journal : journalList) {

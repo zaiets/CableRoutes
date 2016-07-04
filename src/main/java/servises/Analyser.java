@@ -33,15 +33,6 @@ public final class Analyser {
 	@Autowired
 	private IDao<Route> routeDao;
 
-	private String projectName;
-
-	public String getProjectName() {
-		return projectName;
-	}
-
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
-	}
 
 	public void analyseEnglishLettersInEquiments() {
 		//TODO
@@ -63,15 +54,15 @@ public final class Analyser {
 		//TODO
 	}
 
-	public void defineEquipmentsClosestPoints(String projectName, File equipmentsFile, File targetPath) {
-		ioExcelForAnalyser.analyseAndDefineClosestPointsOfEquipment(projectName, equipmentsFile, targetPath, joinPointDao);
+	public boolean defineEquipmentsClosestPoints(String projectName, File equipmentsFile, File targetPath) {
+		return ioExcelForAnalyser.analyseAndDefineClosestPointsOfEquipment(projectName, equipmentsFile, targetPath, joinPointDao);
 	}
 
-	public void findNewEquipmentsInJournals(List<File> journals, File targetPath) {
+	public boolean findNewEquipmentsInJournals(String projectName, List<File> journals, File targetPath) {
 		List<String[]> addEquip = new ArrayList<>();
 		for (File journal : journals) {
 			addEquip.addAll(ioExcelForAnalyser.analyseEquipmentsInJournal(journal, equipmentDao.getAll(), targetPath));
 		}
-		ioExcelForAnalyser.writeToFileAllAdditionalEquipment (projectName, addEquip, targetPath);
+		return ioExcelForAnalyser.writeToFileAllAdditionalEquipment (projectName, addEquip, targetPath);
 	}
 }
