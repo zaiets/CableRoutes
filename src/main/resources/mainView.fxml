@@ -92,7 +92,7 @@
                                         <Insets right="10.0" />
                                     </GridPane.margin>
                                 </Text>
-                                <Text fx:id="textArea4" strokeType="OUTSIDE" strokeWidth="0.0" text="...choose files" wrappingWidth="250.0" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                                <Text fx:id="textArea4" strokeType="OUTSIDE" strokeWidth="0.0" text="...choose file" wrappingWidth="250.0" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                                     <GridPane.margin>
                                         <Insets right="10.0" />
                                     </GridPane.margin>
@@ -128,7 +128,7 @@
                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <RadioButton fx:id="radioAnalyser1" mnemonicParsing="false" selected="true" text="Test DB is not empty" GridPane.rowIndex="1">
+                                <RadioButton fx:id="radioAnalyser1" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsAnalyser" selected="true" text="Test DB is not empty" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
@@ -136,12 +136,12 @@
                                         <ToggleGroup fx:id="group1" />
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton fx:id="radioAnalyser2" mnemonicParsing="false" text="Equipments in journals" toggleGroup="$group1" GridPane.rowIndex="2">
+                                <RadioButton fx:id="radioAnalyser2" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsAnalyser" text="Equipments in journals" toggleGroup="$group1" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
                                 </RadioButton>
-                                <Text fx:id="textAreaAnalyser2" strokeType="OUTSIDE" strokeWidth="0.0" text="...choose your files" wrappingWidth="250.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                <Text fx:id="textAreaAnalyser2" strokeType="OUTSIDE" strokeWidth="0.0" text="...choose file" wrappingWidth="250.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets right="10.0" />
                                     </GridPane.margin>
@@ -167,14 +167,14 @@
                                         <Insets left="10.0" />
                                     </GridPane.margin>
                                 </Label>
-                                <RadioButton fx:id="radioAnalyser3" mnemonicParsing="false" text="Points in Equipments" toggleGroup="$group1" GridPane.rowIndex="3">
+                                <RadioButton fx:id="radioAnalyser3" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsAnalyser" text="Points in Equipments" toggleGroup="$group1" GridPane.rowIndex="3">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
                                 </RadioButton>
                                 <Label alignment="CENTER" prefHeight="75.0" prefWidth="60.0" text="File:" underline="true" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                 <Button fx:id="buttonChooseFileAnalyser2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#setFileEquipmentsForAnalysePoints" prefHeight="64.0" prefWidth="65.0" text="&gt;&gt;" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                <Text fx:id="textAreaAnalyser3" strokeType="OUTSIDE" strokeWidth="0.0" text="...choose your file" wrappingWidth="250.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                <Text fx:id="textAreaAnalyser3" strokeType="OUTSIDE" strokeWidth="0.0" text="...choose file" wrappingWidth="250.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                                     <GridPane.margin>
                                         <Insets right="10.0" />
                                     </GridPane.margin>
@@ -192,7 +192,7 @@
                     <content>
                         <GridPane>
                             <children>
-                                <RadioButton fx:id="radioTracer1" mnemonicParsing="false" selected="true" text="Test DB is ready" GridPane.rowIndex="1">
+                                <RadioButton fx:id="radioTracer1" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsTracer" selected="true" text="Test DB is ready" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
@@ -200,7 +200,7 @@
                                         <ToggleGroup fx:id="group2" />
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton fx:id="radioTracer2" mnemonicParsing="false" text="Trace model" toggleGroup="$group2" GridPane.rowIndex="2">
+                                <RadioButton fx:id="radioTracer2" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsTracer" text="Trace model" toggleGroup="$group2" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
