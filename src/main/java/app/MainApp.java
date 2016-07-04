@@ -11,7 +11,9 @@ import javafx.stage.Stage;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import servises.Analyser;
 import servises.DBManager;
+import servises.Tracer;
 
 @Configuration
 @Import(AppConfig.class)
@@ -28,6 +30,8 @@ public class MainApp extends Application {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         ScreenController screenController = context.getBean(ScreenController.class);
         screenController.setdBManager(context.getBean(DBManager.class));
+        screenController.setTracer(context.getBean(Tracer.class));
+        screenController.setAnalyser(context.getBean(Analyser.class));
         screenController.setStage(stage);
         screenController.show();
     }

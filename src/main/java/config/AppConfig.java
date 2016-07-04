@@ -2,7 +2,7 @@ package config;
 
 import controllers.ScreenController;
 import model.db.InMemoryDB;
-import model.db.impl.*;
+import model.db.implInMemory.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

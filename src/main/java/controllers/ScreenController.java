@@ -135,7 +135,6 @@ public class ScreenController {
             e.printStackTrace();
             textArea2.setText(EQUIP_INIT_ERROR.getMessage());
         }
-
         try {
             progressBar.setProgress(MAX_BAR_VALUE * 0.6);
             if (checkBox3.isSelected()) {
@@ -244,17 +243,13 @@ public class ScreenController {
             textAreaAnalyser1.setText("NOT IMPLEMENTED FOR NOW!!");
             result = true;
         } else if (radioAnalyser2.isSelected()) {
-            if (filesJournalsForAnalyse != null) {
-                result = analyser.findNewEquipmentsInJournals(projectName, filesJournalsForAnalyse, targetPath);
-            }
+            result = analyser.findNewEquipmentsInJournals(projectName, filesJournalsForAnalyse, targetPath);
         } else if (radioAnalyser3.isSelected()) {
-            if (fileEquipmentsForAnalyse != null) {
-                result = analyser.defineEquipmentsClosestPoints(projectName, fileEquipmentsForAnalyse, targetPath);
-            }
+            result = analyser.defineEquipmentsClosestPoints(projectName, fileEquipmentsForAnalyse, targetPath);
         }
-        if (!result) textAreaAnalyser1.setText(ANY_INPUT.getMessage());
+        if (!result) textAreaAnalyser1.setText(MESSAGE_SMTHN_WRONG.getMessage());
         progressBarAnalyser.setProgress(MAX_BAR_VALUE);
-        textAreaAnalyser0.setText(WORK_DONE_OK.getMessage());
+        textAreaAnalyser1.setText(WORK_DONE_OK.getMessage());
     }
 
     @FXML
@@ -286,19 +281,20 @@ public class ScreenController {
         if (radioTracer1.isSelected()) {
             result = tracer.testModelIsReadyForTracing();
         } else if (radioTracer2.isSelected()) {
-            if (targetPath != null) {
-                result = tracer.traceJournals(projectName, targetPath);
-            }
+            result = tracer.traceJournals(projectName, targetPath);
         }
-        if (!result) textAreaAnalyser1.setText(TRACING_ERRORS.getMessage());
-        progressBarAnalyser.setProgress(MAX_BAR_VALUE);
-        textAreaAnalyser0.setText(WORK_DONE_OK.getMessage());
+        if (!result) {
+            textAreaTracer1.setText(TRACING_ERRORS.getMessage());
+        } else {
+            progressBarTracer.setProgress(MAX_BAR_VALUE);
+            textAreaTracer1.setText(WORK_DONE_OK.getMessage());
+        }
     }
 
 
     @FXML
     protected void setPathForTracer(ActionEvent event) {
-        targetPath = inputPath(PATH_INPUT.getMessage());
+        targetPath = chooseTargetPath(PATH_INPUT.getMessage());
         if (targetPath != null) {
             textAreaTracer2.setText(defineFileMessage(targetPath));
         } else {
@@ -320,7 +316,7 @@ public class ScreenController {
     }
 
     //TODO rewrite?
-    private File inputPath (String title) {
+    private File chooseTargetPath(String title) {
         JFileChooser pathChooser = new JFileChooser();
         pathChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         pathChooser.setAcceptAllFileFilterUsed(false);
@@ -346,5 +342,13 @@ public class ScreenController {
 
     public void setdBManager(DBManager dBManager) {
         ScreenController.dBManager = dBManager;
+    }
+
+    public void setAnalyser(Analyser analyser) {
+        ScreenController.analyser = analyser;
+    }
+
+    public void setTracer(Tracer tracer) {
+        ScreenController.tracer = tracer;
     }
 }

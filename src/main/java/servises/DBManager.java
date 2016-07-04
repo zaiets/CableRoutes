@@ -53,8 +53,6 @@ public final class DBManager {
     public boolean initJoinPoints(String projectName, File joinPointsFile) {
         if (joinPointsFile == null || !joinPointsFile.canRead()) {
             String path = propertiesHolder.get("default.inputPathName");
-            System.out.println(path);
-
             String fileExtension = propertiesHolder.get("default.excelFileType");
             String joinPointsFileName = propertiesHolder.get("default.joinPointsFileName");
             joinPointsFile = new File(buildFileName(path, projectName, joinPointsFileName, null, fileExtension));

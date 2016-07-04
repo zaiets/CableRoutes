@@ -253,7 +253,7 @@
                         </GridPane>
                     </content>
                 </Tab>
-                <Tab text="Calculator">
+                <Tab disable="true" text="Calculator">
                     <content>
                         <GridPane>
                             <children>

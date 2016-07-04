@@ -31,7 +31,10 @@ public final class ExcelDBServices {
                     xyz[0] = getDoubleCellValue(cells.next());
                     xyz[1] = getDoubleCellValue(cells.next());
                     xyz[2] = getDoubleCellValue(cells.next());
-                    joinPoints.add(new JoinPoint(name, xyz));
+                    JoinPoint current = new JoinPoint(name, xyz);
+                    //TODO logging
+                    System.out.println(current);
+                    joinPoints.add(current);
                 }
             }
             return joinPoints;
@@ -72,7 +75,12 @@ public final class ExcelDBServices {
                             ex.printStackTrace();
                         }
                     }
-                    equipments.add(new Equipment(equipmentKKS, equipmentName, extraCableLength, xyz, closestTracePoint));
+                    Equipment current = new Equipment(equipmentKKS, equipmentName, extraCableLength, xyz, closestTracePoint);
+
+                    //TODO logging
+                    System.out.println(current);
+
+                    equipments.add(current);
                 }
             }
             return equipments;
@@ -105,7 +113,10 @@ public final class ExcelDBServices {
                     cells.next();
                     int shelvesCount = getDoubleCellValue(cells.next()).intValue();
                     Double height = getDoubleCellValue(cells.next());
-                    routes.add(new Route(routeKks, routeType, length, height, shelvesCount, point1, point2));
+                    Route current = new Route(routeKks, routeType, length, height, shelvesCount, point1, point2);
+                    //TODO logging
+                    System.out.println(current);
+                    routes.add(current);
                 }
             }
             return routes;
