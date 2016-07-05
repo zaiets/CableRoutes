@@ -88,8 +88,8 @@ public class IOExcelForAnalyser {
                     if (cellF == null || cellJ == null) continue;
                     String cf = getStringCellValue(cellF);
                     String cj = getStringCellValue(cellJ);
-                    String kksCF = extractKKS(cf, propertiesHolder.get("default.kksPattern.regexp"));
-                    String kksCJ = extractKKS(cj, propertiesHolder.get("default.kksPattern.regexp"));
+                    String kksCF = extractKKS(cf, propertiesHolder.get("default.kksPattern.1.regexp"), propertiesHolder.get("default.kksPattern.2.regexp"));
+                    String kksCJ = extractKKS(cj, propertiesHolder.get("default.kksPattern.1.regexp"), propertiesHolder.get("default.kksPattern.2.regexp"));
                     String[] nameXyzCF = {kksCF, cf, getStringCellValue(cellG), getStringCellValue(cellH), getStringCellValue(cellI)};
                     String[] nameXyzCJ = {kksCJ, cj, getStringCellValue(cellK), getStringCellValue(cellL), getStringCellValue(cellM)};
                     boolean marker1 = false, marker2 = false;
@@ -97,13 +97,12 @@ public class IOExcelForAnalyser {
                         String eqFullName = eq.getEquipmentName();
                         String eqKks = eq.getKksName();
                         if (marker1 && marker2) break;
-                        if (!marker1 && cf.contains(eqKks) || cf.contains(eqFullName) || eqFullName.contains(cf)) {
+                        if (!marker1 && !addEquip.contains(nameXyzCF) && (kksCF.equals(eqKks) || cf.contains(eqKks) || eqFullName.contains(cf) || cf.contains(eqFullName))) {
                             cellF.setCellStyle(styleEquipmentConfirmed);
                             marker1 = true;
                             continue;
                         }
-
-                        if (!marker2 && cj.contains(eqKks) || cj.contains(eqFullName) || eqFullName.contains(cj)) {
+                        if (!marker2 && !addEquip.contains(nameXyzCJ) && (kksCJ.equals(eqKks) || cj.contains(eqKks) || eqFullName.contains(cj) || cj.contains(eqFullName))) {
                             cellJ.setCellStyle(styleEquipmentConfirmed);
                             marker2 = true;
                         }
@@ -186,7 +185,7 @@ public class IOExcelForAnalyser {
                 targetFileName = buildFileName(targetPath.getAbsolutePath(), null, equipmentsFileName, newMessage, fileExtension);
             }
             File targetFile = new File(targetFileName);
-            List<Equipment> allEquipment = ExcelDBServices.readEquipments(equipmentFile, joinPointDao);
+            List<Equipment> allEquipment = ExcelDBServices.readEquipments(equipmentFile, joinPointDao,propertiesHolder.get("default.kksPattern.1.regexp"), propertiesHolder.get("default.kksPattern.2.regexp"));
             if (allEquipment == null) return false;
             List<Equipment> targetEquipment = new ArrayList<>();
             allEquipment.forEach(o -> {

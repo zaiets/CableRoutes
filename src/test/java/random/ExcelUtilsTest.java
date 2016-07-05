@@ -6,6 +6,7 @@ import repository.excelutils.ExcelUtils;
 
 
 public class ExcelUtilsTest {
+
     @Test
     public void buildTargetFileNameTest () {
         String expected1 = "a/a - a_a.s";
@@ -14,5 +15,14 @@ public class ExcelUtilsTest {
         String expected2 = "a/a.s";
         String actual2 = ExcelUtils.buildFileName("a", null, "a", null, ".s");
         Assert.assertEquals(expected2, actual2);
+    }
+
+    @Test
+    public void extractKksTest () {
+        String targetText = "Коробка зажимов 00SАС40ФФ002-X01";
+        String expected = "00SАС40ФФ002";
+        String actual = ExcelUtils.extractKKS(targetText, "(\\b[\\d[A-Z][А-Я]]{5,12}+)[-]?", null);
+        System.out.println(actual);
+        Assert.assertEquals("Extract KKS test", expected, actual);
     }
 }

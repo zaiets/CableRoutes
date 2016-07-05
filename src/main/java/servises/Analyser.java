@@ -11,6 +11,7 @@ import repository.IOExcelForAnalyser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -59,6 +60,15 @@ public final class Analyser {
 	}
 
 	public boolean findNewEquipmentsInJournals(String projectName, List<File> journals, File targetPath) {
+		File journalsPath;
+		if (journals == null || journals.isEmpty()) {
+			String journalsPathName = propertiesHolder.get("input.journalsPath").concat(projectName).concat("/");
+			journalsPath = new File(journalsPathName);
+			File[] journalMassive = journalsPath.listFiles();
+			if (journalMassive != null) {
+				journals = Arrays.asList(journalMassive);
+			} else return false;
+		}
 		List<String[]> addEquip = new ArrayList<>();
 		for (File journal : journals) {
 			addEquip.addAll(ioExcelForAnalyser.analyseEquipmentsInJournal(journal, equipmentDao.getAll(), targetPath));

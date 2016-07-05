@@ -86,7 +86,7 @@ public final class ExcelUtils {
         try {
             switch (cell.getCellType()) {
                 case Cell.CELL_TYPE_NUMERIC:
-                    cellValue = (int)cell.getNumericCellValue();
+                    cellValue = (int) cell.getNumericCellValue();
                     break;
                 case Cell.CELL_TYPE_STRING:
                     cellValue = Integer.parseInt(cell.getStringCellValue());
@@ -108,7 +108,8 @@ public final class ExcelUtils {
     public static String buildFileName(String path, String project, String target, String suffix, String type) {
         StringBuilder targetFileName = new StringBuilder();
         if (path != null) targetFileName.append(path);
-        if (targetFileName.length() > 0 && targetFileName.charAt(targetFileName.length()-1) != '/') targetFileName.append('/');
+        if (targetFileName.length() > 0 && targetFileName.charAt(targetFileName.length() - 1) != '/')
+            targetFileName.append('/');
         if (project != null) targetFileName.append(project).append(" - ");
         if (target != null) targetFileName.append(target);
         if (suffix != null) targetFileName.append('_').append(suffix);
@@ -116,16 +117,27 @@ public final class ExcelUtils {
         return targetFileName.toString();
     }
 
-    public static String extractKKS (String someString, String patternExpected) {
-        StringBuilder extracted = new StringBuilder();
-        Pattern pattern = Pattern.compile(patternExpected);
-        Matcher matcher = pattern.matcher(someString);
-        if (matcher.matches()) {
-            for (int i = 1; i <= matcher.groupCount(); i ++ ) {
-                extracted.append(matcher.group(i)).append('\n');
+    public static String extractKKS(String someString, String patternStr1, String patternStr2) {
+        String result;
+        Pattern pattern1 = Pattern.compile(patternStr1);
+        Matcher matcher1 = pattern1.matcher(someString);
+
+        if (matcher1.find()) {
+            result = matcher1.group(1);
+            return result;
+        } else {
+            if (patternStr2 != null) {
+                Pattern pattern2 = Pattern.compile(patternStr2);
+                Matcher matcher2 = pattern2.matcher(someString);
+                if (matcher2.find()) {
+                    result = matcher2.group(1);
+                    return result;
+                }
             }
         }
-        return extracted.toString();
+        System.out.println(someString);
+        result = someString;
+        return result;
     }
 
     public static Workbook getWorkbook(File file) {
@@ -138,11 +150,11 @@ public final class ExcelUtils {
         return workBook;
     }
 
-    public static Iterator<Row> getWorkbookSheetIterator (File file) {
+    public static Iterator<Row> getWorkbookSheetIterator(File file) {
         return getWorkbook(file).getSheetAt(FIRST_SHEET_INDEX).iterator();
     }
 
-    public static Iterator<Row> getWorkbookSheetIterator (File file, int sheetNumber) {
+    public static Iterator<Row> getWorkbookSheetIterator(File file, int sheetNumber) {
         return getWorkbook(file).getSheetAt(sheetNumber).iterator();
     }
 

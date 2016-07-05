@@ -107,7 +107,7 @@ public class TracingHelper {
             Double length = minus(x, a) + minus(y, b) + minus(z, c);
             map.put(length, point);
         }
-        Integer extraLength = (int)(map.firstEntry().getKey()*reserveRatio);
+        Integer extraLength = (int)Math.round(map.firstEntry().getKey()*reserveRatio);
         JoinPoint closestPoint = map.firstEntry().getValue();
         return new Object []{closestPoint, extraLength};
     }
@@ -116,4 +116,5 @@ public class TracingHelper {
         if (m > n) return Math.abs(m - n);
         else return Math.abs(n - m);
     }
+
 }

@@ -39,7 +39,7 @@ public final class DBManager {
             equipmentsFile = new File(buildFileName(path, projectName, equipmentsFileName, null, fileExtension));
         }
         try {
-            List<Equipment> equipments = readEquipments(equipmentsFile, joinPointDao);
+            List<Equipment> equipments = readEquipments(equipmentsFile, joinPointDao, propertiesHolder.get("default.kksPattern.1.regexp"), propertiesHolder.get("default.kksPattern.2.regexp"));
             if (equipments != null && !equipments.isEmpty()) {
                 equipments.forEach(o -> equipmentDao.createOrUpdate(o));
                 return true;

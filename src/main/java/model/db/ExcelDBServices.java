@@ -44,7 +44,7 @@ public final class ExcelDBServices {
         return null;
     }
 
-    public static List<Equipment> readEquipments(File equipmentsFile, IDao<JoinPoint> joinPointDao) {
+    public static List<Equipment> readEquipments(File equipmentsFile, IDao<JoinPoint> joinPointDao, String kksRegexp1, String kksRegexp2) {
         List<Equipment> equipments = new ArrayList<>();
         try {
             Iterator<Row> it = getWorkbookSheetIterator(equipmentsFile);
@@ -56,6 +56,9 @@ public final class ExcelDBServices {
                     Iterator<Cell> cells = row.iterator();
                     String equipmentKKS = getStringCellValue(cells.next());
                     String equipmentName = getStringCellValue(cells.next());
+                    if (equipmentKKS.equals("")) {
+                        equipmentKKS = extractKKS(equipmentName, kksRegexp1, kksRegexp2);
+                    }
                     double[] xyz = new double[3];
                     for (int i = 0; i < 3; i++) {
                         xyz[i] = Double.valueOf(getStringCellValue(cells.next()).replace(',', '.'));

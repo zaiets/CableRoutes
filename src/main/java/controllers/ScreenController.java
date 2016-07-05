@@ -171,29 +171,29 @@ public class ScreenController {
     @FXML
     protected void setDefaults() {
         projectName = projectNameArea.getText();
-        progressBar.setProgress(MIN_BAR_VALUE);
-        progressBarAnalyser.setProgress(MIN_BAR_VALUE);
-        progressBarCalculator.setProgress(MIN_BAR_VALUE);
-        progressBarTracer.setProgress(MIN_BAR_VALUE);
     }
 
     @FXML
     protected void setCheckBox1Defaults() {
+        progressBar.setProgress(MIN_BAR_VALUE);
         if (fileJoinPoints == null) textArea1.setText(CHOOSE_FILE.getMessage());
     }
 
     @FXML
     protected void setCheckBox2Defaults() {
+        progressBar.setProgress(MIN_BAR_VALUE);
         if (fileEquipments == null) textArea2.setText(CHOOSE_FILE.getMessage());
     }
 
     @FXML
     protected void setCheckBox3Defaults() {
+        progressBar.setProgress(MIN_BAR_VALUE);
         if (fileRoutes == null) textArea3.setText(CHOOSE_FILE.getMessage());
     }
 
     @FXML
     protected void setCheckBox4Defaults() {
+        progressBar.setProgress(MIN_BAR_VALUE);
         if (filesJournals == null) {
             textArea4.setFont(Font.font(MEDIUM_FONT_SIZE));
             textArea4.setText(CHOOSE_FILE.getMessage());
@@ -278,6 +278,7 @@ public class ScreenController {
     @FXML
     protected void setRadioButtonsDefaultsAnalyser() {
         textAreaAnalyser1.setText(MESSAGE_READY.getMessage());
+        progressBarAnalyser.setProgress(MIN_BAR_VALUE);
         if (filesJournalsForAnalyse == null) textAreaAnalyser2.setText(CHOOSE_FILE.getMessage());
         if (fileEquipmentsForAnalyse == null) textAreaAnalyser3.setText(CHOOSE_FILE.getMessage());
     }
@@ -312,8 +313,19 @@ public class ScreenController {
 
     @FXML
     protected void setRadioButtonsDefaultsTracer() {
+        progressBarTracer.setProgress(MIN_BAR_VALUE);
         textAreaTracer1.setText(MESSAGE_READY.getMessage());
         if (targetPath == null) textAreaTracer2.setText(CHOOSE_TARGET_PATH.getMessage());
+    }
+
+
+
+    //TODO CALCULATOR
+    @FXML
+    protected void setRadioButtonsDefaultsCalculator() {
+        progressBarCalculator.setProgress(MIN_BAR_VALUE);
+        textAreaCalculator1.setText(MESSAGE_READY.getMessage());
+        if (targetPath == null) textAreaCalculator2.setText(CHOOSE_TARGET_PATH.getMessage());
     }
 
 
@@ -345,6 +357,7 @@ public class ScreenController {
         fileChooser.setTitle(title);
         return fileChooser.showOpenMultipleDialog(stage);
     }
+
 
     public void setStage(Stage stage) {
         this.stage = stage;
