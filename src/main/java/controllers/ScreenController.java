@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Service;
 import servises.Analyser;
-import servises.DBManager;
+import servises.Calculator;
+import servises.Manager;
 import servises.Tracer;
 
 import javax.swing.*;
@@ -33,11 +34,13 @@ public class ScreenController {
     public static final double MIN_BAR_VALUE = 0.0;
     public static final int TEXTAREA_CHARS_COUNT_MARKER_VALUE = 80;
     @Autowired
+    private static Calculator calculator;
+    @Autowired
     private static Analyser analyser;
     @Autowired
     private static Tracer tracer;
     @Autowired
-    private static DBManager dBManager;
+    private static Manager dBManager;
 
     private String projectName;
     private Stage stage;
@@ -320,14 +323,40 @@ public class ScreenController {
 
 
 
-    //TODO CALCULATOR
+    //CALCULATOR
     @FXML
-    protected void setRadioButtonsDefaultsCalculator() {
+    protected void calcActions(ActionEvent event) {
+        boolean result = false;
+        progressBarCalculator.setProgress(MIN_BAR_VALUE);
+        if (radioCalculator1.isSelected()) {
+            result = tracer.testModelIsReadyForTracing();
+        } else if (radioCalculator2.isSelected()) {
+            result = calculator.calculateAllJournals(projectName, targetPath);
+        }
+        if (!result) {
+            textAreaCalculator1.setText(CALC_ERRORS.getMessage());
+        } else {
+            progressBarCalculator.setProgress(MAX_BAR_VALUE);
+            textAreaCalculator1.setText(WORK_DONE_OK.getMessage());
+        }
+    }
+
+    @FXML
+    protected void setRadioButtonsDefaultsCalc() {
         progressBarCalculator.setProgress(MIN_BAR_VALUE);
         textAreaCalculator1.setText(MESSAGE_READY.getMessage());
         if (targetPath == null) textAreaCalculator2.setText(CHOOSE_TARGET_PATH.getMessage());
     }
 
+    @FXML
+    protected void setPathForCalc(ActionEvent event) {
+        targetPath = chooseTargetPath(PATH_INPUT.getMessage());
+        if (targetPath != null) {
+            textAreaCalculator2.setText(defineFileMessage(targetPath));
+        } else {
+            textAreaCalculator2.setText(CHOSEN_DEFAULT_FILE.getMessage());
+        }
+    }
 
     //private helpers
     private String defineFileMessage(File file) {
@@ -367,7 +396,7 @@ public class ScreenController {
         stage.show();
     }
 
-    public void setdBManager(DBManager dBManager) {
+    public void setdBManager(Manager dBManager) {
         ScreenController.dBManager = dBManager;
     }
 
@@ -377,5 +406,9 @@ public class ScreenController {
 
     public void setTracer(Tracer tracer) {
         ScreenController.tracer = tracer;
+    }
+
+    public void setCalculator(Calculator calculator) {
+        ScreenController.calculator = calculator;
     }
 }

@@ -3,7 +3,7 @@ package model.entities;
 import java.util.Arrays;
 import java.util.List;
 
-public class Cable extends Line implements INamedByUniqueKKS {
+public class Cable extends Line implements INamedByUniqueName {
     private String kksName;
     private String journalName;
     private int numberInJournal;

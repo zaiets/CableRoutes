@@ -1,41 +1,29 @@
-package repository;
+package excel;
 
 import model.entities.Cable;
 import model.entities.Journal;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import properties.PropertiesHolder;
-import servises.tracerlogic.TracingHelper;
+import servises.utils.HelperUtils;
 
 import java.io.File;
 
-import static repository.excelutils.ExcelUtils.*;
+import static excel.utils.ExcelUtils.*;
 
 @Component
 public class IOExcelForTracer {
 
     @Autowired
-    private PropertiesHolder propertiesHolder;
-    @Autowired
-    private TracingHelper tracingHelperUtil;
+    private HelperUtils helperUtilsUtil;
 
     /**
      * Writing info from Journal 'j' in to new Excel file named
      */
-    public void writeToFileTracedJournal(String objectName, Journal journal, File targetPath) {
-        String targetFileName;
-        String newMessage = propertiesHolder.get("output.suffix.tracedJournals");
-        String fileExtension = propertiesHolder.get("default.excelFileType");
-        if (targetPath == null || !targetPath.isDirectory()) {
-            String journalPathName = propertiesHolder.get("output.path");
-            targetFileName = buildFileName(journalPathName, null, journal.getKksName(), newMessage, fileExtension);
-        } else {
-            targetFileName = buildFileName(targetPath.getAbsolutePath(), null, journal.getKksName(), newMessage, fileExtension);
-        }
-        File targetFile = new File(targetFileName);
+    public void writeToFileTracedJournal(String objectName, Journal journal, File targetFile, File templateFile) {
 
-        Workbook workbook = getWorkbook(new File (propertiesHolder.get("default.journalTemplateFile")));
+
+        Workbook workbook = getWorkbook(templateFile);
         Sheet sheet = workbook.getSheetAt(FIRST_SHEET_INDEX);
         workbook.setSheetName(0, journal.getKksName());
 
@@ -79,7 +67,7 @@ public class IOExcelForTracer {
             row.createCell(11).setCellValue(cable.getEnd().getXyz()[1]);
             row.createCell(12).setCellValue(cable.getEnd().getXyz()[2] + "00");
             row.createCell(13).setCellValue(cable.getLength());
-            row.createCell(14).setCellValue(tracingHelperUtil.getRoutesListForExcel(cable));
+            row.createCell(14).setCellValue(helperUtilsUtil.getRoutesListForExcel(cable));
             row.createCell(15);
             for (int i = 0; i < 16; i++) {
                 row.getCell(i).setCellStyle(style);
@@ -89,4 +77,6 @@ public class IOExcelForTracer {
         }
         writeWorkbook(workbook, targetFile);
     }
+
+
 }

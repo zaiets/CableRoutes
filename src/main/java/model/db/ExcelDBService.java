@@ -3,7 +3,8 @@ package model.db;
 import model.entities.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,12 +12,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static repository.excelutils.ExcelUtils.*;
+import static excel.utils.ExcelUtils.*;
 
-@Component
-public final class ExcelDBServices {
+@Service
+public final class ExcelDBService {
+    @Autowired
+    private IDao<Route> routeDao;
+    @Autowired
+    private IDao<JoinPoint> joinPointDao;
+    @Autowired
+    private IDao<Equipment> equipmentDao;
 
-    public static List<JoinPoint> readJoinPoints(File joinPointsFile) {
+    public List<JoinPoint> readJoinPoints(File joinPointsFile) {
         List<JoinPoint> joinPoints = new ArrayList<>();
         try {
             Iterator<Row> it = getWorkbookSheetIterator(joinPointsFile);
@@ -44,7 +51,7 @@ public final class ExcelDBServices {
         return null;
     }
 
-    public static List<Equipment> readEquipments(File equipmentsFile, IDao<JoinPoint> joinPointDao, String kksRegexp1, String kksRegexp2) {
+    public List<Equipment> readEquipments(File equipmentsFile) {
         List<Equipment> equipments = new ArrayList<>();
         try {
             Iterator<Row> it = getWorkbookSheetIterator(equipmentsFile);
@@ -57,7 +64,7 @@ public final class ExcelDBServices {
                     String equipmentKKS = getStringCellValue(cells.next());
                     String equipmentName = getStringCellValue(cells.next());
                     if (equipmentKKS.equals("")) {
-                        equipmentKKS = extractKKS(equipmentName, kksRegexp1, kksRegexp2);
+                        equipmentKKS = extractKKS(equipmentName);
                     }
                     double[] xyz = new double[3];
                     for (int i = 0; i < 3; i++) {
@@ -93,7 +100,7 @@ public final class ExcelDBServices {
         return null;
     }
 
-    public static List<Route> readRoutes(File routesFile, IDao<JoinPoint> joinPointDao) {
+    public List<Route> readRoutes(File routesFile) {
         List<Route> routes = new ArrayList<>();
         try {
             Iterator<Row> it = getWorkbookSheetIterator(routesFile);
@@ -129,7 +136,7 @@ public final class ExcelDBServices {
         return null;
     }
 
-    public static Journal readJournal(File journalFile, IDao<Equipment> equipmentDao, IDao<Route> routeDao) {
+    public Journal readJournal(File journalFile) {
         List<Cable> cables = new ArrayList<>();
         try {
             Iterator<Row> it = getWorkbookSheetIterator(journalFile);
@@ -152,7 +159,7 @@ public final class ExcelDBServices {
                     cells.next();
                     cells.next();
                     int previousLength = getIntCellValue(cells.next());
-                    List<Route> previouslyDefinedRoutes = parceRoutes(getStringCellValue(cells.next()), routeDao);
+                    List<Route> previouslyDefinedRoutes = parceRoutes(getStringCellValue(cells.next()));
                     Cable cable = new Cable(cableKKSCode, journalFile.getName(), numberInJournal, cableType,
                             reserving, startEquip, endEquip, previouslyDefinedRoutes, previousLength);
                     cables.add(cable);
@@ -166,7 +173,7 @@ public final class ExcelDBServices {
     }
 
 
-    private static List<Route> parceRoutes(String routesString, IDao<Route> routeDao) {
+    private List<Route> parceRoutes(String routesString) {
         List<Route> actualRoutes = new ArrayList<>();
         String[] fragments = routesString.split(";");
         Stream.of(fragments).forEachOrdered(o -> {

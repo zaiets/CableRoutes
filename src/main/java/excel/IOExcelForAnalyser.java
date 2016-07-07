@@ -1,7 +1,7 @@
-package repository;
+package excel;
 
 
-import model.db.ExcelDBServices;
+import model.db.ExcelDBService;
 import model.db.IDao;
 import model.entities.Equipment;
 import model.entities.JoinPoint;
@@ -9,19 +9,19 @@ import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import properties.PropertiesHolder;
-import servises.tracerlogic.TracingHelper;
+import servises.utils.HelperUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
-import static repository.excelutils.ExcelUtils.*;
+import static excel.utils.ExcelUtils.*;
 
 @Component
 public class IOExcelForAnalyser {
 
-    //properties
+    @Autowired
+    private ExcelDBService excelDBService;
+
     @Autowired
     private PropertiesHolder propertiesHolder;
 
@@ -33,8 +33,7 @@ public class IOExcelForAnalyser {
      * в которых обнаружено новое оборудование и зеленым цветом - ячейки где найдено
      * оборудование, имеющееся в каталоге.
      */
-    public List<String[]> analyseEquipmentsInJournal(File journalFile, List<Equipment> equipmentList, File targetPath) {
-        List<String[]> addEquip = new ArrayList<>();
+    public List<String[]> analyseNewEquipmentsFromJournal(List<String[]> addEquip, File journalFile, List<Equipment> equipmentList, File targetPath) {
         try {
             Workbook workbook = getWorkbook(journalFile);
             Sheet sheet = workbook.getSheetAt(0);
@@ -88,32 +87,32 @@ public class IOExcelForAnalyser {
                     if (cellF == null || cellJ == null) continue;
                     String cf = getStringCellValue(cellF);
                     String cj = getStringCellValue(cellJ);
-                    String kksCF = extractKKS(cf, propertiesHolder.get("default.kksPattern.1.regexp"), propertiesHolder.get("default.kksPattern.2.regexp"));
-                    String kksCJ = extractKKS(cj, propertiesHolder.get("default.kksPattern.1.regexp"), propertiesHolder.get("default.kksPattern.2.regexp"));
-                    String[] nameXyzCF = {kksCF, cf, getStringCellValue(cellG), getStringCellValue(cellH), getStringCellValue(cellI)};
-                    String[] nameXyzCJ = {kksCJ, cj, getStringCellValue(cellK), getStringCellValue(cellL), getStringCellValue(cellM)};
+                    String kksCF = extractKKS(cf);
+                    String kksCJ = extractKKS(cj);
+                    String[] nameXyzCF = {kksCF, cf, getStringCellValue(cellG), getStringCellValue(cellH), getStringCellValue(cellI), journalFile.getName()};
+                    String[] nameXyzCJ = {kksCJ, cj, getStringCellValue(cellK), getStringCellValue(cellL), getStringCellValue(cellM), journalFile.getName()};
                     boolean marker1 = false, marker2 = false;
                     for (Equipment eq : equipmentList) {
                         String eqFullName = eq.getEquipmentName();
                         String eqKks = eq.getKksName();
-                        if (marker1 && marker2) break;
-                        if (!marker1 && !addEquip.contains(nameXyzCF) && (kksCF.equals(eqKks) || cf.contains(eqKks) || eqFullName.contains(cf) || cf.contains(eqFullName))) {
+                        if (!marker1 && (kksCF.equals(eqFullName) || cf.equals(eqKks) || eqFullName.equals(cf))) {
                             cellF.setCellStyle(styleEquipmentConfirmed);
                             marker1 = true;
                             continue;
                         }
-                        if (!marker2 && !addEquip.contains(nameXyzCJ) && (kksCJ.equals(eqKks) || cj.contains(eqKks) || eqFullName.contains(cj) || cj.contains(eqFullName))) {
+                        if (!marker2 && (kksCJ.equals(eqFullName) || cj.equals(eqKks) || eqFullName.equals(cj))) {
                             cellJ.setCellStyle(styleEquipmentConfirmed);
                             marker2 = true;
                         }
+                        if (marker1 && marker2) break;
                     }
-                    if ((!marker1) && !cf.isEmpty()) {
+                    if ((!marker1) && !cf.equals("")) {
                         cellF.setCellStyle(styleNewEquipment);
-                        addEquip.add(nameXyzCF);
+                        if (!isContains(addEquip, nameXyzCF)) addEquip.add(nameXyzCF);
                     }
-                    if ((!marker2) && !cj.isEmpty()) {
+                    if ((!marker2) && !cf.equals("")) {
                         cellJ.setCellStyle(styleNewEquipment);
-                        addEquip.add(nameXyzCJ);
+                        if (!isContains(addEquip, nameXyzCJ)) addEquip.add(nameXyzCJ);
                     }
                 }
             }
@@ -130,7 +129,7 @@ public class IOExcelForAnalyser {
         return addEquip;
     }
 
-    public boolean writeToFileAllAdditionalEquipment(String projectName, List<String[]> extraEquip, File targetPath) {
+    public boolean writeToFileAllAdditionalEquipment(String projectName, List<String[]> addEquip, File targetPath) {
         try {
             String equipmentsFileName = propertiesHolder.get("default.equipmentsFileName");
             String equipmentsPathName = propertiesHolder.get("default.inputPathName");
@@ -145,19 +144,19 @@ public class IOExcelForAnalyser {
                 targetFileName = buildFileName(targetPath.getAbsolutePath(), projectName, equipmentsFileName, newMessage, fileExtension);
             }
             File targetFile = new File(targetFileName);
-            if (extraEquip != null) {
+            if (addEquip != null) {
                 Workbook workbook = getWorkbook(new File(buildFileName(equipmentsPathName, projectName, equipmentsFileName, null, fileExtension)));
                 Sheet sheet = workbook.getSheetAt(0);
                 int num = sheet.getLastRowNum();
-                for (int i = 0; i < extraEquip.size(); i++) {
-                    if (!extraEquip.get(i)[0].equals("")) {
-                        Row row = sheet.createRow(num + i);
-                        for (int n = 0; n < extraEquip.get(0).length; n++) {
-                            row.createCell(n).setCellValue(extraEquip.get(i)[n]);
+                int i = 0;
+                for (String [] eq : addEquip) {
+                    if (!eq [0].equals("")) {
+                        Row row = sheet.createRow(num + i++);
+                        for (int n = 0; n < eq.length; n++) {
+                            row.createCell(n).setCellValue(eq[n]);
                         }
                     }
                 }
-
                 writeWorkbook(workbook, targetFile);
             }
         } catch (Exception ex) {
@@ -185,7 +184,7 @@ public class IOExcelForAnalyser {
                 targetFileName = buildFileName(targetPath.getAbsolutePath(), null, equipmentsFileName, newMessage, fileExtension);
             }
             File targetFile = new File(targetFileName);
-            List<Equipment> allEquipment = ExcelDBServices.readEquipments(equipmentFile, joinPointDao,propertiesHolder.get("default.kksPattern.1.regexp"), propertiesHolder.get("default.kksPattern.2.regexp"));
+            List<Equipment> allEquipment = excelDBService.readEquipments(equipmentFile);
             if (allEquipment == null) return false;
             List<Equipment> targetEquipment = new ArrayList<>();
             allEquipment.forEach(o -> {
@@ -193,7 +192,7 @@ public class IOExcelForAnalyser {
             });
             for (Equipment equipment : targetEquipment) {
                 double reserveRatio = propertiesHolder.get("reserveRatio.approximateDeterminationOfTrace", Double.class);
-                Object[] result = TracingHelper.defineNearestPoint(equipment.getXyz(), joinPointDao.getAll(), reserveRatio);
+                Object[] result = HelperUtils.defineNearestPoint(equipment.getXyz(), joinPointDao.getAll(), reserveRatio);
                 JoinPoint joinPointDefined = ((JoinPoint) result[0]);
                 int extraLength = (int) result[1];
                 equipment.setJoinPoint(joinPointDefined);
@@ -232,5 +231,13 @@ public class IOExcelForAnalyser {
             return false;
         }
         return true;
+    }
+
+    private boolean isContains(List<String[]> list, String[] current) {
+        if (list.size() == 0 || current == null) return false;
+        for (String[] obj : list) {
+            if (obj[1].equals(current[1])) return true;
+        }
+        return false;
     }
 }

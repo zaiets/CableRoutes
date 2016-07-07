@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import properties.PropertiesHolder;
-import repository.IOExcelForTracer;
-import servises.tracerlogic.TracingHelper;
-import servises.tracerlogic.TracingLogicUtils;
+import excel.IOExcelForTracer;
+import servises.utils.HelperUtils;
+import servises.utils.TracingLogic;
 
 import java.io.File;
 import java.util.List;
+
+import static excel.utils.ExcelUtils.buildFileName;
 
 @Service
 @Scope(value = "singleton")
@@ -22,7 +24,7 @@ public final class Tracer {
     @Autowired
     IOExcelForTracer ioExcelForTracer;
     @Autowired
-    TracingHelper tracingHelper;
+    HelperUtils helperUtils;
     @Autowired
     private IDao<JoinPoint> joinPointDao;
     @Autowired
@@ -44,8 +46,19 @@ public final class Tracer {
 
     public boolean traceJournals(String projectName, File targetPath) {
         try {
+            String newMessage = propertiesHolder.get("output.suffix.tracedJournals");
+            String fileExtension = propertiesHolder.get("default.excelFileType");
+            String journalPathName = propertiesHolder.get("output.path");
+            File templateFile = new File (propertiesHolder.get("default.tracer.journalTemplateFile"));
             for (Journal journal : traceJournals(journalDao.getAll())) {
-                ioExcelForTracer.writeToFileTracedJournal(projectName, journal, targetPath);
+                String targetFileName;
+                if (targetPath == null || !targetPath.isDirectory()) {
+                    targetFileName = buildFileName(journalPathName, null, journal.getKksName(), newMessage, fileExtension);
+                } else {
+                    targetFileName = buildFileName(targetPath.getAbsolutePath(), null, journal.getKksName(), newMessage, fileExtension);
+                }
+                File targetFile = new File(targetFileName);
+                ioExcelForTracer.writeToFileTracedJournal(projectName, journal, targetFile, templateFile);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -58,12 +71,12 @@ public final class Tracer {
     private List<Journal> traceJournals(List<Journal> journalList) {
         for (Journal journal : journalList) {
             for (Cable cable : journal.getCables()) {
-                List<Route> routes = TracingLogicUtils.defineTrace(cable, joinPointDao.getAll(), routeDao.getAll());
+                List<Route> routes = TracingLogic.defineTrace(cable, joinPointDao.getAll(), routeDao.getAll());
                 if (!routes.isEmpty()) {
                     cable.setTraced(true);
                     cable.setRoutesList(routes);
                     // define length after tracing cable
-                    tracingHelper.defineCableLength(cable);
+                    helperUtils.defineCableLength(cable);
                     for (Route rou : routes) {
                         rou.getCablesList().add(cable);
                     }

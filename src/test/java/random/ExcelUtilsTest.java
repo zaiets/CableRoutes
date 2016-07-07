@@ -2,7 +2,7 @@ package random;
 
 import org.junit.Assert;
 import org.junit.Test;
-import repository.excelutils.ExcelUtils;
+import excel.utils.ExcelUtils;
 
 
 public class ExcelUtilsTest {
@@ -21,8 +21,7 @@ public class ExcelUtilsTest {
     public void extractKksTest () {
         String targetText = "Коробка зажимов 00SАС40ФФ002-X01";
         String expected = "00SАС40ФФ002";
-        String actual = ExcelUtils.extractKKS(targetText, "(\\b[\\d[A-Z][А-Я]]{5,12}+)[-]?", null);
-        System.out.println(actual);
+        String actual = ExcelUtils.extractKKS(targetText);
         Assert.assertEquals("Extract KKS test", expected, actual);
     }
 }

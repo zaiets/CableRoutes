@@ -1,4 +1,4 @@
-package servises.tracerlogic;
+package servises.utils;
 
 
 import model.entities.*;
@@ -9,7 +9,7 @@ import properties.PropertiesHolder;
 import java.util.*;
 
 @Component
-public class TracingHelper {
+public class HelperUtils {
 
     @Autowired
     private PropertiesHolder propertiesHolder;

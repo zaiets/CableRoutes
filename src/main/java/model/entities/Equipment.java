@@ -2,7 +2,7 @@ package model.entities;
 
 import java.util.Arrays;
 
-public class Equipment implements INamedByUniqueKKS {
+public class Equipment implements INamedByUniqueName {
 	private String kksName;
 	private String equipmentName; // наименование оборудования (название как написано в журнале)
 	private int cableConnectionAddLength = 0; //запас кабеля для подключения

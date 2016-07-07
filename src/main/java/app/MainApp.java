@@ -12,7 +12,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import servises.Analyser;
-import servises.DBManager;
+import servises.Calculator;
+import servises.Manager;
 import servises.Tracer;
 
 @Configuration
@@ -29,9 +30,10 @@ public class MainApp extends Application {
         stage.setResizable(false);
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
         ScreenController screenController = context.getBean(ScreenController.class);
-        screenController.setdBManager(context.getBean(DBManager.class));
+        screenController.setdBManager(context.getBean(Manager.class));
         screenController.setTracer(context.getBean(Tracer.class));
         screenController.setAnalyser(context.getBean(Analyser.class));
+        screenController.setCalculator(context.getBean(Calculator.class));
         screenController.setStage(stage);
         screenController.show();
     }

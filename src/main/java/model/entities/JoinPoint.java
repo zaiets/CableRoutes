@@ -2,7 +2,7 @@ package model.entities;
 
 import java.util.Arrays;
 
-public class JoinPoint implements INamedByUniqueKKS {
+public class JoinPoint implements INamedByUniqueName {
 	private String kksName;
 	private double [] xyz;
 	

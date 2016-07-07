@@ -1,17 +1,19 @@
-package repository.excelutils;
+package excel.utils;
 
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import test_exceptions.CellReadMyException;
+import org.springframework.stereotype.Component;
+import custom.exceptions.CellReadMyException;
 
 import java.io.*;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Component
 public final class ExcelUtils {
     public static final int FIRST_SHEET_INDEX = 0;
 
@@ -117,8 +119,12 @@ public final class ExcelUtils {
         return targetFileName.toString();
     }
 
-    public static String extractKKS(String someString, String patternStr1, String patternStr2) {
+    public static String extractKKS(String someString) {
+        String patternStr1 = "([\\d[A-Z][А-Я]]{10,14})";
+        //String patternStr1 = "(\\d{2}[[A-Z][А-Я]]{3}\\d{2}[[A-Z][А-Я]]{0,2}\\d{0,3})[-]?";
+        String patternStr2 = "(\\d{2}[[A-Z][А-Я]]{3}\\d{0,2})";
         String result;
+
         Pattern pattern1 = Pattern.compile(patternStr1);
         Matcher matcher1 = pattern1.matcher(someString);
 
@@ -126,16 +132,13 @@ public final class ExcelUtils {
             result = matcher1.group(1);
             return result;
         } else {
-            if (patternStr2 != null) {
-                Pattern pattern2 = Pattern.compile(patternStr2);
-                Matcher matcher2 = pattern2.matcher(someString);
-                if (matcher2.find()) {
-                    result = matcher2.group(1);
-                    return result;
-                }
+            Pattern pattern2 = Pattern.compile(patternStr2);
+            Matcher matcher2 = pattern2.matcher(someString);
+            if (matcher2.find()) {
+                result = matcher2.group(1);
+                return result;
             }
         }
-        System.out.println(someString);
         result = someString;
         return result;
     }

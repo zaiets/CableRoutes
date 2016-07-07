@@ -2,7 +2,7 @@ package model.entities;
 
 import java.util.List;
 
-public class Journal implements INamedByUniqueKKS {
+public class Journal implements INamedByUniqueName {
 	private String fileName;
 	private String kksName;
 	private List<Cable> cables;

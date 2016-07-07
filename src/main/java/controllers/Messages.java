@@ -24,7 +24,9 @@ public enum Messages {
     CHOSEN_DEFAULT_FILE ("chosen: default path or file"),
 
     //tracer
-    TRACING_ERRORS ("Can't trace model");
+    TRACING_ERRORS ("Can't trace model"),
+    //calc
+    CALC_ERRORS ("Can't calculate model");
 
 
     private String message;

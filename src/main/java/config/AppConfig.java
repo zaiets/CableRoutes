@@ -1,19 +1,23 @@
 package config;
 
 import controllers.ScreenController;
+import excel.IOExcelForAnalyser;
+import excel.IOExcelForTracer;
+import model.db.ExcelDBService;
+import model.db.IDao;
 import model.db.InMemoryDB;
 import model.db.implInMemory.*;
+import model.entities.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import properties.PropertiesHolder;
-import repository.IOExcelForAnalyser;
-import repository.IOExcelForTracer;
 import servises.Analyser;
-import servises.DBManager;
+import servises.Calculator;
+import servises.Manager;
 import servises.Tracer;
-import servises.tracerlogic.TracingHelper;
+import servises.utils.HelperUtils;
 
 
 @Configuration
@@ -22,72 +26,82 @@ import servises.tracerlogic.TracingHelper;
 public class AppConfig {
 
 	@Bean
-	PropertiesHolder propertiesHolder() {
+	private PropertiesHolder propertiesHolder() {
 		return new PropertiesHolder();
 	}
 
 	@Bean
-	InMemoryDB inMemoryDB() {
+	private ExcelDBService excelDBService() {
+		return new ExcelDBService();
+	}
+
+	@Bean
+	private InMemoryDB inMemoryDB() {
 		return InMemoryDB.INSTANCE;
 	}
 
 	@Bean
-	CableDao cableDao() {
+	private IDao<Cable> cableDao() {
 		return new CableDao();
 	}
 
 	@Bean
-	EquipmentDao equipmentDao() {
+	private IDao<Equipment> equipmentDao() {
 		return new EquipmentDao();
 	}
 
 	@Bean
-	JoinPointDao joinPointDao() {
+	private IDao<JoinPoint> joinPointDao() {
 		return new JoinPointDao();
 	}
 
 	@Bean
-	JournalDao journalDao() {
+	private IDao<Journal> journalDao() {
 		return new JournalDao();
 	}
 
 	@Bean
-	RouteDao routeDao() {
+	private IDao<Route> routeDao() {
 		return new RouteDao();
 	}
 
 	@Bean
-	Tracer tracer() {
+	private Tracer tracer() {
 		return new Tracer();
 	}
 
 	@Bean
-	Analyser analyser() {
+	private Analyser analyser() {
 		return new Analyser();
 	}
 
 	@Bean
-	DBManager dBManager() {
-		return new DBManager();
+	private Calculator calculator() {
+		return new Calculator();
 	}
 
 	@Bean
-	TracingHelper tracingHelper() {
-		return new TracingHelper();
+	private Manager dBManager() {
+		return new Manager();
 	}
 
 	@Bean
-	IOExcelForTracer iOExcelForTracer() {
+	private HelperUtils tracingHelper() {
+		return new HelperUtils();
+	}
+
+	@Bean
+	private IOExcelForTracer iOExcelForTracer() {
 		return new IOExcelForTracer();
 	}
 
 	@Bean
-	IOExcelForAnalyser iOExcelForAnalyser() {
+	private IOExcelForAnalyser iOExcelForAnalyser() {
 		return new IOExcelForAnalyser();
 	}
 
 	@Bean
-	ScreenController screenController() {
+	private ScreenController screenController() {
 		return new ScreenController();
 	}
 }

@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import properties.PropertiesHolder;
-import repository.IOExcelForAnalyser;
+import excel.IOExcelForAnalyser;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Scope(value = "singleton")
@@ -71,7 +69,7 @@ public final class Analyser {
 		}
 		List<String[]> addEquip = new ArrayList<>();
 		for (File journal : journals) {
-			addEquip.addAll(ioExcelForAnalyser.analyseEquipmentsInJournal(journal, equipmentDao.getAll(), targetPath));
+			addEquip = ioExcelForAnalyser.analyseNewEquipmentsFromJournal(addEquip, journal, equipmentDao.getAll(), targetPath);
 		}
 		return ioExcelForAnalyser.writeToFileAllAdditionalEquipment (projectName, addEquip, targetPath);
 	}

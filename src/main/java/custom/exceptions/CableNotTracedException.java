@@ -1,4 +1,4 @@
-package test_exceptions;
+package custom.exceptions;
 
 public class CableNotTracedException extends Exception {
 	public CableNotTracedException (String info) {

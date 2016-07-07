@@ -3,7 +3,7 @@ package model.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Route implements INamedByUniqueKKS {
+public class Route implements INamedByUniqueName {
 	private String kksName;
 	private String routeType;
 	private double length;

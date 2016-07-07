@@ -1,4 +1,4 @@
-package servises.tracerlogic;
+package servises.utils;
 
 
 import model.entities.JoinPoint;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TracingLogicUtils {
+public class TracingLogic {
     static private int INF = Integer.MAX_VALUE / 2;
     static private int n; // количество вершин в орграфе
     static private int m; // количествое дуг в орграфе
