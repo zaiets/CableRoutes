@@ -17,7 +17,7 @@ import servises.Analyser;
 import servises.Calculator;
 import servises.Manager;
 import servises.Tracer;
-import servises.utils.HelperUtils;
+import servises.utils.CommonUtil;
 
 
 @Configuration
@@ -86,8 +86,8 @@ public class AppConfig {
 	}
 
 	@Bean
-	private HelperUtils tracingHelper() {
-		return new HelperUtils();
+	private CommonUtil tracingHelper() {
+		return new CommonUtil();
 	}
 
 	@Bean

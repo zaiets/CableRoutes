@@ -9,7 +9,7 @@ import properties.PropertiesHolder;
 import java.util.*;
 
 @Component
-public class HelperUtils {
+public class CommonUtil {
 
     @Autowired
     private PropertiesHolder propertiesHolder;

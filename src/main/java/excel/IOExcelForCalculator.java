@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import servises.utils.CalculatorUtil;
-import servises.utils.HelperUtils;
+import servises.utils.CommonUtil;
 
 import java.io.File;
 import java.util.List;
@@ -18,7 +18,7 @@ import static excel.utils.ExcelUtils.writeWorkbook;
 public class IOExcelForCalculator {
 
     @Autowired
-    private HelperUtils helperUtilsUtil;
+    private CommonUtil commonUtil;
 
 // public static final int START_ROW_IN_TYPES_FILE = 3;
 
@@ -112,7 +112,7 @@ public class IOExcelForCalculator {
             row.createCell(11).setCellValue(cable.getEnd().getXyz()[1]);
             row.createCell(12).setCellValue(cable.getEnd().getXyz()[2] + "00");
             row.createCell(13).setCellValue(cable.getLength());
-            row.createCell(14).setCellValue(helperUtilsUtil.getRoutesListForExcel(cable));
+            row.createCell(14).setCellValue(commonUtil.getRoutesListForExcel(cable));
             row.createCell(15);
             for (int i = 1; i < 16; i++) {
                 row.getCell(i).setCellStyle(style0);

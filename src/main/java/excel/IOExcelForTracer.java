@@ -5,7 +5,7 @@ import model.entities.Journal;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import servises.utils.HelperUtils;
+import servises.utils.CommonUtil;
 
 import java.io.File;
 
@@ -15,7 +15,7 @@ import static excel.utils.ExcelUtils.*;
 public class IOExcelForTracer {
 
     @Autowired
-    private HelperUtils helperUtilsUtil;
+    private CommonUtil commonUtil;
 
     /**
      * Writing info from Journal 'j' in to new Excel file named
@@ -67,7 +67,7 @@ public class IOExcelForTracer {
             row.createCell(11).setCellValue(cable.getEnd().getXyz()[1]);
             row.createCell(12).setCellValue(cable.getEnd().getXyz()[2] + "00");
             row.createCell(13).setCellValue(cable.getLength());
-            row.createCell(14).setCellValue(helperUtilsUtil.getRoutesListForExcel(cable));
+            row.createCell(14).setCellValue(commonUtil.getRoutesListForExcel(cable));
             row.createCell(15);
             for (int i = 0; i < 16; i++) {
                 row.getCell(i).setCellStyle(style);

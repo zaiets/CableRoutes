@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import properties.PropertiesHolder;
 import excel.IOExcelForTracer;
-import servises.utils.HelperUtils;
+import servises.utils.CommonUtil;
 import servises.utils.TracingLogic;
 
 import java.io.File;
@@ -24,7 +24,7 @@ public final class Tracer {
     @Autowired
     IOExcelForTracer ioExcelForTracer;
     @Autowired
-    HelperUtils helperUtils;
+    CommonUtil commonUtil;
     @Autowired
     private IDao<JoinPoint> joinPointDao;
     @Autowired
@@ -76,7 +76,7 @@ public final class Tracer {
                     cable.setTraced(true);
                     cable.setRoutesList(routes);
                     // define length after tracing cable
-                    helperUtils.defineCableLength(cable);
+                    commonUtil.defineCableLength(cable);
                     for (Route rou : routes) {
                         rou.getCablesList().add(cable);
                     }

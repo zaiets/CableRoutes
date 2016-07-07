@@ -9,7 +9,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import properties.PropertiesHolder;
-import servises.utils.HelperUtils;
+import servises.utils.CommonUtil;
 
 import java.io.File;
 import java.util.*;
@@ -192,7 +192,7 @@ public class IOExcelForAnalyser {
             });
             for (Equipment equipment : targetEquipment) {
                 double reserveRatio = propertiesHolder.get("reserveRatio.approximateDeterminationOfTrace", Double.class);
-                Object[] result = HelperUtils.defineNearestPoint(equipment.getXyz(), joinPointDao.getAll(), reserveRatio);
+                Object[] result = CommonUtil.defineNearestPoint(equipment.getXyz(), joinPointDao.getAll(), reserveRatio);
                 JoinPoint joinPointDefined = ((JoinPoint) result[0]);
                 int extraLength = (int) result[1];
                 equipment.setJoinPoint(joinPointDefined);
