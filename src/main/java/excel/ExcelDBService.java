@@ -69,10 +69,7 @@ public final class ExcelDBService {
                     }
                     Double[] xyz = new Double[3];
                     for (int i = 0; i < 3; i++) {
-                        String value = getStringCellValue(cells.next());
-                        if (!value.equals("")) {
-                            xyz[i] = Double.parseDouble(value.replace(',', '.'));
-                        } else xyz[i] = null;
+                        xyz[i] = getDoubleCellValue(cells.next());
                     }
                     Cell cellF = cells.next();
                     JoinPoint closestTracePoint = null;
