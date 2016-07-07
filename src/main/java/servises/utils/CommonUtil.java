@@ -18,8 +18,8 @@ public class CommonUtil {
         if (line.isTraced()) {
             StringBuilder builder = new StringBuilder();
             String firstWord = null;
-            String secondWord = "";
-            String beforeLastWord = "";
+            String secondWord = null;
+            String beforeLastWord = null;
             String lastWord = null;
             if (propertiesHolder.get("tracer.showAlternatePointsInTrace", Boolean.class)) {
                 firstWord = line.getStartPoint().getKksName();
@@ -27,10 +27,10 @@ public class CommonUtil {
             }
             if (propertiesHolder.get("tracer.showApproximateDeterminationOfTraceMessage", Boolean.class)) {
                 if (line instanceof Cable) {
-                    if (defineExtraLength(((Cable) line).getStart()) >= propertiesHolder.get("cableLength.minimalForApproxDetermMessage", Double.class)) {
+                    if (((Cable) line).getStart().getCableConnectionAddLength() >= propertiesHolder.get("cableLength.minimalForApproxDetermMessage", Double.class)) {
                         secondWord = propertiesHolder.get("message.approximateDeterminationOfTrace");
                     }
-                    if (defineExtraLength(((Cable) line).getEnd()) >= propertiesHolder.get("cableLength.minimalForApproxDetermMessage", Double.class)) {
+                    if (((Cable) line).getEnd().getCableConnectionAddLength() >= propertiesHolder.get("cableLength.minimalForApproxDetermMessage", Double.class)) {
                         beforeLastWord = propertiesHolder.get("message.approximateDeterminationOfTrace");
                     }
                 }
@@ -40,13 +40,17 @@ public class CommonUtil {
                 builder.append(firstWord);
                 builder.append("]; ");
             }
-            builder.append(secondWord);
-            builder.append("; ");
+            if (secondWord != null) {
+                builder.append(secondWord);
+                builder.append("; ");
+            }
             for (Route rou : line.getRoutesList()) {
                 builder.append(rou.getKksName());
                 builder.append("; ");
             }
-            builder.append(beforeLastWord);
+            if (beforeLastWord != null) {
+                builder.append(beforeLastWord);
+            }
             if (firstWord != null) {
                 builder.append("; [");
                 builder.append(lastWord);
@@ -94,7 +98,7 @@ public class CommonUtil {
         return Math.abs(sX - eX) + Math.abs(sY - eY) + Math.abs(sZ - eZ);
     }
 
-    public static Object [] defineNearestPoint(Double[] equipXyz, List<JoinPoint> pointList, double reserveRatio) {
+    public static Object[] defineNearestPoint(Double[] equipXyz, List<JoinPoint> pointList, double reserveRatio) {
         double a = equipXyz[0];
         double b = equipXyz[1];
         double c = equipXyz[2];
@@ -106,12 +110,12 @@ public class CommonUtil {
             Double length = minus(x, a) + minus(y, b) + minus(z, c);
             map.put(length, point);
         }
-        Integer extraLength = (int)Math.round(map.firstEntry().getKey()*reserveRatio);
+        Integer extraLength = (int) Math.round(map.firstEntry().getKey() * reserveRatio);
         JoinPoint closestPoint = map.firstEntry().getValue();
-        return new Object []{closestPoint, extraLength};
+        return new Object[]{closestPoint, extraLength};
     }
 
-    private static double minus (double m, double n) {
+    private static double minus(double m, double n) {
         if (m > n) return Math.abs(m - n);
         else return Math.abs(n - m);
     }

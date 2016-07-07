@@ -122,17 +122,26 @@ public class IOExcelForCalculator {
 
             //добавляем данные по части калькуляции
             List<Long> cableInfo = CalculatorUtil.getInfo(cable);
-            for (int i = 0; i < 13; i++) {
-                row.createCell(calcStartCell + i);
-                Cell thisCell = row.getCell(calcStartCell);
-                if (cableInfo.get(i) != 0) {
-                    thisCell.setCellValue(cableInfo.get(i));
-                    if (i < 3) thisCell.setCellStyle(styleCalc1);
-                    else if (i < 10) thisCell.setCellStyle(styleCalc2);
-                    else thisCell.setCellStyle(styleCalc3);
-                } else {
-                    thisCell.setCellStyle(style0);
+            if (!(cableInfo == null)) {
+                for (int i = 0; i < 13; i++) {
+                    row.createCell(calcStartCell + i);
+                    Cell thisCell = row.getCell(calcStartCell);
+                    if (cableInfo.get(i) != 0) {
+                        thisCell.setCellValue(cableInfo.get(i));
+                        if (i < 3) thisCell.setCellStyle(styleCalc1);
+                        else if (i < 10) thisCell.setCellStyle(styleCalc2);
+                        else thisCell.setCellStyle(styleCalc3);
+                    } else {
+                        thisCell.setCellStyle(style0);
+                    }
                 }
+            } else {
+                row.createCell(17);
+                row.createCell(28);
+                row.getCell(17).setCellValue(cable.getLength());
+                row.getCell(17).setCellStyle(styleCalc1);;
+                row.getCell(28).setCellValue(cable.getLength());
+                row.getCell(28).setCellStyle(style0);
             }
             //информационные ячейки (повторяющиеся)
             row.createCell(calcStartCell + 13).setCellValue(row.getCell(3).getStringCellValue());

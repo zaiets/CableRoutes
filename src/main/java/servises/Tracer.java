@@ -74,8 +74,8 @@ public final class Tracer {
         for (Journal journal : journalList) {
             for (Cable cable : journal.getCables()) {
                 List<Route> routes = TracingLogic.defineTrace(cable, joinPointDao.getAll(), routeDao.getAll());
-                cable.setTraced(true);
                 if (!routes.isEmpty()) {
+                    cable.setTraced(true);
                     cable.setRoutesList(routes);
                     for (Route rou : routes) {
                         rou.getCablesList().add(cable);
