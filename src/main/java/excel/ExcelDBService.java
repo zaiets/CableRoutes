@@ -175,6 +175,7 @@ public final class ExcelDBService {
 
 
     private List<Route> parceRoutes(String routesString) {
+        if (routesString.isEmpty() || routesString.equals("")) return null;
         List<Route> actualRoutes = new ArrayList<>();
         String[] fragments = routesString.split(";");
         Stream.of(fragments).forEachOrdered(o -> {

@@ -56,16 +56,15 @@ public class CommonUtil {
         } else if (propertiesHolder.get("tracer.showInTracesListWarningNoTrace", Boolean.class)) {
             return (propertiesHolder.get("message.warningNoTrace"));
         } else
-            return "";
+            return propertiesHolder.get("message.approximateDeterminationOfTrace");
     }
 
-    public void defineCableLength(Cable cable) {
-        if (cable.getRoutesList() == null) {
-            return;
-        }
+    public void defineAndSetCableLength(Cable cable) {
         double cableLength = 0;
-        for (Route r : cable.getRoutesList()) {
-            cableLength += r.getLength();
+        if (!(cable.getRoutesList() == null)) {
+            for (Route r : cable.getRoutesList()) {
+                cableLength += r.getLength();
+            }
         }
         if (cableLength > propertiesHolder.get("reserveRatio.step2", Integer.class)) {
             cableLength = cableLength * propertiesHolder.get("reserveRatio.length>step2", Double.class);

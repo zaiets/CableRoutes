@@ -33,7 +33,7 @@ public class Calculator {
             String newMessage = propertiesHolder.get("output.suffix.calculatedJournals");
             String fileExtension = propertiesHolder.get("default.excelFileType");
             String journalPathName = propertiesHolder.get("output.path");
-            File templateFile = new File(propertiesHolder.get("default.calc.journalTemplateFile"));
+            File templateFile = new File(propertiesHolder.get("calc.journalTemplateFile"));
             for (Journal journal : journalDao.getAll()) {
                 String targetFileName;
                 if (targetPath == null || !targetPath.isDirectory()) {

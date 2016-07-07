@@ -27,7 +27,7 @@ public class IOExcelForTracer {
         Sheet sheet = workbook.getSheetAt(FIRST_SHEET_INDEX);
         workbook.setSheetName(0, journal.getKksName());
 
-        Row row = sheet.createRow(0);
+        Row row = sheet.getRow(0);
         Cell cell = row.createCell(0);
         cell.setCellValue(objectName);
 
@@ -50,6 +50,9 @@ public class IOExcelForTracer {
         font2.setColor(IndexedColors.DARK_RED.getIndex());
         style2.setAlignment(CellStyle.ALIGN_LEFT);
         style2.setFont(font2);
+
+        CellStyle style3 = sheet.getRow(0).getCell(8).getCellStyle();
+
         int lastTitleRow = 5;
         for (Cable cable : journal.getCables()) {
             row = sheet.createRow(lastTitleRow++);
@@ -61,11 +64,11 @@ public class IOExcelForTracer {
             row.createCell(5).setCellValue(cable.getStart().getEquipmentName());
             row.createCell(6).setCellValue(cable.getStart().getXyz()[0]);
             row.createCell(7).setCellValue(cable.getStart().getXyz()[1]);
-            row.createCell(8).setCellValue(cable.getStart().getXyz()[2] + "00");
+            row.createCell(8).setCellValue(cable.getStart().getXyz()[2]);
             row.createCell(9).setCellValue(cable.getEnd().getEquipmentName());
             row.createCell(10).setCellValue(cable.getEnd().getXyz()[0]);
             row.createCell(11).setCellValue(cable.getEnd().getXyz()[1]);
-            row.createCell(12).setCellValue(cable.getEnd().getXyz()[2] + "00");
+            row.createCell(12).setCellValue(cable.getEnd().getXyz()[2]);
             row.createCell(13).setCellValue(cable.getLength());
             row.createCell(14).setCellValue(commonUtil.getRoutesListForExcel(cable));
             row.createCell(15);
@@ -74,6 +77,9 @@ public class IOExcelForTracer {
             }
             row.getCell(2).setCellStyle(style1);
             row.getCell(14).setCellStyle(style2);
+            //z axis
+            row.getCell(8).setCellStyle(style3);
+            row.getCell(12).setCellStyle(style3);
         }
         writeWorkbook(workbook, targetFile);
     }

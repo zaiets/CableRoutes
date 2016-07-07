@@ -192,7 +192,6 @@ public class IOExcelForAnalyser {
                 if (o.getJoinPoint() == null || o.getJoinPoint().getKksName().equals("")) targetEquipment.add(o);
             });
             for (Equipment equipment : targetEquipment) {
-                System.out.println(equipment.getKksName());
                 double reserveRatio = propertiesHolder.get("reserveRatio.approximateDeterminationOfTrace", Double.class);
                 Object[] result = CommonUtil.defineNearestPoint(equipment.getXyz(), joinPointDao.getAll(), reserveRatio);
                 JoinPoint joinPointDefined = ((JoinPoint) result[0]);

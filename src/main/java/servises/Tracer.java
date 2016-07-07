@@ -45,11 +45,13 @@ public final class Tracer {
     }
 
     public boolean traceJournals(String projectName, File targetPath) {
+        String templateFileName = propertiesHolder.get("tracer.journalTemplateFile");
         try {
             String newMessage = propertiesHolder.get("output.suffix.tracedJournals");
             String fileExtension = propertiesHolder.get("default.excelFileType");
             String journalPathName = propertiesHolder.get("output.path");
-            File templateFile = new File (propertiesHolder.get("default.tracer.journalTemplateFile"));
+            File templateFile = new File(templateFileName);
+            File targetFile;
             for (Journal journal : traceJournals(journalDao.getAll())) {
                 String targetFileName;
                 if (targetPath == null || !targetPath.isDirectory()) {
@@ -57,7 +59,7 @@ public final class Tracer {
                 } else {
                     targetFileName = buildFileName(targetPath.getAbsolutePath(), null, journal.getKksName(), newMessage, fileExtension);
                 }
-                File targetFile = new File(targetFileName);
+                targetFile = new File(targetFileName);
                 ioExcelForTracer.writeToFileTracedJournal(projectName, journal, targetFile, templateFile);
             }
         } catch (Exception ex) {
@@ -72,15 +74,17 @@ public final class Tracer {
         for (Journal journal : journalList) {
             for (Cable cable : journal.getCables()) {
                 List<Route> routes = TracingLogic.defineTrace(cable, joinPointDao.getAll(), routeDao.getAll());
+                cable.setTraced(true);
                 if (!routes.isEmpty()) {
-                    cable.setTraced(true);
                     cable.setRoutesList(routes);
-                    // define length after tracing cable
-                    commonUtil.defineCableLength(cable);
                     for (Route rou : routes) {
                         rou.getCablesList().add(cable);
                     }
                 }
+                // define length after tracing cable
+                commonUtil.defineAndSetCableLength(cable);
+
+
             }
         }
         return journalList;

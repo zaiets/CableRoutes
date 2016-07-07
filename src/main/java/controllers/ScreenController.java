@@ -297,10 +297,10 @@ public class ScreenController {
             result = tracer.traceJournals(projectName, targetPath);
         }
         if (!result) {
-            textAreaTracer1.setText(TRACING_ERRORS.getMessage());
+            textAreaTracer2.setText(TRACING_ERRORS.getMessage());
         } else {
             progressBarTracer.setProgress(MAX_BAR_VALUE);
-            textAreaTracer1.setText(WORK_DONE_OK.getMessage());
+            textAreaTracer2.setText(WORK_DONE_OK.getMessage());
         }
     }
 
@@ -334,10 +334,10 @@ public class ScreenController {
             result = calculator.calculateAllJournals(projectName, targetPath);
         }
         if (!result) {
-            textAreaCalculator1.setText(CALC_ERRORS.getMessage());
+            textAreaCalculator2.setText(CALC_ERRORS.getMessage());
         } else {
             progressBarCalculator.setProgress(MAX_BAR_VALUE);
-            textAreaCalculator1.setText(WORK_DONE_OK.getMessage());
+            textAreaCalculator2.setText(WORK_DONE_OK.getMessage());
         }
     }
 

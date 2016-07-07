@@ -6,7 +6,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
-import custom.exceptions.CellReadMyException;
 
 import java.io.*;
 import java.util.Iterator;
@@ -48,7 +47,7 @@ public final class ExcelUtils {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new CellReadMyException();
+            //throw new CellReadMyException();
         }
         return s.toString();
     }
@@ -64,7 +63,7 @@ public final class ExcelUtils {
                     cellValue = cell.getNumericCellValue();
                     break;
                 case Cell.CELL_TYPE_STRING:
-                    cellValue = Double.parseDouble(cell.getStringCellValue());
+                    cellValue = Double.parseDouble(cell.getStringCellValue().replace("+", "").replace(",", "."));
                     break;
                 case Cell.CELL_TYPE_BLANK:
                 case Cell.CELL_TYPE_BOOLEAN:
@@ -74,8 +73,8 @@ public final class ExcelUtils {
                     break;
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new CellReadMyException();
+            //ex.printStackTrace();
+            //throw new CellReadMyException();
         }
         return cellValue;
     }
@@ -91,7 +90,7 @@ public final class ExcelUtils {
                     cellValue = (int) cell.getNumericCellValue();
                     break;
                 case Cell.CELL_TYPE_STRING:
-                    cellValue = Integer.parseInt(cell.getStringCellValue());
+                    cellValue = Integer.parseInt(cell.getStringCellValue().replace("+", ""));
                     break;
                 case Cell.CELL_TYPE_BLANK:
                 case Cell.CELL_TYPE_BOOLEAN:
@@ -101,8 +100,8 @@ public final class ExcelUtils {
                     break;
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new CellReadMyException();
+            //ex.printStackTrace();
+            //throw new CellReadMyException();
         }
         return cellValue;
     }

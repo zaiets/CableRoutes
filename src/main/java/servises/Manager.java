@@ -109,12 +109,11 @@ public final class Manager {
                         cables.forEach(o -> cableDao.createOrUpdate(o));
                     }
                     journalDao.createOrUpdate(journal);
-                    return true;
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
-        return false;
+        return true;
     }
 }
