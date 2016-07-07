@@ -1,5 +1,6 @@
-package model.db;
+package excel;
 
+import model.db.IDao;
 import model.entities.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -66,9 +67,12 @@ public final class ExcelDBService {
                     if (equipmentKKS.equals("")) {
                         equipmentKKS = extractKKS(equipmentName);
                     }
-                    double[] xyz = new double[3];
+                    Double[] xyz = new Double[3];
                     for (int i = 0; i < 3; i++) {
-                        xyz[i] = Double.valueOf(getStringCellValue(cells.next()).replace(',', '.'));
+                        String value = getStringCellValue(cells.next());
+                        if (!value.equals("")) {
+                            xyz[i] = Double.parseDouble(value.replace(',', '.'));
+                        } else xyz[i] = null;
                     }
                     Cell cellF = cells.next();
                     JoinPoint closestTracePoint = null;

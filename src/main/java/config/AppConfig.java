@@ -2,8 +2,9 @@ package config;
 
 import controllers.ScreenController;
 import excel.IOExcelForAnalyser;
+import excel.IOExcelForCalculator;
 import excel.IOExcelForTracer;
-import model.db.ExcelDBService;
+import excel.ExcelDBService;
 import model.db.IDao;
 import model.db.InMemoryDB;
 import model.db.implInMemory.*;
@@ -26,82 +27,86 @@ import servises.utils.CommonUtil;
 public class AppConfig {
 
 	@Bean
-	private PropertiesHolder propertiesHolder() {
+	PropertiesHolder propertiesHolder() {
 		return new PropertiesHolder();
 	}
 
 	@Bean
-	private ExcelDBService excelDBService() {
+	ExcelDBService excelDBService() {
 		return new ExcelDBService();
 	}
 
 	@Bean
-	private InMemoryDB inMemoryDB() {
+	InMemoryDB inMemoryDB() {
 		return InMemoryDB.INSTANCE;
 	}
 
 	@Bean
-	private IDao<Cable> cableDao() {
+	IDao<Cable> cableDao() {
 		return new CableDao();
 	}
 
 	@Bean
-	private IDao<Equipment> equipmentDao() {
+	IDao<Equipment> equipmentDao() {
 		return new EquipmentDao();
 	}
 
 	@Bean
-	private IDao<JoinPoint> joinPointDao() {
+	IDao<JoinPoint> joinPointDao() {
 		return new JoinPointDao();
 	}
 
 	@Bean
-	private IDao<Journal> journalDao() {
+	IDao<Journal> journalDao() {
 		return new JournalDao();
 	}
 
 	@Bean
-	private IDao<Route> routeDao() {
+	IDao<Route> routeDao() {
 		return new RouteDao();
 	}
 
 	@Bean
-	private Tracer tracer() {
+	Tracer tracer() {
 		return new Tracer();
 	}
 
 	@Bean
-	private Analyser analyser() {
+	Analyser analyser() {
 		return new Analyser();
 	}
 
 	@Bean
-	private Calculator calculator() {
+	Calculator calculator() {
 		return new Calculator();
 	}
 
 	@Bean
-	private Manager dBManager() {
+	Manager dBManager() {
 		return new Manager();
 	}
 
 	@Bean
-	private CommonUtil tracingHelper() {
+	CommonUtil tracingHelper() {
 		return new CommonUtil();
 	}
 
 	@Bean
-	private IOExcelForTracer iOExcelForTracer() {
+	IOExcelForTracer iOExcelForTracer() {
 		return new IOExcelForTracer();
 	}
 
 	@Bean
-	private IOExcelForAnalyser iOExcelForAnalyser() {
+	IOExcelForAnalyser iOExcelForAnalyser() {
 		return new IOExcelForAnalyser();
+	}
+	@Bean
+	IOExcelForCalculator iOExcelForCalculator() {
+		return new IOExcelForCalculator();
 	}
 
 	@Bean
-	private ScreenController screenController() {
+	ScreenController screenController() {
 		return new ScreenController();
 	}
 }

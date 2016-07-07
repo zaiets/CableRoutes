@@ -262,7 +262,7 @@
                     <content>
                         <GridPane>
                             <children>
-                                <RadioButton fx:id="radioCalculator1" mnemonicParsing="false" selected="true" text="Test DB is not empty" GridPane.rowIndex="1">
+                                <RadioButton fx:id="radioCalculator1" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsCalc" selected="true" text="Test DB is not empty" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
@@ -270,12 +270,12 @@
                                         <ToggleGroup fx:id="group3" />
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton fx:id="radioCalculator2" mnemonicParsing="false" text="Calculate journals" toggleGroup="$group3" GridPane.rowIndex="2">
+                                <RadioButton fx:id="radioCalculator2" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsCalc" text="Calculate journals" toggleGroup="$group3" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
                                 </RadioButton>
-                                <Text fx:id="textAreaCalculator2" strokeType="OUTSIDE" strokeWidth="0.0" text="...choose your files" wrappingWidth="250.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                <Text fx:id="textAreaCalculator2" strokeType="OUTSIDE" strokeWidth="0.0" text="...choose target path" wrappingWidth="250.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets right="10.0" />
                                     </GridPane.margin>
@@ -285,12 +285,12 @@
                                         <Insets right="10.0" />
                                     </GridPane.margin>
                                 </Text>
-                                <Button fx:id="buttonChooseFilesCalculator1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="64.0" prefWidth="65.0" text="&gt;&gt;" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                <Button fx:id="buttonChooseFilesCalculator1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#setPathForCalc" prefHeight="64.0" prefWidth="65.0" text="&gt;&gt;" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                                 <Label alignment="CENTER" prefHeight="75.0" prefWidth="60.0" text="&gt;&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                                <Label alignment="CENTER" prefHeight="75.0" prefWidth="60.0" text="Files:" underline="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <Label alignment="CENTER" prefHeight="75.0" prefWidth="60.0" text="Target:" underline="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="93.0" text="Project name:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
                                 <Label prefHeight="21.0" prefWidth="170.0" text="Working progress:" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                <Button fx:id="buttonActionsCalculator" mnemonicParsing="false" prefHeight="40.0" prefWidth="136.0" text="Perform actions" GridPane.halignment="LEFT" GridPane.rowIndex="5">
+                                <Button fx:id="buttonActionsCalculator" mnemonicParsing="false" onAction="#calcActions" prefHeight="40.0" prefWidth="136.0" text="Perform actions" GridPane.halignment="LEFT" GridPane.rowIndex="5">
                                     <GridPane.margin>
                                         <Insets left="20.0" />
                                     </GridPane.margin>

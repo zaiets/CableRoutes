@@ -1,7 +1,6 @@
 package excel;
 
 
-import model.db.ExcelDBService;
 import model.db.IDao;
 import model.entities.Equipment;
 import model.entities.JoinPoint;
@@ -147,14 +146,16 @@ public class IOExcelForAnalyser {
             if (addEquip != null) {
                 Workbook workbook = getWorkbook(new File(buildFileName(equipmentsPathName, projectName, equipmentsFileName, null, fileExtension)));
                 Sheet sheet = workbook.getSheetAt(0);
-                int num = sheet.getLastRowNum();
+                int num = sheet.getLastRowNum()+1;
                 int i = 0;
                 for (String [] eq : addEquip) {
                     if (!eq [0].equals("")) {
                         Row row = sheet.createRow(num + i++);
-                        for (int n = 0; n < eq.length; n++) {
+                        for (int n = 0; n < eq.length-1; n++) {
                             row.createCell(n).setCellValue(eq[n]);
                         }
+                        //номер журнала откуда взято
+                        row.createCell(7).setCellValue(eq[eq.length-1]);
                     }
                 }
                 writeWorkbook(workbook, targetFile);
@@ -191,6 +192,7 @@ public class IOExcelForAnalyser {
                 if (o.getJoinPoint() == null || o.getJoinPoint().getKksName().equals("")) targetEquipment.add(o);
             });
             for (Equipment equipment : targetEquipment) {
+                System.out.println(equipment.getKksName());
                 double reserveRatio = propertiesHolder.get("reserveRatio.approximateDeterminationOfTrace", Double.class);
                 Object[] result = CommonUtil.defineNearestPoint(equipment.getXyz(), joinPointDao.getAll(), reserveRatio);
                 JoinPoint joinPointDefined = ((JoinPoint) result[0]);

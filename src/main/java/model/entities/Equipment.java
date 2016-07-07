@@ -6,10 +6,10 @@ public class Equipment implements INamedByUniqueName {
 	private String kksName;
 	private String equipmentName; // наименование оборудования (название как написано в журнале)
 	private int cableConnectionAddLength = 0; //запас кабеля для подключения
-	private double[] xyz;
+	private Double[] xyz;
 	private JoinPoint joinPoint;
 
-	public Equipment(String kksName, String equipmentName, int cableConnectionAddLength, double[] xyz, JoinPoint joinPoint) {
+	public Equipment(String kksName, String equipmentName, int cableConnectionAddLength, Double[] xyz, JoinPoint joinPoint) {
 		setKksName(kksName);
 		setEquipmentName(equipmentName);
 		setCableConnectionAddLength(cableConnectionAddLength);
@@ -42,11 +42,11 @@ public class Equipment implements INamedByUniqueName {
 		this.kksName = kksName;
 	}
 
-	public double[] getXyz() {
+	public Double[] getXyz() {
 		return xyz;
 	}
 
-	public void setXyz(double[] xyz) {
+	public void setXyz(Double[] xyz) {
 		this.xyz = xyz;
 	}
 
@@ -70,6 +70,7 @@ public class Equipment implements INamedByUniqueName {
 			return false;
 		if (getEquipmentName() != null ? !getEquipmentName().equals(equipment.getEquipmentName()) : equipment.getEquipmentName() != null)
 			return false;
+		// Probably incorrect - comparing Object[] arrays with Arrays.equals
 		if (!Arrays.equals(getXyz(), equipment.getXyz())) return false;
 		return getJoinPoint() != null ? getJoinPoint().equals(equipment.getJoinPoint()) : equipment.getJoinPoint() == null;
 

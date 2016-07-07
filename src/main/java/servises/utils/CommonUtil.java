@@ -95,7 +95,7 @@ public class CommonUtil {
         return Math.abs(sX - eX) + Math.abs(sY - eY) + Math.abs(sZ - eZ);
     }
 
-    public static Object [] defineNearestPoint(double[] equipXyz, List<JoinPoint> pointList, double reserveRatio) {
+    public static Object [] defineNearestPoint(Double[] equipXyz, List<JoinPoint> pointList, double reserveRatio) {
         double a = equipXyz[0];
         double b = equipXyz[1];
         double c = equipXyz[2];
