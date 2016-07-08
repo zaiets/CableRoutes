@@ -42,22 +42,22 @@
                                         <Insets left="10.0" />
                                     </GridPane.margin>
                                 </Label>
-                                <CheckBox fx:id="checkBox1" mnemonicParsing="false" onMouseClicked="#setCheckBox1Defaults" prefHeight="21.0" prefWidth="108.0" text="Join points" GridPane.rowIndex="1">
+                                <CheckBox fx:id="checkBox1" mnemonicParsing="false" onMouseClicked="#setCheckBox1Defaults" prefHeight="21.0" prefWidth="108.0" selected="true" text="Join points" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
                                 </CheckBox>
-                                <CheckBox fx:id="checkBox2" mnemonicParsing="false" onMouseClicked="#setCheckBox2Defaults" text="Equipments" GridPane.rowIndex="2">
+                                <CheckBox fx:id="checkBox2" mnemonicParsing="false" onMouseClicked="#setCheckBox2Defaults" selected="true" text="Equipments" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
                                 </CheckBox>
-                                <CheckBox fx:id="checkBox3" mnemonicParsing="false" onMouseClicked="#setCheckBox3Defaults" text="Routes" GridPane.rowIndex="3">
+                                <CheckBox fx:id="checkBox3" mnemonicParsing="false" onMouseClicked="#setCheckBox3Defaults" selected="true" text="Routes" GridPane.rowIndex="3">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
                                 </CheckBox>
-                                <CheckBox fx:id="checkBox4" mnemonicParsing="false" onMouseClicked="#setCheckBox4Defaults" text="Journals" GridPane.rowIndex="4">
+                                <CheckBox fx:id="checkBox4" mnemonicParsing="false" onMouseClicked="#setCheckBox4Defaults" selected="true" text="Journals" GridPane.rowIndex="4">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
@@ -136,7 +136,7 @@
                                         <ToggleGroup fx:id="group1" />
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton fx:id="radioAnalyser2" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsAnalyser" text="Equipments in journals" toggleGroup="$group1" GridPane.rowIndex="2">
+                                <RadioButton fx:id="radioAnalyser2" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsAnalyser" selected="true" text="Equipments in journals" toggleGroup="$group1" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
@@ -200,7 +200,7 @@
                                         <ToggleGroup fx:id="group2" />
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton fx:id="radioTracer2" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsTracer" text="Trace model" toggleGroup="$group2" GridPane.rowIndex="2">
+                                <RadioButton fx:id="radioTracer2" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsTracer" selected="true" text="Trace model" toggleGroup="$group2" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>
@@ -270,7 +270,7 @@
                                         <ToggleGroup fx:id="group3" />
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton fx:id="radioCalculator2" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsCalc" text="Calculate journals" toggleGroup="$group3" GridPane.rowIndex="2">
+                                <RadioButton fx:id="radioCalculator2" mnemonicParsing="false" onAction="#setRadioButtonsDefaultsCalc" selected="true" text="Calculate journals" toggleGroup="$group3" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets left="10.0" />
                                     </GridPane.margin>

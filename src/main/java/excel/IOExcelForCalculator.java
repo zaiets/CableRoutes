@@ -17,6 +17,7 @@ import static excel.utils.ExcelUtils.writeWorkbook;
 @Component
 public class IOExcelForCalculator {
 
+    public static final int START_CELL_IN_TEMPLATE_FOR_CALC = 16;
     @Autowired
     private CommonUtil commonUtil;
 
@@ -45,7 +46,7 @@ public class IOExcelForCalculator {
         Sheet sheet = workbook.getSheetAt(0);
         workbook.setSheetName(0, journal.getKksName());
 
-        Row row = sheet.createRow(0);
+        Row row = sheet.getRow(0);
         Cell cell = row.createCell(0);
         cell.setCellValue(projectName);
 
@@ -94,7 +95,9 @@ public class IOExcelForCalculator {
         styleCalcInfo.cloneStyleFrom(styleCalc1);
         styleCalcInfo.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
 
-        int calcStartCell = 17;
+        CellStyle style3 = sheet.getRow(0).getCell(8).getCellStyle();
+
+        int calcStartCell = START_CELL_IN_TEMPLATE_FOR_CALC;
         int lastTitleRow = 5;
         for (Cable cable : journal.getCables()) {
             row = sheet.createRow(lastTitleRow++);
@@ -106,40 +109,43 @@ public class IOExcelForCalculator {
             row.createCell(5).setCellValue(cable.getStart().getEquipmentName());
             row.createCell(6).setCellValue(cable.getStart().getXyz()[0]);
             row.createCell(7).setCellValue(cable.getStart().getXyz()[1]);
-            row.createCell(8).setCellValue(cable.getStart().getXyz()[2] + "00");
+            row.createCell(8).setCellValue(cable.getStart().getXyz()[2]);
             row.createCell(9).setCellValue(cable.getEnd().getEquipmentName());
             row.createCell(10).setCellValue(cable.getEnd().getXyz()[0]);
             row.createCell(11).setCellValue(cable.getEnd().getXyz()[1]);
-            row.createCell(12).setCellValue(cable.getEnd().getXyz()[2] + "00");
+            row.createCell(12).setCellValue(cable.getEnd().getXyz()[2]);
             row.createCell(13).setCellValue(cable.getLength());
             row.createCell(14).setCellValue(commonUtil.getRoutesListForExcel(cable));
-            row.createCell(15);
+            row.createCell(15).setCellValue(cable.getLength());
             for (int i = 1; i < 16; i++) {
                 row.getCell(i).setCellStyle(style0);
             }
             row.getCell(2).setCellStyle(style1);
             row.getCell(14).setCellStyle(style2);
+            row.getCell(8).setCellStyle(style3);
+            row.getCell(12).setCellStyle(style3);
 
             //добавляем данные по части калькуляции
             List<Long> cableInfo = CalculatorUtil.getInfo(cable);
             if (!(cableInfo == null)) {
                 for (int i = 0; i < 13; i++) {
                     row.createCell(calcStartCell + i);
-                    Cell thisCell = row.getCell(calcStartCell);
+                    Cell thisCell = row.getCell(calcStartCell + i);
                     if (cableInfo.get(i) != 0) {
                         thisCell.setCellValue(cableInfo.get(i));
                         if (i < 3) thisCell.setCellStyle(styleCalc1);
                         else if (i < 10) thisCell.setCellStyle(styleCalc2);
                         else thisCell.setCellStyle(styleCalc3);
-                    } else {
-                        thisCell.setCellStyle(style0);
                     }
+                    //else {
+                    //    thisCell.setCellStyle(style0);
+                    //}
                 }
             } else {
                 row.createCell(17);
                 row.createCell(28);
                 row.getCell(17).setCellValue(cable.getLength());
-                row.getCell(17).setCellStyle(styleCalc1);;
+                row.getCell(17).setCellStyle(styleCalc1);
                 row.getCell(28).setCellValue(cable.getLength());
                 row.getCell(28).setCellStyle(style0);
             }
