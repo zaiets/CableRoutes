@@ -133,8 +133,8 @@ public class IOExcelForCalculator {
                     Cell thisCell = row.getCell(calcStartCell + i);
                     if (cableInfo.get(i) != 0) {
                         thisCell.setCellValue(cableInfo.get(i));
-                        if (i < 3) thisCell.setCellStyle(styleCalc1);
-                        else if (i < 10) thisCell.setCellStyle(styleCalc2);
+                        if (i < 2) thisCell.setCellStyle(styleCalc1);
+                        else if (i < 11) thisCell.setCellStyle(styleCalc2);
                         else thisCell.setCellStyle(styleCalc3);
                     }
                     //else {
