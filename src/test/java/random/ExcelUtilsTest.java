@@ -2,7 +2,7 @@ package random;
 
 import org.junit.Assert;
 import org.junit.Test;
-import excel.utils.ExcelUtils;
+import app.business.excel.utils.ExcelUtils;
 
 
 public class ExcelUtilsTest {
