@@ -1,5 +1,6 @@
 package app.configuration;
 
+import app.business.properties.PropertiesHolder;
 import app.converter.RoleToUserProfileConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "app.*")
+@ComponentScan(basePackages = "app.**")
 public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Autowired
@@ -60,6 +61,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	    ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 	    messageSource.setBasename("props/messages.properties");
 	    return messageSource;
+	}
+
+	@Bean
+	public PropertiesHolder propertiesHolder() {
+	    return new PropertiesHolder ();
 	}
     
     /**Optional. It's only required when handling '.' in @PathVariables which otherwise ignore everything after last '.' in @PathVaidables argument.

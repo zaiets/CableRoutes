@@ -6,7 +6,9 @@ import app.repository.entities.business.Route;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalculatorUtil {
+public final class CalculatorUtil {
+    private CalculatorUtil() {
+    }
 
     public static List<Long> getInfo(Cable cable) {
         if (cable.getRoutesList() == null) return null;

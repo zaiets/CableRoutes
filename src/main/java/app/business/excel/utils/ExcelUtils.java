@@ -16,6 +16,9 @@ import java.util.regex.Pattern;
 public final class ExcelUtils {
     public static final int FIRST_SHEET_INDEX = 0;
 
+    public ExcelUtils() {
+    }
+
     /**
      * Читает любой стандартный тип ячейки книги models.excel в строковом представлении
      */

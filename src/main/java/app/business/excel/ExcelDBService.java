@@ -1,11 +1,11 @@
 package app.business.excel;
 
 import app.repository.dao.business.IDao;
+import app.repository.entities.business.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import app.repository.entities.business.*;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,14 +15,18 @@ import java.util.stream.Stream;
 
 import static app.business.excel.utils.ExcelUtils.*;
 
-@Service
-public final class ExcelDBService {
+@Component
+
+public class ExcelDBService {
     @Autowired
     private IDao<Route> routeDao;
     @Autowired
     private IDao<JoinPoint> joinPointDao;
     @Autowired
     private IDao<Equipment> equipmentDao;
+
+    public ExcelDBService() {
+    }
 
     public List<JoinPoint> readJoinPoints(File joinPointsFile) {
         List<JoinPoint> joinPoints = new ArrayList<>();

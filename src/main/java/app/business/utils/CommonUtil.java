@@ -13,6 +13,8 @@ import java.util.*;
 
 @Component
 public class CommonUtil {
+    public CommonUtil() {
+    }
 
     @Autowired
     private PropertiesHolder propertiesHolder;

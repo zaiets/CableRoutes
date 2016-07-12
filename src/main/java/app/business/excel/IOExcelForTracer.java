@@ -17,6 +17,9 @@ public class IOExcelForTracer {
     @Autowired
     private CommonUtil commonUtil;
 
+    public IOExcelForTracer() {
+    }
+
     /**
      * Writing info from Journal 'j' in to new Excel file named
      */

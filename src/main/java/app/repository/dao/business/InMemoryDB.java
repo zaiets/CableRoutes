@@ -1,13 +1,12 @@
 package app.repository.dao.business;
 
-import org.springframework.stereotype.Repository;
 import app.repository.entities.business.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
 public enum InMemoryDB {
+
     INSTANCE;
 
     private List<Journal> journals = new ArrayList<>();

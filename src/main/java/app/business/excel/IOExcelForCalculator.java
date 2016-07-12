@@ -21,6 +21,9 @@ public class IOExcelForCalculator {
     @Autowired
     private CommonUtil commonUtil;
 
+    public IOExcelForCalculator() {
+    }
+
 // public static final int START_ROW_IN_TYPES_FILE = 3;
 
 // no needed now..

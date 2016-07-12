@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TracingLogic {
+public final class TracingLogic {
     static private int INF = Integer.MAX_VALUE / 2;
     static private int n; // количество вершин в орграфе
     static private int m; // количествое дуг в орграфе
@@ -24,6 +24,9 @@ public class TracingLogic {
     static int startPoint; // стартовая вершина, от которой ищется расстояние до
     // всех
     // других
+    private TracingLogic() {
+    }
+
 
 
     public static List<Route> defineTrace(Line cable, List<JoinPoint> points, List<Route> routes) {

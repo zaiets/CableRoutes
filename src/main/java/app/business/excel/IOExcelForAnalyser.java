@@ -1,17 +1,19 @@
 package app.business.excel;
 
 
+import app.business.properties.PropertiesHolder;
+import app.business.utils.CommonUtil;
 import app.repository.dao.business.IDao;
 import app.repository.entities.business.Equipment;
 import app.repository.entities.business.JoinPoint;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import app.business.properties.PropertiesHolder;
-import app.business.utils.CommonUtil;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import static app.business.excel.utils.ExcelUtils.*;
 
@@ -23,6 +25,9 @@ public class IOExcelForAnalyser {
 
     @Autowired
     private PropertiesHolder propertiesHolder;
+
+    public IOExcelForAnalyser() {
+    }
 
     /**
      * ранее:

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("classpath:/props/application.properties")
 public class PropertiesHolder {
+    public PropertiesHolder() {
+    }
 
     @Autowired
     private Environment environment;
