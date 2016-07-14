@@ -1,5 +1,7 @@
 package app.repository.entities.common;
 
+import org.springframework.context.annotation.Lazy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -30,6 +32,7 @@ public class User implements Serializable {
 	private String email;
 
 	@OneToOne
+	@Lazy
 	@JoinColumn(name = "USER_PROFILE_ID", nullable = false)
 	private UserProfile userProfile;
 

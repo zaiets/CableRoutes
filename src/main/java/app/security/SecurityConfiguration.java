@@ -39,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/")
                 .access("hasRole('USER') or hasRole('ADMIN')").and().formLogin()
                 .usernameParameter("login").passwordParameter("password").and()
-                .rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository)
+                .rememberMe().tokenRepository(tokenRepository)
                 .tokenValiditySeconds(86400).and().csrf().disable();
     }
 

@@ -16,9 +16,9 @@ public class UserProfile implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLE", columnDefinition = "enum ('ADMIN','USER')", unique = true, nullable = false)
     private Role role;
-
-    @OneToOne(mappedBy = "userProfile", targetEntity = User.class)
-    private User user;
+//
+//    @OneToOne(mappedBy = "userProfile")
+//    private User user;
 
     public Integer getId() {
         return id;
@@ -36,13 +36,13 @@ public class UserProfile implements Serializable {
         this.role = role;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 
     public UserProfile() {
     }
