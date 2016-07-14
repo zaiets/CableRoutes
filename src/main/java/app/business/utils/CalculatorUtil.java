@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class CalculatorUtil {
+
+    public static final int FIRST_HEIGHT_MARKER = 2;
+
     private CalculatorUtil() {
     }
 
@@ -33,13 +36,13 @@ public final class CalculatorUtil {
             }
             String type = route.getRouteType();
             if (type.contains("B")) {
-                if (route.getHeight() < 5) b_low += length;
+                if (route.getHeight() < FIRST_HEIGHT_MARKER) b_low += length;
                 else b_high += length;
             } else if (type.contains("L")) {
-                if (route.getHeight() < 5) l_low += length;
+                if (route.getHeight() < FIRST_HEIGHT_MARKER) l_low += length;
                 else l_high += length;
             } else if (type.contains("T")) {
-                if (route.getHeight() < 5) t_low += length;
+                if (route.getHeight() < FIRST_HEIGHT_MARKER) t_low += length;
                 else t_high += length;
             } else if (type.contains("C")) {
                 c += length;
@@ -53,7 +56,7 @@ public final class CalculatorUtil {
         summary_low = b_low + l_low + t_low + c + g + p;
         summary_high = b_high + l_high + t_high;
 
-        double extraKoef = cable.getLength() / (existingRoutes + summary_low + summary_high);
+        double extraKoef = cable.getLength() / (summary_low + summary_high);
         currentCableInfo.add(Math.round(existingRoutes));
         currentCableInfo.add(Math.round(newRoutes));
         currentCableInfo.add(Math.round(b_low * extraKoef));
