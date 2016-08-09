@@ -1,47 +1,60 @@
 package app.repository.entities.business;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ROUTE_TYPE")
 public class RouteType {
-	
-	String name;
-	CharSequence type;
+    @Basic
+    @Column(name = "NAME")
+    String name;
+    @Column(name = "MARKER", nullable = false)
+    CharSequence marker;
 
-	public RouteType(String name, CharSequence type) {
-		this.name = name;
-		this.type = type;
-	}
+    public RouteType () {}
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    //TODO delete
+    public RouteType(String name, CharSequence type) {
+        this.name = name;
+        this.marker = type;
+    }
 
-	public CharSequence getType() {
-		return type;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setType(CharSequence type) {
-		this.type = type;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof RouteType)) return false;
+    public CharSequence getMarker() {
+        return marker;
+    }
 
-		RouteType routeType = (RouteType) o;
+    public void setMarker(CharSequence marker) {
+        this.marker = marker;
+    }
 
-		if (getName() != null ? !getName().equals(routeType.getName()) : routeType.getName() != null) return false;
-		return getType() != null ? getType().equals(routeType.getType()) : routeType.getType() == null;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RouteType)) return false;
 
-	}
+        RouteType routeType = (RouteType) o;
 
-	@Override
-	public int hashCode() {
-		int result = getName() != null ? getName().hashCode() : 0;
-		result = 31 * result + (getType() != null ? getType().hashCode() : 0);
-		return result;
-	}
+        if (getName() != null ? !getName().equals(routeType.getName()) : routeType.getName() != null) return false;
+        return getMarker() != null ? getMarker().equals(routeType.getMarker()) : routeType.getMarker() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getMarker() != null ? getMarker().hashCode() : 0);
+        return result;
+    }
 }

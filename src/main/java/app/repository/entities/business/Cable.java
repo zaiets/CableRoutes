@@ -21,7 +21,7 @@ public class Cable extends Line implements INamedByUniqueName {
     private String cableDimensions;
     @JoinColumn(name = "EQUIPMENT_START_NAME")
     private Equipment start;
-    @JoinColumn(name = "EQUIPMENT_START_NAME")
+    @JoinColumn(name = "EQUIPMENT_END_NAME")
     private Equipment end;
     @Basic
     @Column(name = "RESERVING")
@@ -123,6 +123,57 @@ public class Cable extends Line implements INamedByUniqueName {
         this.length = length;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cable)) return false;
+        if (!super.equals(o)) return false;
 
+        Cable cable = (Cable) o;
 
+        if (getNumberInJournal() != cable.getNumberInJournal()) return false;
+        if (getLength() != cable.getLength()) return false;
+        if (kksName != null ? !kksName.equals(cable.kksName) : cable.kksName != null) return false;
+        if (getJournal() != null ? !getJournal().equals(cable.getJournal()) : cable.getJournal() != null) return false;
+        if (getCableType() != null ? !getCableType().equals(cable.getCableType()) : cable.getCableType() != null)
+            return false;
+        if (getCableDimensions() != null ? !getCableDimensions().equals(cable.getCableDimensions()) : cable.getCableDimensions() != null)
+            return false;
+        if (getStart() != null ? !getStart().equals(cable.getStart()) : cable.getStart() != null) return false;
+        if (getEnd() != null ? !getEnd().equals(cable.getEnd()) : cable.getEnd() != null) return false;
+        return getReserving() != null ? getReserving().equals(cable.getReserving()) : cable.getReserving() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (kksName != null ? kksName.hashCode() : 0);
+        result = 31 * result + (getJournal() != null ? getJournal().hashCode() : 0);
+        result = 31 * result + getNumberInJournal();
+        result = 31 * result + (getCableType() != null ? getCableType().hashCode() : 0);
+        result = 31 * result + (getCableDimensions() != null ? getCableDimensions().hashCode() : 0);
+        result = 31 * result + (getStart() != null ? getStart().hashCode() : 0);
+        result = 31 * result + (getEnd() != null ? getEnd().hashCode() : 0);
+        result = 31 * result + (getReserving() != null ? getReserving().hashCode() : 0);
+        result = 31 * result + getLength();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Cable{");
+        sb.append("kksName='").append(kksName).append('\'');
+        sb.append(", journal=").append(journal);
+        sb.append(", numberInJournal=").append(numberInJournal);
+        sb.append(", cableType='").append(cableType).append('\'');
+        sb.append(", cableDimensions='").append(cableDimensions).append('\'');
+        sb.append(", start=").append(start);
+        sb.append(", end=").append(end);
+        sb.append(", reserving='").append(reserving).append('\'');
+        sb.append(", length=").append(length);
+        sb.append(", commonKks='").append(getCommonKks()).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

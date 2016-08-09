@@ -9,9 +9,8 @@ import java.util.List;
 public class Route implements INamedByUniqueName {
 	@Column(name = "KKS", unique = true)
 	private String kksName;
-	@Basic
-	@Column(name = "TYPE")
-	private String routeType;
+	@JoinColumn(name = "ROUTE_TYPE_MARKER")
+	private RouteType routeType;
 	@Basic
 	@Column(name = "LENGTH")
 	private double length;
@@ -34,7 +33,7 @@ public class Route implements INamedByUniqueName {
 	public Route() {	}
 
 	//TODO delete
-	public Route(String kksName, String routeType, double length, Double height, int shelvesCount, JoinPoint firstEnd, JoinPoint secondEnd) {
+	public Route(String kksName, RouteType routeType, double length, Double height, int shelvesCount, JoinPoint firstEnd, JoinPoint secondEnd) {
 		this.kksName = kksName;
 		this.routeType = routeType;
 		this.length = length;
@@ -52,11 +51,11 @@ public class Route implements INamedByUniqueName {
 		this.kksName = kksName;
 	}
 
-	public String getRouteType() {
+	public RouteType getRouteType() {
 		return routeType;
 	}
 
-	public void setRouteType(String routeType) {
+	public void setRouteType(RouteType routeType) {
 		this.routeType = routeType;
 	}
 
@@ -117,7 +116,7 @@ public class Route implements INamedByUniqueName {
 
 		if (Double.compare(route.getLength(), getLength()) != 0) return false;
 		if (getShelvesCount() != route.getShelvesCount()) return false;
-		if (getCommonKks() != null ? !getCommonKks().equals(route.getCommonKks()) : route.getCommonKks() != null) return false;
+		if (kksName != null ? !kksName.equals(route.kksName) : route.kksName != null) return false;
 		if (getRouteType() != null ? !getRouteType().equals(route.getRouteType()) : route.getRouteType() != null)
 			return false;
 		if (getHeight() != null ? !getHeight().equals(route.getHeight()) : route.getHeight() != null) return false;
@@ -133,7 +132,7 @@ public class Route implements INamedByUniqueName {
 	public int hashCode() {
 		int result;
 		long temp;
-		result = getCommonKks() != null ? getCommonKks().hashCode() : 0;
+		result = kksName != null ? kksName.hashCode() : 0;
 		result = 31 * result + (getRouteType() != null ? getRouteType().hashCode() : 0);
 		temp = Double.doubleToLongBits(getLength());
 		result = 31 * result + (int) (temp ^ (temp >>> 32));
@@ -149,13 +148,14 @@ public class Route implements INamedByUniqueName {
 	public String toString() {
 		final StringBuilder sb = new StringBuilder("Route{");
 		sb.append("kksName='").append(kksName).append('\'');
-		sb.append(", routeType='").append(routeType).append('\'');
+		sb.append(", routeType=").append(routeType);
 		sb.append(", length=").append(length);
 		sb.append(", height=").append(height);
 		sb.append(", shelvesCount=").append(shelvesCount);
 		sb.append(", firstEnd=").append(firstEnd);
 		sb.append(", secondEnd=").append(secondEnd);
 		sb.append(", cablesList=").append(cablesList);
+		sb.append(", commonKks='").append(getCommonKks()).append('\'');
 		sb.append('}');
 		return sb.toString();
 	}
