@@ -97,8 +97,8 @@ public class IOExcelForAnalyser {
                     String[] nameXyzCJ = {kksCJ, cj, getStringCellValue(cellK), getStringCellValue(cellL), getStringCellValue(cellM), journalFile.getName()};
                     boolean marker1 = false, marker2 = false;
                     for (Equipment eq : equipmentList) {
-                        String eqFullName = eq.getEquipmentName();
-                        String eqKks = eq.getKksName();
+                        String eqFullName = eq.getFullName();
+                        String eqKks = eq.getCommonKks();
                         if (!marker1 && (kksCF.equals(eqFullName) || cf.equals(eqKks) || eqFullName.equals(cf))) {
                             cellF.setCellStyle(styleEquipmentConfirmed);
                             marker1 = true;
@@ -194,7 +194,7 @@ public class IOExcelForAnalyser {
             if (allEquipment == null) return false;
             List<Equipment> targetEquipment = new ArrayList<>();
             allEquipment.forEach(o -> {
-                if (o.getJoinPoint() == null || o.getJoinPoint().getKksName().equals("")) targetEquipment.add(o);
+                if (o.getJoinPoint() == null || o.getJoinPoint().getCommonKks().equals("")) targetEquipment.add(o);
             });
             for (Equipment equipment : targetEquipment) {
                 double reserveRatio = propertiesHolder.get("reserveRatio.approximateDeterminationOfTrace", Double.class);
@@ -221,10 +221,10 @@ public class IOExcelForAnalyser {
                 Row row = it.next();
                 String cellB = getStringCellValue(row.getCell(1));
                 for (Equipment equipment : targetEquipment) {
-                    if (cellB.equals(equipment.getEquipmentName())) {
+                    if (cellB.equals(equipment.getFullName())) {
                         Cell cellF = row.createCell(5);
                         cellF.setCellStyle(pointAddedStyle);
-                        cellF.setCellValue(equipment.getJoinPoint().getKksName());
+                        cellF.setCellValue(equipment.getJoinPoint().getCommonKks());
                         Cell cellG = row.createCell(6);
                         cellG.setCellStyle(pointAddedStyle);
                         cellG.setCellValue(equipment.getCableConnectionAddLength());

@@ -1,17 +1,27 @@
 package app.repository.entities.business;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Arrays;
 
+@Entity
+@Table(name="JOIN_POINT")
 public class JoinPoint implements INamedByUniqueName {
+	@Column(name = "KKS", unique = true)
 	private String kksName;
+	@Column(name = "XYZ")
 	private double [] xyz;
-	
+
+	public JoinPoint(){}
+
+	//TODO delete
 	public JoinPoint(String kksName, double [] xyz) {
 		setKksName(kksName);
 		setXyz(xyz);
 	}
 
-	public String getKksName() {
+	public String getCommonKks() {
 		return kksName;
 	}
 
@@ -34,14 +44,14 @@ public class JoinPoint implements INamedByUniqueName {
 
 		JoinPoint that = (JoinPoint) o;
 
-		if (getKksName() != null ? !getKksName().equals(that.getKksName()) : that.getKksName() != null) return false;
+		if (getCommonKks() != null ? !getCommonKks().equals(that.getCommonKks()) : that.getCommonKks() != null) return false;
 		return Arrays.equals(getXyz(), that.getXyz());
 
 	}
 
 	@Override
 	public int hashCode() {
-		int result = getKksName() != null ? getKksName().hashCode() : 0;
+		int result = getCommonKks() != null ? getCommonKks().hashCode() : 0;
 		result = 31 * result + Arrays.hashCode(getXyz());
 		return result;
 	}
@@ -50,7 +60,7 @@ public class JoinPoint implements INamedByUniqueName {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("\nJoinPoint [Name: ");
-		builder.append(getKksName());
+		builder.append(getCommonKks());
 		builder.append(", X-Y-Z: ");
 		builder.append(Arrays.toString(getXyz()));
 		builder.append("]");

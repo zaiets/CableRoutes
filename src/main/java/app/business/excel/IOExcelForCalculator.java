@@ -47,7 +47,7 @@ public class IOExcelForCalculator {
     public void writeToFileEstimatedJournal(String projectName, Journal journal, File targetFile, File templateFile) {
         Workbook workbook = getWorkbook(templateFile);
         Sheet sheet = workbook.getSheetAt(0);
-        workbook.setSheetName(0, journal.getKksName());
+        workbook.setSheetName(0, journal.getCommonKks());
 
         Row row = sheet.getRow(0);
         Cell cell = row.createCell(0);
@@ -105,15 +105,15 @@ public class IOExcelForCalculator {
         for (Cable cable : journal.getCables()) {
             row = sheet.createRow(lastTitleRow++);
             row.createCell(0).setCellValue(cable.getNumberInJournal());
-            row.createCell(1).setCellValue(cable.getKksName());
+            row.createCell(1).setCellValue(cable.getCommonKks());
             row.createCell(2).setCellValue(cable.getReserving());
             row.createCell(3).setCellValue(cable.getCableType()[0]);
             row.createCell(4).setCellValue(cable.getCableType()[1]);
-            row.createCell(5).setCellValue(cable.getStart().getEquipmentName());
+            row.createCell(5).setCellValue(cable.getStart().getFullName());
             row.createCell(6).setCellValue(cable.getStart().getXyz()[0]);
             row.createCell(7).setCellValue(cable.getStart().getXyz()[1]);
             row.createCell(8).setCellValue(cable.getStart().getXyz()[2]);
-            row.createCell(9).setCellValue(cable.getEnd().getEquipmentName());
+            row.createCell(9).setCellValue(cable.getEnd().getFullName());
             row.createCell(10).setCellValue(cable.getEnd().getXyz()[0]);
             row.createCell(11).setCellValue(cable.getEnd().getXyz()[1]);
             row.createCell(12).setCellValue(cable.getEnd().getXyz()[2]);

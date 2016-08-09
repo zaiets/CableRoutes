@@ -1,8 +1,8 @@
 package app.repository.entities.business;
 
 /**
- * Created by Levsha on 28.06.2016.
+ * This is marker interface for an unique-named entities
  */
 public interface INamedByUniqueName {
-    String getKksName();
+
 }

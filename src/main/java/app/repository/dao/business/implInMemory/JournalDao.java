@@ -19,7 +19,7 @@ public class JournalDao implements IDao<Journal> {
     public boolean create(Journal journal) {
         if (journal == null) return false;
         for (Journal o : inMemoryDB.getJournals()) {
-            if (o.getKksName().equals(journal.getKksName())) {
+            if (o.getCommonKks().equals(journal.getCommonKks())) {
                 //throw new RuntimeException("Duplicates in journal list");
                 return false;
             }
@@ -44,7 +44,7 @@ public class JournalDao implements IDao<Journal> {
     public Journal read(String uniqueName) {
         Journal journal = null;
         for (Journal o : inMemoryDB.getJournals()) {
-            if (o.getKksName().equals(uniqueName)) {
+            if (o.getCommonKks().equals(uniqueName)) {
                 if (journal == null) {journal = o;}
                 else throw new RuntimeException("Duplicates in journal list");
             }
@@ -56,7 +56,7 @@ public class JournalDao implements IDao<Journal> {
     public boolean update(Journal journal) {
         if (journal == null) return false;
         for (Journal o : inMemoryDB.getJournals()) {
-            if (o.getKksName().equals(journal.getKksName())) {
+            if (o.getCommonKks().equals(journal.getCommonKks())) {
                 o.setFileName(journal.getFileName());
                 o.setCables(journal.getCables());
             } else {
@@ -70,7 +70,7 @@ public class JournalDao implements IDao<Journal> {
     public boolean delete(String uniqueName) {
         Journal journal = null;
         for (Journal o : inMemoryDB.getJournals()) {
-            if (o.getKksName().equals(uniqueName)) {
+            if (o.getCommonKks().equals(uniqueName)) {
                 if (journal == null) {journal = o;}
                 else throw new RuntimeException("Duplicates in journal list");
             }

@@ -8,7 +8,7 @@
     <artifactId>CableRoutesWebApp</artifactId>
     <version>1.0.0</version>
     <packaging>war</packaging>
-    <name>CableRoutesWebApp</name>
+    <fullName>CableRoutesWebApp</fullName>
 
     <properties>
         <junit.version>4.12</junit.version>

@@ -1,14 +1,32 @@
 package app.repository.entities.business;
 
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name="LINE")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "ID")
 public class Line {
+    @Id
+    @GeneratedValue
+    @Column(name = "ID")
+    private int id;
+    @JoinColumn(name = "JOIN_POINT_ID", nullable=false)
     private JoinPoint startPoint;
+    @JoinColumn(name = "JOIN_POINT_ID", nullable=false)
     private JoinPoint endPoint;
+    @OneToMany
+    @JoinColumn(name = "ROUTE_ID")
     private List<Route> routesList;
+    @Basic
+    @Column(name = "TRACED")
     private boolean traced;
 
+    public Line () {}
+
+    //TODO delete
     public Line(JoinPoint startPoint, JoinPoint endPoint) {
         setStartPoint(startPoint);
         setEndPoint(endPoint);

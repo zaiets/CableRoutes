@@ -53,9 +53,9 @@ public final class Tracer {
             for (Journal journal : traceJournals(journalDao.getAll())) {
                 String targetFileName;
                 if (targetPath == null || !targetPath.isDirectory()) {
-                    targetFileName = buildFileName(journalPathName, null, journal.getKksName(), newMessage, fileExtension);
+                    targetFileName = buildFileName(journalPathName, null, journal.getCommonKks(), newMessage, fileExtension);
                 } else {
-                    targetFileName = buildFileName(targetPath.getAbsolutePath(), null, journal.getKksName(), newMessage, fileExtension);
+                    targetFileName = buildFileName(targetPath.getAbsolutePath(), null, journal.getCommonKks(), newMessage, fileExtension);
                 }
                 targetFile = new File(targetFileName);
                 ioExcelForTracer.writeToFileTracedJournal(projectName, journal, targetFile, templateFile);

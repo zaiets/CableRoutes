@@ -27,8 +27,8 @@ public class CommonUtil {
             String beforeLastWord = null;
             String lastWord = null;
             if (propertiesHolder.get("tracer.showAlternatePointsInTrace", Boolean.class)) {
-                firstWord = line.getStartPoint().getKksName();
-                lastWord = line.getEndPoint().getKksName();
+                firstWord = line.getStartPoint().getCommonKks();
+                lastWord = line.getEndPoint().getCommonKks();
             }
             if (propertiesHolder.get("tracer.showApproximateDeterminationOfTraceMessage", Boolean.class)) {
                 if (line instanceof Cable) {
@@ -50,7 +50,7 @@ public class CommonUtil {
                 builder.append("; ");
             }
             for (Route rou : line.getRoutesList()) {
-                builder.append(rou.getKksName());
+                builder.append(rou.getCommonKks());
                 builder.append("; ");
             }
             if (beforeLastWord != null) {

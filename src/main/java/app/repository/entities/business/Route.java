@@ -1,18 +1,39 @@
 package app.repository.entities.business;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name="ROUTE")
 public class Route implements INamedByUniqueName {
+	@Column(name = "KKS", unique = true)
 	private String kksName;
+	@Basic
+	@Column(name = "TYPE")
 	private String routeType;
+	@Basic
+	@Column(name = "LENGTH")
 	private double length;
+	@Basic
+	@Column(name = "HEIGHT")
 	private Double height;
+	@Basic
+	@Column(name = "SHELVES_COUNT")
 	private int shelvesCount;
+	@JoinColumn(name = "JOIN_POINT_KKS", nullable=false)
 	private JoinPoint firstEnd;
+	@JoinColumn(name = "JOIN_POINT_KKS", nullable=false)
 	private JoinPoint secondEnd;
+	@ManyToMany
+	@JoinTable(name = "CABLES_ROUTES",
+			joinColumns = @JoinColumn(name = "ROUTE_KKS"),
+			inverseJoinColumns = @JoinColumn(name = "CABLE_KKS"))
 	private List<Cable> cablesList = new ArrayList<>();
 
+	public Route() {	}
+
+	//TODO delete
 	public Route(String kksName, String routeType, double length, Double height, int shelvesCount, JoinPoint firstEnd, JoinPoint secondEnd) {
 		this.kksName = kksName;
 		this.routeType = routeType;
@@ -23,8 +44,7 @@ public class Route implements INamedByUniqueName {
 		this.secondEnd = secondEnd;
 	}
 
-	@Override
-	public String getKksName() {
+	public String getCommonKks() {
 		return kksName;
 	}
 
@@ -97,7 +117,7 @@ public class Route implements INamedByUniqueName {
 
 		if (Double.compare(route.getLength(), getLength()) != 0) return false;
 		if (getShelvesCount() != route.getShelvesCount()) return false;
-		if (getKksName() != null ? !getKksName().equals(route.getKksName()) : route.getKksName() != null) return false;
+		if (getCommonKks() != null ? !getCommonKks().equals(route.getCommonKks()) : route.getCommonKks() != null) return false;
 		if (getRouteType() != null ? !getRouteType().equals(route.getRouteType()) : route.getRouteType() != null)
 			return false;
 		if (getHeight() != null ? !getHeight().equals(route.getHeight()) : route.getHeight() != null) return false;
@@ -113,7 +133,7 @@ public class Route implements INamedByUniqueName {
 	public int hashCode() {
 		int result;
 		long temp;
-		result = getKksName() != null ? getKksName().hashCode() : 0;
+		result = getCommonKks() != null ? getCommonKks().hashCode() : 0;
 		result = 31 * result + (getRouteType() != null ? getRouteType().hashCode() : 0);
 		temp = Double.doubleToLongBits(getLength());
 		result = 31 * result + (int) (temp ^ (temp >>> 32));

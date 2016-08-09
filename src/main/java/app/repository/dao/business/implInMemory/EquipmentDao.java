@@ -19,7 +19,7 @@ public class EquipmentDao implements IDao<Equipment> {
     public boolean create(Equipment equipment) {
         if (equipment == null) return false;
         for (Equipment o : inMemoryDB.getEquipments()) {
-            if (o.getEquipmentName().equals(equipment.getEquipmentName())) {
+            if (o.getFullName().equals(equipment.getFullName())) {
                 //throw new RuntimeException("Duplicates in equipment list");
                 return false;
             }
@@ -44,7 +44,7 @@ public class EquipmentDao implements IDao<Equipment> {
     public Equipment read(String uniqueName) {
         Equipment equipment = null;
         for (Equipment o : inMemoryDB.getEquipments()) {
-            if (o.getEquipmentName().equals(uniqueName)) {
+            if (o.getFullName().equals(uniqueName)) {
                 if (equipment == null) {equipment = o;}
                 else throw new RuntimeException("Duplicates in equipment list");
             }
@@ -56,9 +56,9 @@ public class EquipmentDao implements IDao<Equipment> {
     public boolean update(Equipment equipment) {
         if (equipment == null) return false;
         for (Equipment o : inMemoryDB.getEquipments()) {
-            if (o.getEquipmentName().equals(equipment.getEquipmentName())) {
+            if (o.getFullName().equals(equipment.getFullName())) {
                 o.setJoinPoint(equipment.getJoinPoint());
-                o.setKksName(equipment.getKksName());
+                o.setCommonKks(equipment.getCommonKks());
                 o.setXyz(equipment.getXyz());
                 o.setCableConnectionAddLength(equipment.getCableConnectionAddLength());
             } else {
@@ -72,7 +72,7 @@ public class EquipmentDao implements IDao<Equipment> {
     public boolean delete(String uniqueName) {
         Equipment equipment = null;
         for (Equipment o : inMemoryDB.getEquipments()) {
-            if (o.getEquipmentName().equals(uniqueName)) {
+            if (o.getFullName().equals(uniqueName)) {
                 if (equipment == null) {equipment = o;}
                 else throw new RuntimeException("Duplicates in equipment list");
             }

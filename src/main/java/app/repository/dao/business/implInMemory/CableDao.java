@@ -19,7 +19,7 @@ public class CableDao implements IDao<Cable> {
     public boolean create(Cable cable) {
         if (cable == null) return false;
         for (Cable o : inMemoryDB.getCables()) {
-            if (o.getKksName().equals(cable.getKksName())) {
+            if (o.getCommonKks().equals(cable.getCommonKks())) {
                 //throw new RuntimeException("Duplicates in cables list");
                 return false;
             }
@@ -44,7 +44,7 @@ public class CableDao implements IDao<Cable> {
     public Cable read(String uniqueName) {
         Cable cable = null;
         for (Cable o : inMemoryDB.getCables()) {
-            if (o.getKksName().equals(uniqueName)) {
+            if (o.getCommonKks().equals(uniqueName)) {
                 if (cable == null) {cable = o;}
                 else throw new RuntimeException("Duplicates in cables list");
             }
@@ -56,12 +56,12 @@ public class CableDao implements IDao<Cable> {
     public boolean update(Cable cable) {
         if (cable == null) return false;
         for (Cable o : inMemoryDB.getCables()) {
-            if (o.getKksName().equals(cable.getKksName())) {
+            if (o.getCommonKks().equals(cable.getCommonKks())) {
                 o.setCableType(cable.getCableType());
                 o.setStart(cable.getStart());
                 o.setLength(cable.getLength());
                 o.setEnd(cable.getEnd());
-                o.setJournalName(cable.getJournalName());
+                o.setJournal(cable.getJournal());
                 o.setNumberInJournal(cable.getNumberInJournal());
                 o.setReserving(cable.getReserving());
                 if (!o.isTraced()) {
@@ -79,7 +79,7 @@ public class CableDao implements IDao<Cable> {
     public boolean delete(String uniqueName) {
         Cable cable = null;
         for (Cable o : inMemoryDB.getCables()) {
-            if (o.getKksName().equals(uniqueName)) {
+            if (o.getCommonKks().equals(uniqueName)) {
                 if (cable == null) {cable = o;}
                 else throw new RuntimeException("Duplicates in cables list");
             }

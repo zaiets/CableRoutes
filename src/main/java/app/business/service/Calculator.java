@@ -35,9 +35,9 @@ public class Calculator {
             for (Journal journal : journalDao.getAll()) {
                 String targetFileName;
                 if (targetPath == null || !targetPath.isDirectory()) {
-                    targetFileName = buildFileName(journalPathName, null, journal.getKksName(), newMessage, fileExtension);
+                    targetFileName = buildFileName(journalPathName, null, journal.getCommonKks(), newMessage, fileExtension);
                 } else {
-                    targetFileName = buildFileName(targetPath.getAbsolutePath(), null, journal.getKksName(), newMessage, fileExtension);
+                    targetFileName = buildFileName(targetPath.getAbsolutePath(), null, journal.getCommonKks(), newMessage, fileExtension);
                 }
                 File targetFile = new File(targetFileName);
                 ioExcelForCalculator.writeToFileEstimatedJournal(projectName, journal, targetFile, templateFile);

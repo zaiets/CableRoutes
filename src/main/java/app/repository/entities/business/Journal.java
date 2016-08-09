@@ -1,12 +1,22 @@
 package app.repository.entities.business;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name="JOURNAL")
 public class Journal implements INamedByUniqueName {
-	private String fileName;
+	@Column(name = "KKS", unique = true)
 	private String kksName;
+	@Basic
+	@Column(name = "FILE_NAME")
+	private String fileName;
+	@OneToMany(mappedBy = "cable")
 	private List<Cable> cables;
-	
+
+	public Journal () {}
+
+	//TODO delete
 	public Journal (String fullFileName, String journalName, List<Cable> cables) {
 		setFileName(fullFileName);
 		setKksName(journalName);
@@ -17,7 +27,7 @@ public class Journal implements INamedByUniqueName {
 		return fileName;
 	}
 
-	public String getKksName() {
+	public String getCommonKks() {
 		return kksName;
 	}
 
@@ -43,7 +53,7 @@ public class Journal implements INamedByUniqueName {
 		builder.append("\nJournal [File:");
 		builder.append(getFileName());
 		builder.append(", Journal kksName: ");
-		builder.append(getKksName());
+		builder.append(getCommonKks());
 		if (getCables() != null) {
 			builder.append(", cables in it: {");
 			for (Cable cab : getCables()) {
@@ -66,7 +76,7 @@ public class Journal implements INamedByUniqueName {
 
 		if (getFileName() != null ? !getFileName().equals(journal.getFileName()) : journal.getFileName() != null)
 			return false;
-		if (getKksName() != null ? !getKksName().equals(journal.getKksName()) : journal.getKksName() != null) return false;
+		if (getCommonKks() != null ? !getCommonKks().equals(journal.getCommonKks()) : journal.getCommonKks() != null) return false;
 		return getCables() != null ? getCables().equals(journal.getCables()) : journal.getCables() == null;
 
 	}
@@ -74,7 +84,7 @@ public class Journal implements INamedByUniqueName {
 	@Override
 	public int hashCode() {
 		int result = getFileName() != null ? getFileName().hashCode() : 0;
-		result = 31 * result + (getKksName() != null ? getKksName().hashCode() : 0);
+		result = 31 * result + (getCommonKks() != null ? getCommonKks().hashCode() : 0);
 		result = 31 * result + (getCables() != null ? getCables().hashCode() : 0);
 		return result;
 	}

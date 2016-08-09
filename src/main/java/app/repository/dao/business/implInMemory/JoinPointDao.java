@@ -19,7 +19,7 @@ public class JoinPointDao implements IDao<JoinPoint> {
     public boolean create(JoinPoint joinPoint) {
         if (joinPoint == null) return false;
         for (JoinPoint o : inMemoryDB.getJoinPoints()) {
-            if (o.getKksName().equals(joinPoint.getKksName())) {
+            if (o.getCommonKks().equals(joinPoint.getCommonKks())) {
                 //throw new RuntimeException("Duplicates in joinPoint list");
                 return false;
             }
@@ -44,7 +44,7 @@ public class JoinPointDao implements IDao<JoinPoint> {
     public JoinPoint read(String uniqueName) {
         JoinPoint joinPoint = null;
         for (JoinPoint o : inMemoryDB.getJoinPoints()) {
-            if (o.getKksName().equals(uniqueName)) {
+            if (o.getCommonKks().equals(uniqueName)) {
                 if (joinPoint == null) {joinPoint = o;}
                 else throw new RuntimeException("Duplicates in joinPoint list");
             }
@@ -56,7 +56,7 @@ public class JoinPointDao implements IDao<JoinPoint> {
     public boolean update(JoinPoint joinPoint) {
         if (joinPoint == null) return false;
         for (JoinPoint o : inMemoryDB.getJoinPoints()) {
-            if (o.getKksName().equals(joinPoint.getKksName())) {
+            if (o.getCommonKks().equals(joinPoint.getCommonKks())) {
                 o.setXyz(joinPoint.getXyz());
             } else {
                 create(o);
@@ -69,7 +69,7 @@ public class JoinPointDao implements IDao<JoinPoint> {
     public boolean delete(String uniqueName) {
         JoinPoint joinPoint = null;
         for (JoinPoint o : inMemoryDB.getJoinPoints()) {
-            if (o.getKksName().equals(uniqueName)) {
+            if (o.getCommonKks().equals(uniqueName)) {
                 if (joinPoint == null) {joinPoint = o;}
                 else throw new RuntimeException("Duplicates in joinPoint list");
             }
