@@ -33,6 +33,14 @@ public class Line {
 
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public JoinPoint getStartPoint() {
         return startPoint;
     }
@@ -72,6 +80,7 @@ public class Line {
 
         Line line = (Line) o;
 
+        if (getId() != line.getId()) return false;
         if (isTraced() != line.isTraced()) return false;
         if (getStartPoint() != null ? !getStartPoint().equals(line.getStartPoint()) : line.getStartPoint() != null)
             return false;
@@ -83,7 +92,8 @@ public class Line {
 
     @Override
     public int hashCode() {
-        int result = getStartPoint() != null ? getStartPoint().hashCode() : 0;
+        int result = getId();
+        result = 31 * result + (getStartPoint() != null ? getStartPoint().hashCode() : 0);
         result = 31 * result + (getEndPoint() != null ? getEndPoint().hashCode() : 0);
         result = 31 * result + (getRoutesList() != null ? getRoutesList().hashCode() : 0);
         result = 31 * result + (isTraced() ? 1 : 0);
@@ -93,7 +103,8 @@ public class Line {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Line{");
-        sb.append("startPoint=").append(startPoint);
+        sb.append("id=").append(id);
+        sb.append(", startPoint=").append(startPoint);
         sb.append(", endPoint=").append(endPoint);
         sb.append(", routesList=").append(routesList);
         sb.append(", traced=").append(traced);

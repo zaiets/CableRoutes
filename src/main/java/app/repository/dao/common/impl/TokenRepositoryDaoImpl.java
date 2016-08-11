@@ -1,5 +1,6 @@
-package app.repository.dao.common;
+package app.repository.dao.common.impl;
 
+import app.repository.dao.AbstractDao;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;

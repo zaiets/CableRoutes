@@ -1,4 +1,4 @@
-package app.repository.dao.common;
+package app.repository.dao;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;

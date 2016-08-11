@@ -23,7 +23,6 @@ public class Equipment implements INamedByUniqueName {
 	@Basic
 	@Column(name = "XYZ")
 	private Double[] xyz;
-	@ManyToOne
 	@JoinColumn(name = "JOIN_POINT_KKS")
 	private JoinPoint joinPoint;
 

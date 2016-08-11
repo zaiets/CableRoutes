@@ -11,7 +11,7 @@ public class RouteType {
     @Basic
     @Column(name = "NAME")
     String name;
-    @Column(name = "MARKER", nullable = false)
+    @Column(name = "MARKER", nullable = false, unique = true)
     CharSequence marker;
 
     public RouteType () {}

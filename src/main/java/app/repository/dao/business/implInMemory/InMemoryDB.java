@@ -1,4 +1,4 @@
-package app.repository.dao.business;
+package app.repository.dao.business.implInMemory;
 
 import app.repository.entities.business.*;
 

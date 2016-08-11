@@ -1,5 +1,7 @@
-package app.repository.dao.common;
+package app.repository.dao.common.impl;
 
+import app.repository.dao.AbstractDao;
+import app.repository.dao.common.UserProfileDao;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;

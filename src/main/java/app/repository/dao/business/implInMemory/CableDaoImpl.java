@@ -1,7 +1,6 @@
 package app.repository.dao.business.implInMemory;
 
 import app.repository.dao.business.IDao;
-import app.repository.dao.business.InMemoryDB;
 import app.repository.entities.business.Cable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -10,7 +9,7 @@ import java.util.List;
 
 @Repository
 @Scope(value = "prototype")
-public class CableDao implements IDao<Cable> {
+public class CableDaoImpl implements IDao<Cable> {
 
     InMemoryDB inMemoryDB = InMemoryDB.INSTANCE;
 

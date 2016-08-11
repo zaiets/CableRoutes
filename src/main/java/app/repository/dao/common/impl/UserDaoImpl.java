@@ -1,5 +1,7 @@
-package app.repository.dao.common;
+package app.repository.dao.common.impl;
 
+import app.repository.dao.AbstractDao;
+import app.repository.dao.common.IUserDao;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.Order;
