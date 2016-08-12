@@ -6,7 +6,7 @@ import app.repository.entities.business.JoinPoint;
 import java.util.List;
 
 
-interface EquipmentDao extends IDao<Equipment> {
+public interface IEquipmentDao extends IDao<Equipment> {
 
 	List<Equipment> readAllByFullNameFragment(String nameFragment);
 

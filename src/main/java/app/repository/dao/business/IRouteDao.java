@@ -8,7 +8,7 @@ import app.repository.entities.business.RouteType;
 import java.util.List;
 
 
-interface RouteDao extends IDao<Route> {
+public interface IRouteDao extends IDao<Route> {
 
 	List<Route> readByRouteType(RouteType routeType);
 

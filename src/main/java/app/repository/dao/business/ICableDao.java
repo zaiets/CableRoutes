@@ -5,7 +5,7 @@ import app.repository.entities.business.*;
 import java.util.List;
 
 
-interface CableDao extends IDao<Cable> {
+public interface ICableDao extends IDao<Cable> {
 
 	List<Cable> readAllByTwoEquipments(Equipment eq1, Equipment eq2);
 

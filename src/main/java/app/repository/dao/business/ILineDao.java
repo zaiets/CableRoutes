@@ -7,7 +7,7 @@ import app.repository.entities.business.Route;
 import java.util.List;
 
 
-interface LineDao extends IDao<Line> {
+public interface ILineDao extends IDao<Line> {
 
 	Line readById(int id);
 

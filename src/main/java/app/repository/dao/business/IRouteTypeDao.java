@@ -3,7 +3,7 @@ package app.repository.dao.business;
 import app.repository.entities.business.RouteType;
 
 
-interface RouteTypeDao extends IDao<RouteType> {
+public interface IRouteTypeDao extends IDao<RouteType> {
 
 	//marker interface
 
