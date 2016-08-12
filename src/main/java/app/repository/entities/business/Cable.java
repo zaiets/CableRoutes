@@ -36,10 +36,6 @@ public class Cable extends Line implements INamedByUniqueName {
     public Cable(String kksName, Journal journal, int numberInJournal, String[] cableType, String reserving, Equipment startEquip,
                  Equipment endEquip, List<Route> routes, int length) {
         super(startEquip.getJoinPoint(), endEquip.getJoinPoint());
-        if (routes != null) {
-            routes.forEach(r -> r.getCablesList().add(this));
-            super.setRoutesList(routes);
-        }
         setKksName(kksName);
         setJournal(journal);
         setNumberInJournal(numberInJournal);
@@ -51,7 +47,7 @@ public class Cable extends Line implements INamedByUniqueName {
         setLength(length);
     }
 
-    public String getCommonKks() {
+    public String getKksName() {
         return kksName;
     }
 
@@ -172,8 +168,13 @@ public class Cable extends Line implements INamedByUniqueName {
         sb.append(", end=").append(end);
         sb.append(", reserving='").append(reserving).append('\'');
         sb.append(", length=").append(length);
-        sb.append(", commonKks='").append(getCommonKks()).append('\'');
+        sb.append(", commonKks='").append(getKksName()).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public String getUniqueName() {
+        return getKksName();
     }
 }

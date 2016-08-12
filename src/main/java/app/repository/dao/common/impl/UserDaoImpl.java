@@ -20,6 +20,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements IUserDao 
 	static final Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
 	
 	public User findById(int id) {
+		logger.info("ID : {}", id);
 		User user = getByKey(id);
 		if(user!=null){
 			Hibernate.initialize(user.getUserProfile());

@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface ICableDao extends IDao<Cable> {
 
+	boolean update(String kks, Cable cable);
+
+	Cable read(String kks);
+
 	List<Cable> readAllByTwoEquipments(Equipment eq1, Equipment eq2);
 
 	List<Cable> readAllByEquipment(Equipment equipment);
 
-	List<Cable> readAllByRoute(Route route);
-
-	List<Cable> readAllByJournal(Route route);
-
-	List<Cable> readAllByType(Route route);
+	List<Cable> readAllByJournal(Journal journal);
 
 }
 

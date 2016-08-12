@@ -50,7 +50,7 @@ public class CommonUtil {
                 builder.append("; ");
             }
             for (Route rou : line.getRoutesList()) {
-                builder.append(rou.getCommonKks());
+                builder.append(rou.getKksName());
                 builder.append("; ");
             }
             if (beforeLastWord != null) {

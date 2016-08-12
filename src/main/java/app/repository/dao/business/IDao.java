@@ -6,7 +6,7 @@ public interface IDao<T> {
     boolean create(T t);
     boolean createOrUpdate(T t);
     T read(String uniqueName);
-    boolean update(T t);
+    boolean update(String uniqueName, T t);
     boolean delete(String uniqueName);
     List<T> getAll();
 }

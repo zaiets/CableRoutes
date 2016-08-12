@@ -43,7 +43,7 @@ public class Route implements INamedByUniqueName {
 		this.secondEnd = secondEnd;
 	}
 
-	public String getCommonKks() {
+	public String getKksName() {
 		return kksName;
 	}
 
@@ -155,8 +155,12 @@ public class Route implements INamedByUniqueName {
 		sb.append(", firstEnd=").append(firstEnd);
 		sb.append(", secondEnd=").append(secondEnd);
 		sb.append(", cablesList=").append(cablesList);
-		sb.append(", commonKks='").append(getCommonKks()).append('\'');
+		sb.append(", commonKks='").append(getKksName()).append('\'');
 		sb.append('}');
 		return sb.toString();
+	}
+	@Override
+	public String getUniqueName() {
+		return getKksName();
 	}
 }

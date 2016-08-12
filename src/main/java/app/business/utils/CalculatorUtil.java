@@ -31,7 +31,7 @@ public final class CalculatorUtil {
         double summary_high;
         for (Route route : cable.getRoutesList()) {
             double length = route.getLength();
-            if (route.getCommonKks().contains("*")) {
+            if (route.getKksName().contains("*")) {
                 existingRoutes += length;
             }
             String type = route.getRouteType();

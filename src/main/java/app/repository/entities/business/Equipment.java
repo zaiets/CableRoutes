@@ -116,4 +116,9 @@ public class Equipment implements INamedByUniqueName {
 		sb.append('}');
 		return sb.toString();
 	}
+
+	@Override
+	public String getUniqueName() {
+		return getFullName();
+	}
 }

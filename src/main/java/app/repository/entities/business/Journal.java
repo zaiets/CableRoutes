@@ -27,7 +27,7 @@ public class Journal implements INamedByUniqueName {
 		return fileName;
 	}
 
-	public String getCommonKks() {
+	public String getKksName() {
 		return kksName;
 	}
 
@@ -53,7 +53,7 @@ public class Journal implements INamedByUniqueName {
 		builder.append("\nJournal [File:");
 		builder.append(getFileName());
 		builder.append(", Journal kksName: ");
-		builder.append(getCommonKks());
+		builder.append(getKksName());
 		if (getCables() != null) {
 			builder.append(", cables in it: {");
 			for (Cable cab : getCables()) {
@@ -76,7 +76,7 @@ public class Journal implements INamedByUniqueName {
 
 		if (getFileName() != null ? !getFileName().equals(journal.getFileName()) : journal.getFileName() != null)
 			return false;
-		if (getCommonKks() != null ? !getCommonKks().equals(journal.getCommonKks()) : journal.getCommonKks() != null) return false;
+		if (getKksName() != null ? !getKksName().equals(journal.getKksName()) : journal.getKksName() != null) return false;
 		return getCables() != null ? getCables().equals(journal.getCables()) : journal.getCables() == null;
 
 	}
@@ -84,8 +84,13 @@ public class Journal implements INamedByUniqueName {
 	@Override
 	public int hashCode() {
 		int result = getFileName() != null ? getFileName().hashCode() : 0;
-		result = 31 * result + (getCommonKks() != null ? getCommonKks().hashCode() : 0);
+		result = 31 * result + (getKksName() != null ? getKksName().hashCode() : 0);
 		result = 31 * result + (getCables() != null ? getCables().hashCode() : 0);
 		return result;
+	}
+
+	@Override
+	public String getUniqueName() {
+		return getKksName();
 	}
 }

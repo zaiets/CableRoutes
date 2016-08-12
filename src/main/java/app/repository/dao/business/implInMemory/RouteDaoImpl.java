@@ -18,7 +18,7 @@ public class RouteDaoImpl implements IDao<Route> {
     public boolean create(Route route) {
         if (route == null) return false;
         for (Route o : inMemoryDB.getRoutes()) {
-            if (o.getCommonKks().equals(route.getCommonKks())) {
+            if (o.getKksName().equals(route.getKksName())) {
                 //throw new RuntimeException("Duplicates in route list");
                 return false;
             }
@@ -43,7 +43,7 @@ public class RouteDaoImpl implements IDao<Route> {
     public Route read(String uniqueName) {
         Route route = null;
         for (Route r : inMemoryDB.getRoutes()) {
-            if (r.getCommonKks().equals(uniqueName)) {
+            if (r.getKksName().equals(uniqueName)) {
                 if (route == null) {route = r;}
                 else throw new RuntimeException("Duplicates in route list");
             }
@@ -55,7 +55,7 @@ public class RouteDaoImpl implements IDao<Route> {
     public boolean update(Route route) {
         if (route == null) return false;
         for (Route o : inMemoryDB.getRoutes()) {
-            if (o.getCommonKks().equals(route.getCommonKks())) {
+            if (o.getKksName().equals(route.getKksName())) {
                 o.setRouteType(route.getRouteType());
                 o.setFirstEnd(route.getFirstEnd());
                 o.setSecondEnd(route.getSecondEnd());
@@ -74,7 +74,7 @@ public class RouteDaoImpl implements IDao<Route> {
     public boolean delete(String uniqueName) {
         Route route = null;
         for (Route r : inMemoryDB.getRoutes()) {
-            if (r.getCommonKks().equals(uniqueName)) {
+            if (r.getKksName().equals(uniqueName)) {
                 if (route == null) {route = r;}
                 else throw new RuntimeException("Duplicates in route list");
             }
