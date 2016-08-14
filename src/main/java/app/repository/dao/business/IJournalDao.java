@@ -1,14 +1,9 @@
 package app.repository.dao.business;
 
-import app.repository.entities.business.Cable;
 import app.repository.entities.business.Journal;
 
-import java.util.List;
 
-
-interface IJournalDao extends IDao<Journal> {
-
-	List<Journal> readAllByCable(Cable cable);
-
+public interface IJournalDao extends IDao<Journal> {
+    //no special methods for journals yet.
 }
 

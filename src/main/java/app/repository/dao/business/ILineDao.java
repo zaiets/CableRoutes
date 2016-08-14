@@ -8,17 +8,17 @@ import java.util.List;
 
 public interface ILineDao {
 
-	List<Line> getAll();
-
 	boolean create(Line line);
 
 	boolean createOrUpdate(Line line);
 
-	boolean erase(Line line);
+	Line read (int id);
 
 	boolean change(Line line);
 
-	Line read (int id);
+	boolean erase(Line line);
+
+	List<Line> getAll();
 
 	List<Line> readAllByJoinPoint(JoinPoint joinPoint);
 

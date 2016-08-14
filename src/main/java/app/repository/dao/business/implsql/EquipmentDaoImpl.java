@@ -65,7 +65,7 @@ public class EquipmentDaoImpl extends AbstractDao<String, Equipment> implements 
     @Override
     @SuppressWarnings("unchecked")
     public List<Equipment> getAll(){
-        logger.info("Reading all cables");
+        logger.info("Reading all equipments");
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("NUMBER_IN_JOURNAL"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Equipment> equipments = (List<Equipment>) criteria.list();
