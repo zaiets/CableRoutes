@@ -17,5 +17,9 @@ public interface ICableDao extends IDao<Cable> {
 
 	List<Cable> readAllByJournal(Journal journal);
 
+	List<Cable> readAllByJoinPoint(JoinPoint joinPoint);
+
+	List<Cable> readAllByTwoJoinPoints(JoinPoint start, JoinPoint end);
+
 }
 

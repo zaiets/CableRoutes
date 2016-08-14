@@ -1,7 +1,6 @@
 package app.repository.entities.business;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Cable extends Line implements INamedByUniqueName {
@@ -34,7 +33,7 @@ public class Cable extends Line implements INamedByUniqueName {
 
     //TODO delete
     public Cable(String kksName, Journal journal, int numberInJournal, String[] cableType, String reserving, Equipment startEquip,
-                 Equipment endEquip, List<Route> routes, int length) {
+                 Equipment endEquip, int length) {
         super(startEquip.getJoinPoint(), endEquip.getJoinPoint());
         setKksName(kksName);
         setJournal(journal);

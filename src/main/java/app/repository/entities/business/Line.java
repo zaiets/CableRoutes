@@ -5,17 +5,17 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="LINE")
+@Table(name="CABLE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "ID")
+@DiscriminatorColumn(name = "JOURNAL_KKS")
 public class Line {
     @Id
     @GeneratedValue
     @Column(name = "ID")
     private int id;
-    @JoinColumn(name = "JOIN_POINT_ID", nullable=false)
+    @JoinColumn(name = "START_JOIN_POINT_KKS")
     private JoinPoint startPoint;
-    @JoinColumn(name = "JOIN_POINT_ID", nullable=false)
+    @JoinColumn(name = "END_JOIN_POINT_KKS")
     private JoinPoint endPoint;
     @OneToMany
     @JoinColumn(name = "ROUTE_ID")

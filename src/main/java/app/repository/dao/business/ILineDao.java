@@ -9,11 +9,13 @@ import java.util.List;
 
 public interface ILineDao extends IDao<Line> {
 
-	Line readById(int id);
+	boolean erase(Line line);
 
-	Line readByJoinPoint(JoinPoint joinPoint);
+	boolean change(Line line);
 
-	Line readByStartAndEnd(JoinPoint start, JoinPoint end);
+	List<Line> readAllByJoinPoint(JoinPoint joinPoint);
+
+	List<Line> readAllByStartAndEnd(JoinPoint start, JoinPoint end);
 
 	List<Line> readAllByRoute (Route route);
 

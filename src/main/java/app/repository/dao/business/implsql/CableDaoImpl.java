@@ -2,9 +2,7 @@ package app.repository.dao.business.implsql;
 
 import app.repository.dao.AbstractDao;
 import app.repository.dao.business.ICableDao;
-import app.repository.entities.business.Cable;
-import app.repository.entities.business.Equipment;
-import app.repository.entities.business.Journal;
+import app.repository.entities.business.*;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.Order;
@@ -17,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@SuppressWarnings("unchecked")
 public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDao {
 
     static final Logger logger = LoggerFactory.getLogger(CableDaoImpl.class);
@@ -30,18 +29,9 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
 
     @Override
     public boolean createOrUpdate(Cable cable) {
-        try {
-            logger.info("Creating cable {} in DB!", cable.getUniqueName());
-            if (!create(cable)) {
-                return update(cable.getUniqueName(), cable);
-            }
-        } catch (RuntimeException ex) {
-            //todo ??
-            logger.error("Exception while created/updated cable {} in DB!", cable.getUniqueName());
-            ex.printStackTrace();
-            return update(cable.getUniqueName(), cable);
-        }
-        return true;
+        logger.info("Create or update cable {} in DB!", cable.getUniqueName());
+        saveOrUpdate(cable);
+        return getByKey(cable.getUniqueName()).equals(cable);
     }
 
     @Override
@@ -59,7 +49,7 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
     public boolean update(String kks, Cable cable) {
         logger.info("Updating cable: {}", cable.getUniqueName());
         update(cable);
-        return read(kks).equals(cable);
+        return getByKey(kks).equals(cable);
     }
 
     @Override
@@ -69,7 +59,7 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
         if (cable == null) return true;
         else {
             super.delete(cable);
-            return read(kks) == null;
+            return getByKey(kks) == null;
         }
     }
 
@@ -88,12 +78,17 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
 
 
     @Override
-    public List<Cable> readAllByTwoEquipments(Equipment eq1, Equipment eq2) {
+    public List<Cable> readAllByTwoEquipments(Equipment equipOne, Equipment equipTwo) {
         List<Cable> cables = new ArrayList<>();
-        logger.info("Reading all cables by equipments {} and {}", eq1.getUniqueName(), eq2.getUniqueName());
+        logger.info("Reading all cables by equipments {} and {}", equipOne.getUniqueName(), equipTwo.getUniqueName());
+        Criteria criteria1 = createEntityCriteria().addOrder(Order.asc("KKS"));
+        criteria1.add(Restrictions.like("EQUIPMENT_START_NAME", equipOne.getUniqueName()));
+        criteria1.add(Restrictions.like("EQUIPMENT_END_NAME", equipTwo.getUniqueName()));
+        criteria1.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        cables.addAll((List<Cable>) criteria1.list());
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("KKS"));
-        criteria.add(Restrictions.like("EQUIPMENT_START_NAME", eq1.getUniqueName()));
-        criteria.add(Restrictions.like("EQUIPMENT_END_NAME", eq2.getUniqueName()));
+        criteria.add(Restrictions.like("EQUIPMENT_START_NAME", equipTwo.getUniqueName()));
+        criteria.add(Restrictions.like("EQUIPMENT_END_NAME", equipOne.getUniqueName()));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         cables.addAll((List<Cable>) criteria.list());
         for(Cable cable : cables){
@@ -123,6 +118,46 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
     }
 
     @Override
+    public List<Cable> readAllByJoinPoint(JoinPoint joinPoint) {
+        List<Cable> cables = new ArrayList<>();
+        logger.info("Reading all cables by join point {}", joinPoint.getUniqueName());
+        Criteria criteria1 = createEntityCriteria().addOrder(Order.asc("KKS"));
+        criteria1.add(Restrictions.like("START_JOIN_POINT_KKS", joinPoint.getUniqueName()));
+        criteria1.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        cables.addAll((List<Cable>) criteria1.list());
+        Criteria criteria2 = createEntityCriteria().addOrder(Order.asc("KKS"));
+        criteria2.add(Restrictions.like("END_JOIN_POINT_KKS", joinPoint.getUniqueName()));
+        criteria2.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        cables.addAll((List<Cable>) criteria2.list());
+        for(Cable cable : cables){
+            Hibernate.initialize(cable.getStart());
+            Hibernate.initialize(cable.getEnd());
+        }
+        return cables;
+    }
+
+    @Override
+    public List<Cable> readAllByTwoJoinPoints(JoinPoint pointOne, JoinPoint pointTwo) {
+        List<Cable> cables = new ArrayList<>();
+        logger.info("Reading all cables by join points {} and {}", pointOne.getUniqueName(), pointTwo.getUniqueName());
+        Criteria criteria1 = createEntityCriteria().addOrder(Order.asc("KKS"));
+        criteria1.add(Restrictions.like("START_JOIN_POINT_KKS", pointOne.getUniqueName()));
+        criteria1.add(Restrictions.like("END_JOIN_POINT_KKS", pointTwo.getUniqueName()));
+        criteria1.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        cables.addAll((List<Cable>) criteria1.list());
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("KKS"));
+        criteria.add(Restrictions.like("START_JOIN_POINT_KKS", pointTwo.getUniqueName()));
+        criteria.add(Restrictions.like("END_JOIN_POINT_KKS", pointOne.getUniqueName()));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        cables.addAll((List<Cable>) criteria.list());
+        for(Cable cable : cables){
+            Hibernate.initialize(cable.getStart());
+            Hibernate.initialize(cable.getEnd());
+        }
+        return cables;
+    }
+
+    @Override
     public List<Cable> readAllByJournal(Journal journal) {
         List<Cable> cables = new ArrayList<>();
         logger.info("Reading all cables by journal {}", journal.getUniqueName());
@@ -136,4 +171,5 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
         }
         return cables;
     }
+
 }
