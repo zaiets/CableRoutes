@@ -7,7 +7,7 @@ import app.repository.entities.common.User;
 import java.util.List;
 
 
-public interface UserService {
+public interface IUserService {
 	
 	User findById(int id);
 	

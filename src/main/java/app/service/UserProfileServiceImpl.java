@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Service("userProfileService")
 @Transactional
-public class UserProfileServiceImpl implements UserProfileService{
+public class UserProfileServiceImpl implements IUserProfileService {
 	
 	@Autowired
 	UserProfileDao dao;

@@ -5,7 +5,7 @@ import app.repository.entities.common.UserProfile;
 import java.util.Set;
 
 
-public interface UserProfileService {
+public interface IUserProfileService {
 
 	UserProfile findById(int id);
 

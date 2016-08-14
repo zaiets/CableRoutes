@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import app.repository.entities.common.User;
-import app.service.UserService;
+import app.service.IUserService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
 	
 	@Autowired
-	private UserService userService;
+	private IUserService userService;
 	
 	@Transactional(readOnly=true)
 	public UserDetails loadUserByUsername(String login)

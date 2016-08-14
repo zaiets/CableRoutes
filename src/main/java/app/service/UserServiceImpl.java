@@ -12,11 +12,12 @@ import app.repository.entities.common.UserProfile;
 import app.repository.enumerations.Role;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service("userService")
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 
 	@Autowired
 	private IUserDao dao;
@@ -29,8 +30,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public User findByLogin(String login) {
-		User user = dao.findByLogin(login);
-		return user;
+		return dao.findByLogin(login);
 	}
 
 	public User saveUser(User user) {
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
 	public boolean isUserLoginUnique(Integer id, String login) {
 		User user = findByLogin(login);
-		return ( user == null || ((id != null) && (user.getId() == id)));
+		return ( user == null || ((id != null) && (Objects.equals(user.getId(), id))));
 	}
 
 	private boolean emailExist(String email) {

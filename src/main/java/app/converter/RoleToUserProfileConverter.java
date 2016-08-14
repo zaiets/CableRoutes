@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import app.repository.entities.common.UserProfile;
-import app.service.UserProfileService;
+import app.service.IUserProfileService;
 
 /**
  * A app.converter class used in views to map id's to actual userProfile objects.
@@ -18,7 +18,7 @@ public class RoleToUserProfileConverter implements Converter<Object, UserProfile
 	static final Logger logger = LoggerFactory.getLogger(RoleToUserProfileConverter.class);
 	
 	@Autowired
-	UserProfileService userProfileService;
+	IUserProfileService userProfileService;
 
 	/**
 	 * Gets UserProfile by Id

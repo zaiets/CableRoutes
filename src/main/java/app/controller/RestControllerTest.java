@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import app.dto.users.UserDto;
 import app.exceptions.EmailExistsException;
 import app.repository.entities.common.User;
-import app.service.UserService;
+import app.service.IUserService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.List;
 public class RestControllerTest {
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
