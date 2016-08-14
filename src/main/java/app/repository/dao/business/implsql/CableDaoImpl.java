@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@SuppressWarnings("unchecked")
 public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDao {
 
     static final Logger logger = LoggerFactory.getLogger(CableDaoImpl.class);
@@ -64,6 +63,7 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Cable> getAll(){
         logger.info("Reading all cables");
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("NUMBER_IN_JOURNAL"));
@@ -78,6 +78,7 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
 
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Cable> readAllByTwoEquipments(Equipment equipOne, Equipment equipTwo) {
         List<Cable> cables = new ArrayList<>();
         logger.info("Reading all cables by equipments {} and {}", equipOne.getUniqueName(), equipTwo.getUniqueName());
@@ -99,6 +100,7 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Cable> readAllByEquipment(Equipment equipment) {
         List<Cable> cables = new ArrayList<>();
         logger.info("Reading all cables by equipment {}", equipment.getUniqueName());
@@ -118,6 +120,7 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Cable> readAllByJoinPoint(JoinPoint joinPoint) {
         List<Cable> cables = new ArrayList<>();
         logger.info("Reading all cables by join point {}", joinPoint.getUniqueName());
@@ -137,6 +140,7 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Cable> readAllByTwoJoinPoints(JoinPoint pointOne, JoinPoint pointTwo) {
         List<Cable> cables = new ArrayList<>();
         logger.info("Reading all cables by join points {} and {}", pointOne.getUniqueName(), pointTwo.getUniqueName());
@@ -158,6 +162,7 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Cable> readAllByJournal(Journal journal) {
         List<Cable> cables = new ArrayList<>();
         logger.info("Reading all cables by journal {}", journal.getUniqueName());
