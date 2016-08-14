@@ -10,9 +10,9 @@ import javax.persistence.Table;
 public class RouteType implements INamedByUniqueName {
     @Basic
     @Column(name = "NAME")
-    String name;
+    private String name;
     @Column(name = "MARKER", nullable = false, unique = true)
-    String marker;
+    private String marker;
 
     public RouteType () {}
 

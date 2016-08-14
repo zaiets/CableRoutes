@@ -18,7 +18,7 @@ public class RouteTypeDaoImpl extends AbstractDao<String, RouteType> implements 
 
     @Override
     public boolean create(RouteType routeType) {
-        logger.info("Creating new route type in DB: {}",  routeType.toString());
+        logger.info("Creating new routeType in DB: {}",  routeType.toString());
         persist(routeType);
         return getByKey(routeType.getMarker()) != null;
     }
