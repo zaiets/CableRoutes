@@ -1,8 +1,10 @@
 package app.repository.dao.business;
 
+import app.repository.entities.business.INamedByUniqueName;
+
 import java.util.List;
 
-public interface IDao<T> {
+public interface IDao<T extends INamedByUniqueName> {
     boolean create(T t);
     boolean createOrUpdate(T t);
     T read(String uniqueName);
