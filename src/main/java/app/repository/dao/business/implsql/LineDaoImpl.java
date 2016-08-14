@@ -42,9 +42,14 @@ public class LineDaoImpl extends AbstractDao<Integer, Line> implements ILineDao 
     }
 
     @Override
-    public Line read (int id) {
+    public Line read(int id) {
         logger.info("Reading line by ID: {}", id);
-        return getByKey(id);
+        Line line = getByKey(id);
+        if (line != null) {
+            Hibernate.initialize(line.getStartPoint());
+            Hibernate.initialize(line.getEndPoint());
+        }
+        return line;
     }
 
     @Override
@@ -56,12 +61,12 @@ public class LineDaoImpl extends AbstractDao<Integer, Line> implements ILineDao 
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Line> getAll(){
+    public List<Line> getAll() {
         logger.info("Reading all lines");
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("ID"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Line> lines = (List<Line>) criteria.list();
-        for(Line line : lines){
+        for (Line line : lines) {
             Hibernate.initialize(line.getStartPoint());
             Hibernate.initialize(line.getEndPoint());
         }
@@ -81,7 +86,7 @@ public class LineDaoImpl extends AbstractDao<Integer, Line> implements ILineDao 
         criteria2.add(Restrictions.like("END_JOIN_POINT_KKS", joinPoint.getUniqueName()));
         criteria2.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         lines.addAll((List<Cable>) criteria2.list());
-        for(Line line : lines){
+        for (Line line : lines) {
             Hibernate.initialize(line.getStartPoint());
             Hibernate.initialize(line.getEndPoint());
         }
@@ -103,7 +108,7 @@ public class LineDaoImpl extends AbstractDao<Integer, Line> implements ILineDao 
         criteria.add(Restrictions.like("END_JOIN_POINT_KKS", pointOne.getUniqueName()));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         lines.addAll((List<Cable>) criteria.list());
-        for(Line line : lines){
+        for (Line line : lines) {
             Hibernate.initialize(line.getStartPoint());
             Hibernate.initialize(line.getEndPoint());
         }

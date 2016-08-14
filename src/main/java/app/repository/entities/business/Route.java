@@ -20,9 +20,9 @@ public class Route implements INamedByUniqueName {
 	@Basic
 	@Column(name = "SHELVES_COUNT")
 	private int shelvesCount;
-	@JoinColumn(name = "JOIN_POINT_KKS", nullable=false)
+	@JoinColumn(name = "FIRST_JOIN_POINT_KKS", nullable=false)
 	private JoinPoint firstEnd;
-	@JoinColumn(name = "JOIN_POINT_KKS", nullable=false)
+	@JoinColumn(name = "SECOND_JOIN_POINT_KKS", nullable=false)
 	private JoinPoint secondEnd;
 	@ManyToMany
 	@JoinTable(name = "CABLES_ROUTES",

@@ -7,18 +7,18 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ROUTE_TYPE")
-public class RouteType {
+public class RouteType implements INamedByUniqueName {
     @Basic
     @Column(name = "NAME")
     String name;
     @Column(name = "MARKER", nullable = false, unique = true)
-    CharSequence marker;
+    String marker;
 
     public RouteType () {}
 
 
     //TODO delete
-    public RouteType(String name, CharSequence type) {
+    public RouteType(String name, String type) {
         this.name = name;
         this.marker = type;
     }
@@ -31,13 +31,14 @@ public class RouteType {
         this.name = name;
     }
 
-    public CharSequence getMarker() {
+    public String getMarker() {
         return marker;
     }
 
-    public void setMarker(CharSequence marker) {
+    public void setMarker(String marker) {
         this.marker = marker;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -56,5 +57,19 @@ public class RouteType {
         int result = getName() != null ? getName().hashCode() : 0;
         result = 31 * result + (getMarker() != null ? getMarker().hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("RouteType{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", marker='").append(marker).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
+    public String getUniqueName() {
+        return getMarker();
     }
 }
