@@ -2,9 +2,6 @@ package app.dto.models;
 
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 public class RouteDto {
 	private String kksName;
@@ -14,7 +11,6 @@ public class RouteDto {
 	private Integer shelvesCount;
 	private JoinPointDto firstEnd;
 	private JoinPointDto secondEnd;
-	private List<CableDto> cablesList = new ArrayList<>();
 
 	public RouteDto() {	}
 
@@ -85,33 +81,26 @@ public class RouteDto {
 		this.secondEnd = secondEnd;
 	}
 
-	public List<CableDto> getCablesList() {
-		return cablesList;
-	}
-
-	public void setCablesList(List<CableDto> cablesList) {
-		this.cablesList = cablesList;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof RouteDto)) return false;
 
-		RouteDto route = (RouteDto) o;
+		RouteDto routeDto = (RouteDto) o;
 
-		if (getKksName() != null ? !getKksName().equals(route.getKksName()) : route.getKksName() != null) return false;
-		if (getRouteType() != null ? !getRouteType().equals(route.getRouteType()) : route.getRouteType() != null)
+		if (getKksName() != null ? !getKksName().equals(routeDto.getKksName()) : routeDto.getKksName() != null)
 			return false;
-		if (getLength() != null ? !getLength().equals(route.getLength()) : route.getLength() != null) return false;
-		if (getHeight() != null ? !getHeight().equals(route.getHeight()) : route.getHeight() != null) return false;
-		if (getShelvesCount() != null ? !getShelvesCount().equals(route.getShelvesCount()) : route.getShelvesCount() != null)
+		if (getRouteType() != null ? !getRouteType().equals(routeDto.getRouteType()) : routeDto.getRouteType() != null)
 			return false;
-		if (getFirstEnd() != null ? !getFirstEnd().equals(route.getFirstEnd()) : route.getFirstEnd() != null)
+		if (getLength() != null ? !getLength().equals(routeDto.getLength()) : routeDto.getLength() != null)
 			return false;
-		if (getSecondEnd() != null ? !getSecondEnd().equals(route.getSecondEnd()) : route.getSecondEnd() != null)
+		if (getHeight() != null ? !getHeight().equals(routeDto.getHeight()) : routeDto.getHeight() != null)
 			return false;
-		return getCablesList() != null ? getCablesList().equals(route.getCablesList()) : route.getCablesList() == null;
+		if (getShelvesCount() != null ? !getShelvesCount().equals(routeDto.getShelvesCount()) : routeDto.getShelvesCount() != null)
+			return false;
+		if (getFirstEnd() != null ? !getFirstEnd().equals(routeDto.getFirstEnd()) : routeDto.getFirstEnd() != null)
+			return false;
+		return getSecondEnd() != null ? getSecondEnd().equals(routeDto.getSecondEnd()) : routeDto.getSecondEnd() == null;
 
 	}
 
@@ -124,7 +113,6 @@ public class RouteDto {
 		result = 31 * result + (getShelvesCount() != null ? getShelvesCount().hashCode() : 0);
 		result = 31 * result + (getFirstEnd() != null ? getFirstEnd().hashCode() : 0);
 		result = 31 * result + (getSecondEnd() != null ? getSecondEnd().hashCode() : 0);
-		result = 31 * result + (getCablesList() != null ? getCablesList().hashCode() : 0);
 		return result;
 	}
 }

@@ -11,8 +11,8 @@ public class CableDto extends LineDto {
     private Integer numberInJournal;
     private String cableType;
     private String cableDimensions;
-    private String startEquipment;
-    private String endEquipment;
+    private EquipmentDto startEquipment;
+    private EquipmentDto endEquipment;
     private String reserving;
     private Integer length;
 
@@ -21,7 +21,8 @@ public class CableDto extends LineDto {
 
     //TODO delete?
 
-    public CableDto(JoinPointDto startPoint, JoinPointDto endPoint, List<RouteDto> routesList, boolean traced, String kksName, String journal, Integer numberInJournal, String cableType, String cableDimensions, String startEquipment, String endEquipment, String reserving, Integer length) {
+
+    public CableDto(JoinPointDto startPoint, JoinPointDto endPoint, List<RouteDto> routesList, boolean traced, String kksName, String journal, Integer numberInJournal, String cableType, String cableDimensions, EquipmentDto startEquipment, EquipmentDto endEquipment, String reserving, Integer length) {
         super(startPoint, endPoint, routesList, traced);
         this.kksName = kksName;
         this.journal = journal;
@@ -74,19 +75,19 @@ public class CableDto extends LineDto {
         this.cableDimensions = cableDimensions;
     }
 
-    public String getStartEquipment() {
+    public EquipmentDto getStartEquipment() {
         return startEquipment;
     }
 
-    public void setStartEquipment(String startEquipment) {
+    public void setStartEquipment(EquipmentDto startEquipment) {
         this.startEquipment = startEquipment;
     }
 
-    public String getEndEquipment() {
+    public EquipmentDto getEndEquipment() {
         return endEquipment;
     }
 
-    public void setEndEquipment(String endEquipment) {
+    public void setEndEquipment(EquipmentDto endEquipment) {
         this.endEquipment = endEquipment;
     }
 

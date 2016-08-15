@@ -17,7 +17,6 @@ public class Line {
     private JoinPoint startPoint;
     @JoinColumn(name = "END_JOIN_POINT_KKS")
     private JoinPoint endPoint;
-    @OneToMany
     @JoinColumn(name = "ROUTE_ID")
     private List<Route> routesList;
     @Basic

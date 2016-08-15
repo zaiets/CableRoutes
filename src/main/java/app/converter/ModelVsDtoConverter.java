@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Util class designed to directive transform entities to DTO and DTO to entities
+ * This util class designed for direct transformation of entities into DTO and DTO into entities
  */
 public final class ModelVsDtoConverter {
 
@@ -20,25 +20,40 @@ public final class ModelVsDtoConverter {
         cableDto.setJournal(cable.getJournalName());
         cableDto.setCableDimensions(cable.getCableDimensions());
         cableDto.setCableType(cable.getCableType());
-        cableDto.setEndEquipment(cable.getEnd().getFullName());
-        cableDto.setStartEquipment(cable.getStart().getFullName());
+        cableDto.setEndEquipment(transformEquipment(cable.getEnd()));
+        cableDto.setStartEquipment(transformEquipment(cable.getStart()));
         cableDto.setReserving(cable.getReserving());
         cableDto.setLength(cable.getLength());
         cableDto.setNumberInJournal(cable.getNumberInJournal());
+        cableDto.setEndPoint(transformJoinPoint(cable.getEndPoint()));
+        cableDto.setStartPoint(transformJoinPoint(cable.getStartPoint()));
+        cableDto.setTraced(cable.isTraced());
+        List<Route> routes = cable.getRoutesList();
+        if (routes != null && !routes.isEmpty()) {
+            List<RouteDto> routeDtoList = new ArrayList<>();
+            routes.forEach(o -> routeDtoList.add(transformRoute(o)));
+            cableDto.setRoutesList(routeDtoList);
+        }
         return cableDto;
     }
 
-    public static Cable transformCableDto(CableDto cableDto, Equipment start, Equipment end) {
+    public static Cable transformCableDto(CableDto cableDto) {
         Cable cable = new Cable();
         cable.setKksName(cableDto.getKksName());
         cable.setJournalName(cableDto.getJournal());
         cable.setCableDimensions(cableDto.getCableDimensions());
         cable.setCableType(cableDto.getCableType());
-        cable.setEnd(start);
-        cable.setStart(end);
+        cable.setEnd(transformEquipmentDto(cableDto.getEndEquipment()));
+        cable.setStart(transformEquipmentDto(cableDto.getStartEquipment()));
         cable.setReserving(cableDto.getReserving());
         cable.setLength(cableDto.getLength());
         cable.setNumberInJournal(cableDto.getNumberInJournal());
+        List<RouteDto> routeDtoList = cableDto.getRoutesList();
+        if (routeDtoList != null && !routeDtoList.isEmpty()) {
+            List<Route> routeList = new ArrayList<>();
+            routeDtoList.forEach(o -> routeList.add(transformRouteDto(o)));
+            cable.setRoutesList(routeList);
+        }
         return null;
     }
     public static EquipmentDto transformEquipment(Equipment equipment) {
@@ -111,12 +126,17 @@ public final class ModelVsDtoConverter {
         }
         return lineDto;
     }
-    public static Line transformLineDto(LineDto lineDto, List<Route> routes) {
+    public static Line transformLineDto(LineDto lineDto) {
         Line line = new Line();
         line.setEndPoint(transformJoinPointDto(lineDto.getEndPoint()));
         line.setStartPoint(transformJoinPointDto(lineDto.getStartPoint()));
         line.setTraced(lineDto.isTraced());
-        line.setRoutesList(routes);
+        List<RouteDto> routeDtoList = lineDto.getRoutesList();
+        if (routeDtoList != null && !routeDtoList.isEmpty()) {
+            List<Route> routeList = new ArrayList<>();
+            routeDtoList.forEach(o -> routeList.add(transformRouteDto(o)));
+            line.setRoutesList(routeList);
+        }
         return line;
     }
     public static RouteDto transformRoute(Route route) {
@@ -128,15 +148,9 @@ public final class ModelVsDtoConverter {
         routeDto.setLength(route.getLength());
         routeDto.setShelvesCount(route.getShelvesCount());
         routeDto.setRouteType(transformRouteType(route.getRouteType()));
-        List<Cable> cablesList = route.getCablesList();
-        if (cablesList != null && !cablesList.isEmpty()) {
-            List<CableDto> cableDtoList = new ArrayList<>();
-            cablesList.forEach(o -> cableDtoList.add(transformCable(o)));
-            routeDto.setCablesList(cableDtoList);
-        }
         return routeDto;
     }
-    public static Route transformRouteDto(RouteDto routeDto, List<Cable> cables) {
+    public static Route transformRouteDto(RouteDto routeDto) {
         Route route = new Route();
         route.setKksName(routeDto.getKksName());
         route.setFirstEnd(transformJoinPointDto(routeDto.getFirstEnd()));
@@ -145,7 +159,6 @@ public final class ModelVsDtoConverter {
         route.setLength(routeDto.getLength());
         route.setShelvesCount(routeDto.getShelvesCount());
         route.setRouteType(transformRouteTypeDto(routeDto.getRouteType()));
-        route.setCablesList(cables);
         return route;
     }
     public static RouteTypeDto transformRouteType(RouteType routeType) {

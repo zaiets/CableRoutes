@@ -163,11 +163,11 @@ public class CableDaoImpl extends AbstractDao<String, Cable> implements ICableDa
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Cable> readAllByJournal(Journal journal) {
+    public List<Cable> readAllByJournal(String journalKks) {
         List<Cable> cables = new ArrayList<>();
-        logger.info("Reading all cables by journal {}", journal.getUniqueName());
+        logger.info("Reading all cables by journal {}", journalKks);
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("NUMBER_IN_JOURNAL"));
-        criteria.add(Restrictions.like("JOURNAL_KKS", journal.getUniqueName()));
+        criteria.add(Restrictions.like("JOURNAL_KKS", journalKks));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         cables.addAll((List<Cable>) criteria.list());
         for(Cable cable : cables){
