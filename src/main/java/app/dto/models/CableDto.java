@@ -7,12 +7,12 @@ import java.util.List;
 @Component
 public class CableDto extends LineDto {
     private String kksName;
-    private JournalDto journal;
+    private String journal;
     private Integer numberInJournal;
     private String cableType;
     private String cableDimensions;
-    private EquipmentDto start;
-    private EquipmentDto end;
+    private String startEquipment;
+    private String endEquipment;
     private String reserving;
     private Integer length;
 
@@ -20,18 +20,16 @@ public class CableDto extends LineDto {
     }
 
     //TODO delete?
-    public CableDto(JoinPointDto startPoint, JoinPointDto endPoint, List<RouteDto> routesList,
-                    boolean traced, String kksName, JournalDto journal, Integer numberInJournal,
-                    String cableType, String cableDimensions, EquipmentDto start, EquipmentDto end,
-                    String reserving, Integer length) {
+
+    public CableDto(JoinPointDto startPoint, JoinPointDto endPoint, List<RouteDto> routesList, boolean traced, String kksName, String journal, Integer numberInJournal, String cableType, String cableDimensions, String startEquipment, String endEquipment, String reserving, Integer length) {
         super(startPoint, endPoint, routesList, traced);
         this.kksName = kksName;
         this.journal = journal;
         this.numberInJournal = numberInJournal;
         this.cableType = cableType;
         this.cableDimensions = cableDimensions;
-        this.start = start;
-        this.end = end;
+        this.startEquipment = startEquipment;
+        this.endEquipment = endEquipment;
         this.reserving = reserving;
         this.length = length;
     }
@@ -44,11 +42,11 @@ public class CableDto extends LineDto {
         this.kksName = kksName;
     }
 
-    public JournalDto getJournal() {
+    public String getJournal() {
         return journal;
     }
 
-    public void setJournal(JournalDto journal) {
+    public void setJournal(String journal) {
         this.journal = journal;
     }
 
@@ -76,20 +74,20 @@ public class CableDto extends LineDto {
         this.cableDimensions = cableDimensions;
     }
 
-    public EquipmentDto getStart() {
-        return start;
+    public String getStartEquipment() {
+        return startEquipment;
     }
 
-    public void setStart(EquipmentDto start) {
-        this.start = start;
+    public void setStartEquipment(String startEquipment) {
+        this.startEquipment = startEquipment;
     }
 
-    public EquipmentDto getEnd() {
-        return end;
+    public String getEndEquipment() {
+        return endEquipment;
     }
 
-    public void setEnd(EquipmentDto end) {
-        this.end = end;
+    public void setEndEquipment(String endEquipment) {
+        this.endEquipment = endEquipment;
     }
 
     public String getReserving() {
@@ -126,8 +124,10 @@ public class CableDto extends LineDto {
             return false;
         if (getCableDimensions() != null ? !getCableDimensions().equals(cableDto.getCableDimensions()) : cableDto.getCableDimensions() != null)
             return false;
-        if (getStart() != null ? !getStart().equals(cableDto.getStart()) : cableDto.getStart() != null) return false;
-        if (getEnd() != null ? !getEnd().equals(cableDto.getEnd()) : cableDto.getEnd() != null) return false;
+        if (getStartEquipment() != null ? !getStartEquipment().equals(cableDto.getStartEquipment()) : cableDto.getStartEquipment() != null)
+            return false;
+        if (getEndEquipment() != null ? !getEndEquipment().equals(cableDto.getEndEquipment()) : cableDto.getEndEquipment() != null)
+            return false;
         if (getReserving() != null ? !getReserving().equals(cableDto.getReserving()) : cableDto.getReserving() != null)
             return false;
         return getLength() != null ? getLength().equals(cableDto.getLength()) : cableDto.getLength() == null;
@@ -142,8 +142,8 @@ public class CableDto extends LineDto {
         result = 31 * result + (getNumberInJournal() != null ? getNumberInJournal().hashCode() : 0);
         result = 31 * result + (getCableType() != null ? getCableType().hashCode() : 0);
         result = 31 * result + (getCableDimensions() != null ? getCableDimensions().hashCode() : 0);
-        result = 31 * result + (getStart() != null ? getStart().hashCode() : 0);
-        result = 31 * result + (getEnd() != null ? getEnd().hashCode() : 0);
+        result = 31 * result + (getStartEquipment() != null ? getStartEquipment().hashCode() : 0);
+        result = 31 * result + (getEndEquipment() != null ? getEndEquipment().hashCode() : 0);
         result = 31 * result + (getReserving() != null ? getReserving().hashCode() : 0);
         result = 31 * result + (getLength() != null ? getLength().hashCode() : 0);
         return result;

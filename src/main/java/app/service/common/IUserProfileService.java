@@ -1,4 +1,4 @@
-package app.service;
+package app.service.common;
 
 import app.repository.entities.common.UserProfile;
 

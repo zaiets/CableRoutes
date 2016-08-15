@@ -6,9 +6,9 @@ import javax.persistence.*;
 public class Cable extends Line implements INamedByUniqueName {
     @Column(name = "KKS", unique = true)
     private String kksName;
-    @ManyToOne
-    @JoinColumn(name = "JOURNAL_KKS", nullable = false)
-    private Journal journal;
+    @Basic
+    @Column(name = "JOURNAL_KKS", nullable = false)
+    private String journalName;
     @Basic
     @Column(name = "NUMBER_IN_JOURNAL")
     private int numberInJournal;
@@ -31,21 +31,6 @@ public class Cable extends Line implements INamedByUniqueName {
 
     public Cable () {    }
 
-    //TODO delete
-    public Cable(String kksName, Journal journal, int numberInJournal, String[] cableType, String reserving, Equipment startEquip,
-                 Equipment endEquip, int length) {
-        super(startEquip.getJoinPoint(), endEquip.getJoinPoint());
-        setKksName(kksName);
-        setJournal(journal);
-        setNumberInJournal(numberInJournal);
-        setCableType(cableType[0]);
-        setCableDimensions(cableType[1]);
-        setStart(startEquip);
-        setEnd(endEquip);
-        setReserving(reserving);
-        setLength(length);
-    }
-
     public String getKksName() {
         return kksName;
     }
@@ -54,12 +39,12 @@ public class Cable extends Line implements INamedByUniqueName {
         this.kksName = kksName;
     }
 
-    public Journal getJournal() {
-        return journal;
+    public String getJournalName() {
+        return journalName;
     }
 
-    public void setJournal(Journal journal) {
-        this.journal = journal;
+    public void setJournalName(String journalName) {
+        this.journalName = journalName;
     }
 
     public int getNumberInJournal() {
@@ -128,8 +113,9 @@ public class Cable extends Line implements INamedByUniqueName {
 
         if (getNumberInJournal() != cable.getNumberInJournal()) return false;
         if (getLength() != cable.getLength()) return false;
-        if (kksName != null ? !kksName.equals(cable.kksName) : cable.kksName != null) return false;
-        if (getJournal() != null ? !getJournal().equals(cable.getJournal()) : cable.getJournal() != null) return false;
+        if (getKksName() != null ? !getKksName().equals(cable.getKksName()) : cable.getKksName() != null) return false;
+        if (getJournalName() != null ? !getJournalName().equals(cable.getJournalName()) : cable.getJournalName() != null)
+            return false;
         if (getCableType() != null ? !getCableType().equals(cable.getCableType()) : cable.getCableType() != null)
             return false;
         if (getCableDimensions() != null ? !getCableDimensions().equals(cable.getCableDimensions()) : cable.getCableDimensions() != null)
@@ -143,8 +129,8 @@ public class Cable extends Line implements INamedByUniqueName {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (kksName != null ? kksName.hashCode() : 0);
-        result = 31 * result + (getJournal() != null ? getJournal().hashCode() : 0);
+        result = 31 * result + (getKksName() != null ? getKksName().hashCode() : 0);
+        result = 31 * result + (getJournalName() != null ? getJournalName().hashCode() : 0);
         result = 31 * result + getNumberInJournal();
         result = 31 * result + (getCableType() != null ? getCableType().hashCode() : 0);
         result = 31 * result + (getCableDimensions() != null ? getCableDimensions().hashCode() : 0);
@@ -153,23 +139,6 @@ public class Cable extends Line implements INamedByUniqueName {
         result = 31 * result + (getReserving() != null ? getReserving().hashCode() : 0);
         result = 31 * result + getLength();
         return result;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Cable{");
-        sb.append("kksName='").append(kksName).append('\'');
-        sb.append(", journal=").append(journal);
-        sb.append(", numberInJournal=").append(numberInJournal);
-        sb.append(", cableType='").append(cableType).append('\'');
-        sb.append(", cableDimensions='").append(cableDimensions).append('\'');
-        sb.append(", start=").append(start);
-        sb.append(", end=").append(end);
-        sb.append(", reserving='").append(reserving).append('\'');
-        sb.append(", length=").append(length);
-        sb.append(", commonKks='").append(getKksName()).append('\'');
-        sb.append('}');
-        return sb.toString();
     }
 
     @Override

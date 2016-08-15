@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import app.dto.users.UserDto;
 import app.exceptions.EmailExistsException;
 import app.repository.entities.common.User;
-import app.service.IUserService;
+import app.service.common.IUserService;
 
 import javax.validation.Valid;
 import java.util.List;

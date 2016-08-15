@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import app.repository.entities.common.UserProfile;
-import app.service.IUserProfileService;
+import app.service.common.IUserProfileService;
 
 /**
  * A app.converter class used in views to map id's to actual userProfile objects.

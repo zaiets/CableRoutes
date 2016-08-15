@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import app.repository.entities.common.User;
-import app.service.IUserService;
+import app.service.common.IUserService;
 
 import java.util.ArrayList;
 import java.util.Collection;

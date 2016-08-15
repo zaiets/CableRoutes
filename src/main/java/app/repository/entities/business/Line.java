@@ -57,11 +57,11 @@ public class Line {
         this.routesList = routesList;
     }
 
-    void setStartPoint(JoinPoint startPoint) {
+    public void setStartPoint(JoinPoint startPoint) {
         this.startPoint = startPoint;
     }
 
-    void setEndPoint(JoinPoint endPoint) {
+    public void setEndPoint(JoinPoint endPoint) {
         this.endPoint = endPoint;
     }
 

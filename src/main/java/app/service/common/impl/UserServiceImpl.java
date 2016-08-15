@@ -1,6 +1,7 @@
-package app.service;
+package app.service.common.impl;
 
 import app.dto.users.UserDto;
+import app.service.common.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
