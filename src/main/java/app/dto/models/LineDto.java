@@ -7,6 +7,7 @@ import java.util.List;
 
 @Component
 public class LineDto {
+    private Integer id;
     private JoinPointDto startPoint;
     private JoinPointDto endPoint;
     private List<RouteDto> routesList;
@@ -14,12 +15,12 @@ public class LineDto {
 
     public LineDto() {}
 
-    //TODO delete?
-    public LineDto(JoinPointDto startPoint, JoinPointDto endPoint, List<RouteDto> routesList, boolean traced) {
-        this.startPoint = startPoint;
-        this.endPoint = endPoint;
-        this.routesList = routesList;
-        this.traced = traced;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public JoinPointDto getStartPoint() {
@@ -77,5 +78,14 @@ public class LineDto {
         result = 31 * result + (getRoutesList() != null ? getRoutesList().hashCode() : 0);
         result = 31 * result + (isTraced() ? 1 : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("LineDto{");
+        sb.append("startPoint=").append(startPoint);
+        sb.append(", endPoint=").append(endPoint);
+        sb.append('}');
+        return sb.toString();
     }
 }

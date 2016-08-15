@@ -115,6 +115,7 @@ public final class ModelVsDtoConverter {
     }
     public static LineDto transformLine(Line line) {
         LineDto lineDto = new LineDto();
+        lineDto.setId(line.getId());
         lineDto.setEndPoint(transformJoinPoint(line.getEndPoint()));
         lineDto.setStartPoint(transformJoinPoint(line.getStartPoint()));
         lineDto.setTraced(line.isTraced());
@@ -128,6 +129,7 @@ public final class ModelVsDtoConverter {
     }
     public static Line transformLineDto(LineDto lineDto) {
         Line line = new Line();
+        line.setId(lineDto.getId());
         line.setEndPoint(transformJoinPointDto(lineDto.getEndPoint()));
         line.setStartPoint(transformJoinPointDto(lineDto.getStartPoint()));
         line.setTraced(lineDto.isTraced());

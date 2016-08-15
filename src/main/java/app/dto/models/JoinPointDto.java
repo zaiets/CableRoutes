@@ -78,4 +78,15 @@ public class JoinPointDto {
 		result = 31 * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder("JoinPointDto{");
+		sb.append("kksName='").append(kksName).append('\'');
+		sb.append(", x=").append(x);
+		sb.append(", y=").append(y);
+		sb.append(", z=").append(z);
+		sb.append('}');
+		return sb.toString();
+	}
 }

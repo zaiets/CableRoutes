@@ -76,7 +76,7 @@ public class CableServiceImpl implements ICableService {
     @Override
     @SuppressWarnings("unchecked")
     public List<CableDto> readAllByEquipment(EquipmentDto equipmentDto) {
-        logger.info("Reading all cables by equipmentDto {}", equipmentDto.getFullName());
+        logger.info("CableService is reading all cables by equipmentDto {}", equipmentDto.getFullName());
         List<Cable> cables = cableDao.readAllByEquipment(transformEquipmentDto(equipmentDto));
         List<CableDto> cableDtoList = new ArrayList<>();
         cables.forEach(o -> cableDtoList.add(transformCable(o)));
@@ -86,7 +86,7 @@ public class CableServiceImpl implements ICableService {
     @Override
     @SuppressWarnings("unchecked")
     public List<CableDto> readAllByJoinPoint(JoinPointDto joinPointDto) {
-        logger.info("Reading all cables by joinPointDto {}", joinPointDto.getKksName());
+        logger.info("CableService is reading all cables by joinPointDto {}", joinPointDto.getKksName());
         List<Cable> cables = cableDao.readAllByJoinPoint(transformJoinPointDto(joinPointDto));
         List<CableDto> cableDtoList = new ArrayList<>();
         cables.forEach(o -> cableDtoList.add(transformCable(o)));
@@ -96,7 +96,7 @@ public class CableServiceImpl implements ICableService {
     @Override
     @SuppressWarnings("unchecked")
     public List<CableDto> readAllByTwoJoinPoints(JoinPointDto pointOne, JoinPointDto pointTwo) {
-        logger.info("Reading all cables by joinPointDtos {} and {}", pointOne.getKksName(), pointTwo.getKksName());
+        logger.info("CableService is reading all cables by joinPointDtos {} and {}", pointOne.getKksName(), pointTwo.getKksName());
         List<Cable> cables = cableDao.readAllByTwoJoinPoints(transformJoinPointDto(pointOne), transformJoinPointDto(pointTwo));
         List<CableDto> cableDtoList = new ArrayList<>();
         cables.forEach(o -> cableDtoList.add(transformCable(o)));
@@ -106,7 +106,7 @@ public class CableServiceImpl implements ICableService {
     @Override
     @SuppressWarnings("unchecked")
     public List<CableDto> readAllByJournal(String journalKks) {
-        logger.info("Reading all cables by journalKks {}", journalKks);
+        logger.info("CableService is reading all cables by journalKks {}", journalKks);
         List<Cable> cables = cableDao.readAllByJournal(journalKks);
         List<CableDto> cableDtoList = new ArrayList<>();
         cables.forEach(o -> cableDtoList.add(transformCable(o)));
