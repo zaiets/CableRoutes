@@ -43,13 +43,13 @@ public class LineServiceImpl implements ILineService {
 
     @Override
     public boolean update(Integer id, LineDto lineDto) {
-        logger.info("LineService is updating cable: {}", lineDto.toString());
+        logger.info("LineService is updating line: {}", lineDto.toString());
         return lineDao.change(transformLineDto(lineDto));
     }
 
     @Override
     public boolean delete(Integer id) {
-        logger.info("LineService is deleting cable: {}", id);
+        logger.info("LineService is deleting line: {}", id);
         return !(id == null || id < 0) && lineDao.erase(lineDao.read(id));
     }
 
