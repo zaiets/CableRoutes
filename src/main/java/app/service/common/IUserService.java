@@ -1,6 +1,6 @@
 package app.service.common;
 
-import app.dto.users.UserDto;
+import app.dto.common.UserDto;
 import app.exceptions.EmailExistsException;
 import app.repository.entities.common.User;
 

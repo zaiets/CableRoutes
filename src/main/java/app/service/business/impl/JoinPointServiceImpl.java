@@ -30,7 +30,7 @@ public class JoinPointServiceImpl implements IJoinPointService {
 
     @Override
     public boolean createOrUpdate(JoinPointDto joinPointDto) {
-        logger.info("Cables service is creating new joinPoint: {}", joinPointDto.getKksName());
+        logger.info("joinPointService is creating new joinPoint: {}", joinPointDto.getKksName());
         return joinPointDao.createOrUpdate(transformJoinPointDto(joinPointDto));
     }
 

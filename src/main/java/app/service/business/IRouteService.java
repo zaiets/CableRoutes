@@ -11,9 +11,9 @@ public interface IRouteService extends IService<RouteDto, String> {
 
 	List<RouteDto> readByRouteType(RouteTypeDto routeType);
 
-	List<RouteDto> readByJoinPoint(JoinPointDto point);
+	List<RouteDto> readAllByJoinPoint(JoinPointDto point);
 
-	List<RouteDto> readByTwoJoinPoints(JoinPointDto point1, JoinPointDto point2);
+	List<RouteDto> readAllByTwoJoinPoints(JoinPointDto point1, JoinPointDto point2);
 
 }
 

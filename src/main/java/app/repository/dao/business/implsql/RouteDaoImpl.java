@@ -83,7 +83,7 @@ public class RouteDaoImpl extends AbstractDao<String, Route> implements IRouteDa
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Route> readByRouteType(RouteType routeType) {
+    public List<Route> readAllByRouteType(RouteType routeType) {
         logger.info("Reading all routes by route type", routeType.toString());
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("KKS"));
         criteria.add(Restrictions.eq("ROUTE_TYPE_MARKER", routeType.getMarker()));
@@ -99,7 +99,7 @@ public class RouteDaoImpl extends AbstractDao<String, Route> implements IRouteDa
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Route> readByJoinPoint(JoinPoint joinPoint) {
+    public List<Route> readAllByJoinPoint(JoinPoint joinPoint) {
         logger.info("Reading all routes by joinPoint", joinPoint.getUniqueName());
         List<Route> routes = new ArrayList<>();
         Criteria criteria1 = createEntityCriteria().addOrder(Order.asc("KKS"));
@@ -120,7 +120,7 @@ public class RouteDaoImpl extends AbstractDao<String, Route> implements IRouteDa
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Route> readByTwoJoinPoints(JoinPoint point1, JoinPoint point2) {
+    public List<Route> readAllByTwoJoinPoints(JoinPoint point1, JoinPoint point2) {
         logger.info("Reading all routes between joinPoint {} and {}", point1.getUniqueName(), point2.getUniqueName());
         List<Route> routes = new ArrayList<>();
         Criteria criteria1 = createEntityCriteria().addOrder(Order.asc("KKS"));

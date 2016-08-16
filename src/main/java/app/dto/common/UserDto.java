@@ -1,4 +1,4 @@
-package app.dto.users;
+package app.dto.common;
 
 
 import org.hibernate.validator.constraints.NotEmpty;
