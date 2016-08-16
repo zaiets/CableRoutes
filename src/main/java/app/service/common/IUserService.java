@@ -1,7 +1,7 @@
 package app.service.common;
 
 import app.dto.common.UserDto;
-import app.exceptions.EmailExistsException;
+import app.exceptionsTODO.EmailExistsException;
 import app.repository.entities.common.User;
 
 import java.util.List;

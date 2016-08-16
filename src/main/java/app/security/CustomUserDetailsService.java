@@ -44,6 +44,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	private Collection<? extends GrantedAuthority> getAuthorities(Integer role){
 		return getGrantedAuthorities(getRoles(role));
 	}
+
 	private List<String> getRoles(Integer role) {
 		List<String> roles = new ArrayList<>();
 		if (role == 0) {

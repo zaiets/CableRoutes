@@ -9,7 +9,7 @@ public interface IUserProfileService {
 
 	UserProfile findById(int id);
 
-	UserProfile findByType(String type);
+	UserProfile findByRole(String type);
 	
 	Set<UserProfile> findAll();
 	

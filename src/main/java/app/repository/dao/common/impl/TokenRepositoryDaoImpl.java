@@ -1,15 +1,15 @@
 package app.repository.dao.common.impl;
 
 import app.repository.dao.AbstractDao;
+import app.repository.dao.common.ITokenRepositoryDao;
+import app.repository.entities.common.PersistentLogin;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.web.authentication.rememberme.PersistentRememberMeToken;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import app.repository.entities.common.PersistentLogin;
 
 import java.util.Date;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 @Repository("tokenRepositoryDao")
 @Transactional
 public class TokenRepositoryDaoImpl extends AbstractDao<String, PersistentLogin>
-		implements PersistentTokenRepository {
+		implements ITokenRepositoryDao {
 
 	static final Logger logger = LoggerFactory.getLogger(TokenRepositoryDaoImpl.class);
 
@@ -72,5 +72,21 @@ public class TokenRepositoryDaoImpl extends AbstractDao<String, PersistentLogin>
 		persistentLogin.setLast_used(lastUsed);
 		update(persistentLogin);
 	}
+
+	@Override
+	public PersistentRememberMeToken getByToken(String token) {
+		logger.info("Fetch Token if exists: {}", token);
+		try {
+			Criteria crit = createEntityCriteria();
+			crit.add(Restrictions.eq("token", token));
+			PersistentLogin persistentLogin = (PersistentLogin) crit.uniqueResult();
+			return new PersistentRememberMeToken(persistentLogin.getLogin(), persistentLogin.getSeries(),
+					persistentLogin.getToken(), persistentLogin.getLast_used());
+		} catch (Exception e) {
+			logger.info("Token not found...");
+			return null;
+		}
+	}
+
 
 }

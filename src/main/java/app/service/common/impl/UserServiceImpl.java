@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import app.repository.dao.common.IUserDao;
-import app.exceptions.EmailExistsException;
+import app.exceptionsTODO.EmailExistsException;
 import app.repository.entities.common.User;
 import app.repository.entities.common.UserProfile;
 import app.repository.enumerations.Role;
