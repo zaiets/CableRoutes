@@ -28,6 +28,7 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
     /*
      * parsing journals files (.xlsx format, corresponding to default template)
      */
+    @Override
     public List<CableDto> parseNewJournalFile(List<File> xlsxfilesList) {
         return null;
     }
@@ -35,6 +36,7 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
     /*
      * parsing equipments file (.xlsx format, corresponding to default template)
      */
+    @Override
     public List<EquipmentDto> parseNewEquipmentDataFile(File xlsxfile){
         return null;
     }
@@ -42,6 +44,7 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
     /*
      * parsing join points file (.xlsx format, corresponding to default template)
      */
+    @Override
     public List<JoinPointDto> parseNewJoinPointDataFile(File xlsxfile){
         return null;
     }
@@ -49,22 +52,39 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
     /*
      * parsing routes file (.xlsx format, corresponding to default template)
      */
+    @Override
     public List<RouteDto> parseNewRouteFile(File xlsxfile){
         return null;
     }
 
     //main program functionality
-    List<CableDto> traceCables(List<CableDto> cables);
-    List<CableDto> traceJournals(List<JournalDto> journals);
-    List<CableDto> calculateCables(List<CableDto> cables);
-    List<CableDto> calculateJournals(List<JournalDto> journals);
+    @Override
+    public List<CableDto> traceCables(List<CableDto> cables){
+        return null;
+    }
+    @Override
+    public List<CableDto> traceJournals(List<JournalDto> journals){
+        return null;
+    }
+    @Override
+    public List<CableDto> calculateCables(List<CableDto> cables){
+        return null;
+    }
+    @Override
+    public List<CableDto> calculateJournals(List<JournalDto> journals){
+        return null;
+    }
 
     //TODO maybe this must be private?
     //defines closest joinpoints in equipments
-    List<EquipmentDto> analyseEquipments(List<EquipmentDto> equipments);
+    @Override
+    public List<EquipmentDto> analyseEquipments(List<EquipmentDto> equipments){
+        return null;
+    }
     //defines all new equipments in journals
-    List<JournalDto> analyseJournals(List<JournalDto> journals);
-
-    //TODO else?
+    @Override
+    public List<JournalDto> analyseJournals(List<JournalDto> journals){
+        return null;
+    }
 
 }
