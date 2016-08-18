@@ -20,8 +20,8 @@ public final class ModelVsDtoConverter {
         cableDto.setJournal(cable.getJournalName());
         cableDto.setCableDimensions(cable.getCableDimensions());
         cableDto.setCableType(cable.getCableType());
-        cableDto.setEndEquipment(transformEquipment(cable.getEnd()));
-        cableDto.setStartEquipment(transformEquipment(cable.getStart()));
+        cableDto.setEnd(transformEquipment(cable.getEnd()));
+        cableDto.setStart(transformEquipment(cable.getStart()));
         cableDto.setReserving(cable.getReserving());
         cableDto.setLength(cable.getLength());
         cableDto.setNumberInJournal(cable.getNumberInJournal());
@@ -43,8 +43,8 @@ public final class ModelVsDtoConverter {
         cable.setJournalName(cableDto.getJournal());
         cable.setCableDimensions(cableDto.getCableDimensions());
         cable.setCableType(cableDto.getCableType());
-        cable.setEnd(transformEquipmentDto(cableDto.getEndEquipment()));
-        cable.setStart(transformEquipmentDto(cableDto.getStartEquipment()));
+        cable.setEnd(transformEquipmentDto(cableDto.getEnd()));
+        cable.setStart(transformEquipmentDto(cableDto.getStart()));
         cable.setReserving(cableDto.getReserving());
         cable.setLength(cableDto.getLength());
         cable.setNumberInJournal(cableDto.getNumberInJournal());

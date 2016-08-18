@@ -1,8 +1,8 @@
 package app.service.functionalityTODO.service;
 
-import app.service.functionalityTODO.excel.IOExcelForTracer;
 import app.service.functionalityTODO.properties.PropertiesManager;
-import app.service.functionalityTODO.strategies.TracingSimpleStrategy;
+import app.service.functionalityTODO.strategies.DataManagementSimpleStrategy;
+import app.service.functionalityTODO.strategies.ITracingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import app.repository.dao.business.IDao;
@@ -11,7 +11,7 @@ import app.repository.entities.business.*;
 import java.io.File;
 import java.util.List;
 
-import static app.service.functionalityTODO.excel.utils.ExcelUtils.buildFileName;
+import static app.service.functionalityTODO.utils.ExcelUtils.buildFileName;
 
 @Service
 public final class Tracer {
@@ -21,7 +21,7 @@ public final class Tracer {
     @Autowired
     IOExcelForTracer ioExcelForTracer;
     @Autowired
-    CommonService commonService;
+    DataManagementSimpleStrategy basicDataManagementStrategy;
     @Autowired
     private IDao<JoinPoint> joinPointDao;
     @Autowired
@@ -70,7 +70,7 @@ public final class Tracer {
     private List<Journal> traceJournals(List<Journal> journalList) {
         for (Journal journal : journalList) {
             for (Cable cable : journal.getCables()) {
-                List<Route> routes = TracingSimpleStrategy.defineTrace(cable, joinPointDao.getAll(), routeDao.getAll());
+                List<Route> routes = ITracingStrategy.defineTrace(cable, joinPointDao.getAll(), routeDao.getAll());
                 if (!routes.isEmpty()) {
                     cable.setTraced(true);
                     cable.setRoutesList(routes);
@@ -79,7 +79,7 @@ public final class Tracer {
                     }
                 }
                 // define length after tracing cable
-                commonService.defineAndSetCableLength(cable);
+                basicDataManagementStrategy.defineAndSetCableLength(cable);
 
 
             }

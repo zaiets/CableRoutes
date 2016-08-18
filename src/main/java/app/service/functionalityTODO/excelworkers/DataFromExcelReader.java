@@ -1,4 +1,4 @@
-package app.service.functionalityTODO.excel;
+package app.service.functionalityTODO.excelworkers;
 
 import app.dto.models.*;
 import app.service.entities.IEquipmentService;
@@ -10,7 +10,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,13 +18,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static app.service.functionalityTODO.excel.utils.ExcelUtils.*;
+import static app.service.functionalityTODO.utils.ExcelUtils.*;
 
-@Component
-
-public class ExcelDataReader {
+@Service
+public class DataFromExcelReader {
     @Autowired
-    static final Logger logger = LoggerFactory.getLogger(ExcelDataReader.class);
+    static final Logger logger = LoggerFactory.getLogger(DataFromExcelReader.class);
     @Autowired
     private IRouteService routeService;
     @Autowired
@@ -34,7 +33,7 @@ public class ExcelDataReader {
     @Autowired
     private IRouteTypeService routeTypeService;
 
-    public ExcelDataReader() {
+    public DataFromExcelReader() {
     }
 
 

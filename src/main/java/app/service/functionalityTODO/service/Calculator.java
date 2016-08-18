@@ -1,6 +1,6 @@
 package app.service.functionalityTODO.service;
 
-import app.service.functionalityTODO.excel.IOExcelForCalculator;
+import app.service.functionalityTODO.excelworkers.IOExcelForJournals;
 import app.service.functionalityTODO.properties.PropertiesManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import app.repository.entities.business.Journal;
 
 import java.io.File;
 
-import static app.service.functionalityTODO.excel.utils.ExcelUtils.buildFileName;
+import static app.service.functionalityTODO.utils.ExcelUtils.buildFileName;
 
 @Service
 public class Calculator {
@@ -18,7 +18,7 @@ public class Calculator {
     private PropertiesManager propertiesManager;
     //models.excel writer
     @Autowired
-    IOExcelForCalculator ioExcelForCalculator;
+    IOExcelForJournals ioExcelForJournals;
     @Autowired
     private IDao<Journal> journalDao;
 
@@ -40,7 +40,7 @@ public class Calculator {
                     targetFileName = buildFileName(targetPath.getAbsolutePath(), null, journal.getCommonKks(), newMessage, fileExtension);
                 }
                 File targetFile = new File(targetFileName);
-                ioExcelForCalculator.writeToFileEstimatedJournal(projectName, journal, targetFile, templateFile);
+                ioExcelForJournals.createEstimatedJournalFile(projectName, journal, targetFile, templateFile);
             }
         } catch (Exception e) {
             e.printStackTrace();

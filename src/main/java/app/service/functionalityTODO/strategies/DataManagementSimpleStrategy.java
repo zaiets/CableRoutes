@@ -1,4 +1,4 @@
-package app.service.functionalityTODO.service;
+package app.service.functionalityTODO.strategies;
 
 
 import app.repository.dao.business.IJoinPointDao;
@@ -8,13 +8,13 @@ import app.repository.entities.business.Line;
 import app.repository.entities.business.Route;
 import app.service.functionalityTODO.properties.PropertiesManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.TreeMap;
 
-@Service
-public class CommonService {
+@Component
+public class DataManagementSimpleStrategy implements IDataManagementStrategy {
     //This coef was defined by manual testing of program results
     public static final double COEFICIENT_OF_REALICTIC_LENGTH_DEFINITION = 0.7;
 
@@ -24,12 +24,13 @@ public class CommonService {
     @Autowired
     private PropertiesManager propertiesManager;
 
-    public CommonService() {
+    public DataManagementSimpleStrategy() {
     }
 
     /**
      * Generates proper string of data to fill 'cableroutes' cell in excel file
      */
+    @Override
     public String getRoutesListForExcel(Line line) {
         if (line.isTraced()) {
             StringBuilder builder = new StringBuilder();
@@ -83,6 +84,7 @@ public class CommonService {
      * Defines full cable length for the current cable by its routes list (only for traced cables)
      * or directly by XYZ of its start and end points
      */
+    @Override
     public Cable defineAndSetCableLength(Cable cable, boolean useDirect) {
         double cableLength = 0;
         if (!(cable.getRoutesList() == null)) {
@@ -132,6 +134,7 @@ public class CommonService {
     /**
      * Defines closest join point for the current item by it's XYZ coordinates
      */
+    @Override
     public Object[] defineNearestPointData(double a, double b, double c, double reserveRatio) {
         List<JoinPoint> pointList = joinPointDao.getAll();
         TreeMap<Double, JoinPoint> map = new TreeMap<>();

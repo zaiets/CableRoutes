@@ -1,4 +1,4 @@
-package app.service.functionalityTODO.excel.utils;
+package app.service.functionalityTODO.utils;
 
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -121,7 +121,6 @@ public final class ExcelUtils {
 
     public static String extractKKS(String someString) {
         String patternStr1 = "([\\d[A-Z][А-Я]]{10,14})";
-        //String patternStr1 = "(\\d{2}[[A-Z][А-Я]]{3}\\d{2}[[A-Z][А-Я]]{0,2}\\d{0,3})[-]?";
         String patternStr2 = "(\\d{2}[[A-Z][А-Я]]{3}\\d{0,2})";
         String result;
 

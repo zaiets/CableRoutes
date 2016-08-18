@@ -8,14 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public final class CalculatorSimpleStrategy {
-    //Value, predefined due to standards
-    public static final int FIRST_HEIGHT_MARKER = 2;
+public final class CalculatorSimpleStrategy implements ICalculatorStrategy {
 
     public CalculatorSimpleStrategy() {
     }
 
-    public static List<Long> getInfo(Cable cable) {
+    @Override
+    public List<Long> getInfo(Cable cable) {
         if (cable.getRoutesList() == null) return null;
         List<Long> currentCableInfo = new ArrayList<>();
         double existingRoutes = 0;

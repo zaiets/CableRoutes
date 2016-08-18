@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-public final class TracingSimpleStrategy {
-    private int INF = Integer.MAX_VALUE / 2;
+public final class TracingSimpleStrategy implements ITracingStrategy {
+    private final static int INF = Integer.MAX_VALUE / 2;
     //количество вершин в орграфе
     private int n;
     //количествое дуг в орграфе
@@ -35,6 +35,7 @@ public final class TracingSimpleStrategy {
     }
 
     //Defines avaliable shortest list of routes between two end of cable
+    @Override
     public List<Route> defineTrace(Line cable, List<JoinPoint> points, List<Route> routes) {
         setData(cable.getStartPoint(), points, routes);
         dejkstra(startPoint);
