@@ -9,7 +9,6 @@ public class RouteTypeDto {
 
     public RouteTypeDto() {}
 
-    //TODO delete?
     public RouteTypeDto(String name, String type) {
         this.name = name;
         this.marker = type;

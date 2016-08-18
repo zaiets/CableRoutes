@@ -11,7 +11,6 @@ public class JoinPointDto {
 
 	public JoinPointDto(){}
 
-	//TODO delete?
 	public JoinPointDto(String kksName, double x, double y, double z) {
 		setKksName(kksName);
 		setX(x);

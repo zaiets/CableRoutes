@@ -5,8 +5,8 @@ import app.repository.entities.business.Journal;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import app.service.functionalityTODO.utils.CalculatorUtil;
-import app.service.functionalityTODO.utils.CommonUtil;
+import app.service.functionalityTODO.strategies.CalculatorSimpleStrategy;
+import app.service.functionalityTODO.service.CommonService;
 
 import java.io.File;
 import java.util.List;
@@ -20,7 +20,7 @@ public class IOExcelForCalculator {
     public static final int START_CELL_IN_TEMPLATE_FOR_CALC = 16;
 
     @Autowired
-    private CommonUtil commonUtil;
+    private CommonService commonService;
 
     public IOExcelForCalculator() {
     }
@@ -119,7 +119,7 @@ public class IOExcelForCalculator {
             row.createCell(11).setCellValue(cable.getEnd().getXyz()[1]);
             row.createCell(12).setCellValue(cable.getEnd().getXyz()[2]);
             row.createCell(13).setCellValue(cable.getLength());
-            row.createCell(14).setCellValue(commonUtil.getRoutesListForExcel(cable));
+            row.createCell(14).setCellValue(commonService.getRoutesListForExcel(cable));
             row.createCell(15).setCellValue(cable.getLength());
             for (int i = 1; i < 16; i++) {
                 row.getCell(i).setCellStyle(style0);
@@ -130,7 +130,7 @@ public class IOExcelForCalculator {
             row.getCell(12).setCellStyle(style3);
 
             //добавляем данные по части калькуляции
-            List<Long> cableInfo = CalculatorUtil.getInfo(cable);
+            List<Long> cableInfo = CalculatorSimpleStrategy.getInfo(cable);
             if (!(cableInfo == null)) {
                 for (int i = 0; i < 13; i++) {
                     row.createCell(calcStartCell + i);

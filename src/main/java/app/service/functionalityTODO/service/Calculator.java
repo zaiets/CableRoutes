@@ -1,7 +1,7 @@
 package app.service.functionalityTODO.service;
 
 import app.service.functionalityTODO.excel.IOExcelForCalculator;
-import app.service.functionalityTODO.properties.PropertiesHolder;
+import app.service.functionalityTODO.properties.PropertiesManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import app.repository.dao.business.IDao;
@@ -15,7 +15,7 @@ import static app.service.functionalityTODO.excel.utils.ExcelUtils.buildFileName
 public class Calculator {
 
     @Autowired
-    private PropertiesHolder propertiesHolder;
+    private PropertiesManager propertiesManager;
     //models.excel writer
     @Autowired
     IOExcelForCalculator ioExcelForCalculator;
@@ -28,10 +28,10 @@ public class Calculator {
     public boolean calculateAllJournals(String projectName, File targetPath) {
         //List<RouteType> routeTypes = readAvaliableEstimateRouteTypes();
         try {
-            String newMessage = propertiesHolder.get("output.suffix.calculatedJournals");
-            String fileExtension = propertiesHolder.get("default.excel.type");
-            String journalPathName = propertiesHolder.get("output.path");
-            File templateFile = new File(propertiesHolder.get("calc.journalTemplateFile"));
+            String newMessage = propertiesManager.get("output.suffix.calculatedJournals");
+            String fileExtension = propertiesManager.get("default.excel.type");
+            String journalPathName = propertiesManager.get("output.path");
+            File templateFile = new File(propertiesManager.get("calc.journalTemplateFile"));
             for (Journal journal : journalDao.getAll()) {
                 String targetFileName;
                 if (targetPath == null || !targetPath.isDirectory()) {

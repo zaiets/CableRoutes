@@ -1,9 +1,8 @@
 package app.service.functionalityTODO.service;
 
 import app.service.functionalityTODO.excel.IOExcelForTracer;
-import app.service.functionalityTODO.properties.PropertiesHolder;
-import app.service.functionalityTODO.utils.CommonUtil;
-import app.service.functionalityTODO.utils.TracingLogic;
+import app.service.functionalityTODO.properties.PropertiesManager;
+import app.service.functionalityTODO.strategies.TracingSimpleStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import app.repository.dao.business.IDao;
@@ -17,12 +16,12 @@ import static app.service.functionalityTODO.excel.utils.ExcelUtils.buildFileName
 @Service
 public final class Tracer {
     @Autowired
-    private PropertiesHolder propertiesHolder;
+    private PropertiesManager propertiesManager;
     //models.excel writer
     @Autowired
     IOExcelForTracer ioExcelForTracer;
     @Autowired
-    CommonUtil commonUtil;
+    CommonService commonService;
     @Autowired
     private IDao<JoinPoint> joinPointDao;
     @Autowired
@@ -43,11 +42,11 @@ public final class Tracer {
     }
 
     public boolean traceJournals(String projectName, File targetPath) {
-        String templateFileName = propertiesHolder.get("tracer.journalTemplateFile");
+        String templateFileName = propertiesManager.get("tracer.journalTemplateFile");
         try {
-            String newMessage = propertiesHolder.get("output.suffix.tracedJournals");
-            String fileExtension = propertiesHolder.get("default.excel.type");
-            String journalPathName = propertiesHolder.get("output.path");
+            String newMessage = propertiesManager.get("output.suffix.tracedJournals");
+            String fileExtension = propertiesManager.get("default.excel.type");
+            String journalPathName = propertiesManager.get("output.path");
             File templateFile = new File(templateFileName);
             File targetFile;
             for (Journal journal : traceJournals(journalDao.getAll())) {
@@ -71,7 +70,7 @@ public final class Tracer {
     private List<Journal> traceJournals(List<Journal> journalList) {
         for (Journal journal : journalList) {
             for (Cable cable : journal.getCables()) {
-                List<Route> routes = TracingLogic.defineTrace(cable, joinPointDao.getAll(), routeDao.getAll());
+                List<Route> routes = TracingSimpleStrategy.defineTrace(cable, joinPointDao.getAll(), routeDao.getAll());
                 if (!routes.isEmpty()) {
                     cable.setTraced(true);
                     cable.setRoutesList(routes);
@@ -80,7 +79,7 @@ public final class Tracer {
                     }
                 }
                 // define length after tracing cable
-                commonUtil.defineAndSetCableLength(cable);
+                commonService.defineAndSetCableLength(cable);
 
 
             }

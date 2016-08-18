@@ -2,21 +2,20 @@ package app.dto.models;
 
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.List;
 
 @Component
 public class JournalDto {
 	private String kksName;
-	private String fileName;
+	private File file;
 	private List<CableDto> cables;
 
 	public JournalDto() {}
 
-	//TODO delete?
-
-	public JournalDto(String kksName, String fileName, List<CableDto> cables) {
+	public JournalDto(String kksName, File file, List<CableDto> cables) {
 		this.kksName = kksName;
-		this.fileName = fileName;
+		this.file = file;
 		this.cables = cables;
 	}
 
@@ -36,12 +35,12 @@ public class JournalDto {
 		this.kksName = kksName;
 	}
 
-	public String getFileName() {
-		return fileName;
+	public File getFile() {
+		return file;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setFile(File file) {
+		this.file = file;
 	}
 
 	@Override
@@ -52,8 +51,7 @@ public class JournalDto {
 		JournalDto that = (JournalDto) o;
 
 		if (getKksName() != null ? !getKksName().equals(that.getKksName()) : that.getKksName() != null) return false;
-		if (getFileName() != null ? !getFileName().equals(that.getFileName()) : that.getFileName() != null)
-			return false;
+		if (getFile() != null ? !getFile().equals(that.getFile()) : that.getFile() != null) return false;
 		return getCables() != null ? getCables().equals(that.getCables()) : that.getCables() == null;
 
 	}
@@ -61,7 +59,7 @@ public class JournalDto {
 	@Override
 	public int hashCode() {
 		int result = getKksName() != null ? getKksName().hashCode() : 0;
-		result = 31 * result + (getFileName() != null ? getFileName().hashCode() : 0);
+		result = 31 * result + (getFile() != null ? getFile().hashCode() : 0);
 		result = 31 * result + (getCables() != null ? getCables().hashCode() : 0);
 		return result;
 	}

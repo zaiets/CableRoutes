@@ -22,7 +22,6 @@ public interface IFunctionalityService {
     List<CableDto> calculateCables (List<CableDto> cables);
     List<CableDto> calculateJournals (List<JournalDto> journals);
 
-    //TODO maybe this must be private?
     //defines closest joinpoints in equipments
     List<EquipmentDto> analyseEquipments (List<EquipmentDto> equipments);
     //defines all new equipments in journals

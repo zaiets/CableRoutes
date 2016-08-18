@@ -19,11 +19,10 @@ public class CableDto extends LineDto {
     public CableDto() {
     }
 
-    //TODO delete?
-
-
-    public CableDto(JoinPointDto startPoint, JoinPointDto endPoint, List<RouteDto> routesList, boolean traced, String kksName, String journal, Integer numberInJournal, String cableType, String cableDimensions, EquipmentDto startEquipment, EquipmentDto endEquipment, String reserving, Integer length) {
-        super(startPoint, endPoint, routesList, traced);
+    public CableDto(String kksName, String journal, Integer numberInJournal, String cableType, String cableDimensions,
+                    String reserving, EquipmentDto startEquipment, EquipmentDto endEquipment, Integer length,
+                    List<RouteDto> routesList, boolean traced) {
+        super(startEquipment.getJoinPoint(), endEquipment.getJoinPoint(), routesList, traced);
         this.kksName = kksName;
         this.journal = journal;
         this.numberInJournal = numberInJournal;

@@ -5,7 +5,7 @@ import app.repository.entities.business.Journal;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import app.service.functionalityTODO.utils.CommonUtil;
+import app.service.functionalityTODO.service.CommonService;
 
 import java.io.File;
 
@@ -15,7 +15,7 @@ import static app.service.functionalityTODO.excel.utils.ExcelUtils.*;
 public class IOExcelForTracer {
 
     @Autowired
-    private CommonUtil commonUtil;
+    private CommonService commonService;
 
     public IOExcelForTracer() {
     }
@@ -73,7 +73,7 @@ public class IOExcelForTracer {
             row.createCell(11).setCellValue(cable.getEnd().getXyz()[1]);
             row.createCell(12).setCellValue(cable.getEnd().getXyz()[2]);
             row.createCell(13).setCellValue(cable.getLength());
-            row.createCell(14).setCellValue(commonUtil.getRoutesListForExcel(cable));
+            row.createCell(14).setCellValue(commonService.getRoutesListForExcel(cable));
             row.createCell(15);
             for (int i = 0; i < 16; i++) {
                 row.getCell(i).setCellStyle(style);

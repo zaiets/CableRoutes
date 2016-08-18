@@ -1,9 +1,14 @@
 package app.service.functionalityTODO.excel;
 
-import app.repository.dao.business.IDao;
-import app.repository.entities.business.*;
+import app.dto.models.*;
+import app.service.entities.IEquipmentService;
+import app.service.entities.IJoinPointService;
+import app.service.entities.IRouteService;
+import app.service.entities.IRouteTypeService;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,19 +22,24 @@ import static app.service.functionalityTODO.excel.utils.ExcelUtils.*;
 
 @Component
 
-public class ExcelDBService {
+public class ExcelDataReader {
     @Autowired
-    private IDao<Route> routeDao;
+    static final Logger logger = LoggerFactory.getLogger(ExcelDataReader.class);
     @Autowired
-    private IDao<JoinPoint> joinPointDao;
+    private IRouteService routeService;
     @Autowired
-    private IDao<Equipment> equipmentDao;
+    private IJoinPointService joinPointService;
+    @Autowired
+    private IEquipmentService equipmentService;
+    @Autowired
+    private IRouteTypeService routeTypeService;
 
-    public ExcelDBService() {
+    public ExcelDataReader() {
     }
 
-    public List<JoinPoint> readJoinPoints(File joinPointsFile) {
-        List<JoinPoint> joinPoints = new ArrayList<>();
+
+    public List<JoinPointDto> readJoinPoints(File joinPointsFile) {
+        List<JoinPointDto> joinPoints = new ArrayList<>();
         try {
             Iterator<Row> it = getWorkbookSheetIterator(joinPointsFile);
             int stringNumber = 1;
@@ -39,25 +49,24 @@ public class ExcelDBService {
                 if (stringNumber > 3) {
                     Iterator<Cell> cells = row.iterator();
                     String name = cells.next().getStringCellValue();
-                    double[] xyz = new double[3];
-                    xyz[0] = getDoubleCellValue(cells.next());
-                    xyz[1] = getDoubleCellValue(cells.next());
-                    xyz[2] = getDoubleCellValue(cells.next());
-                    JoinPoint current = new JoinPoint(name, xyz);
-                    //TODO logging
-                    //System.out.println(current);
+                    double x, y, z;
+                    x = getDoubleCellValue(cells.next());
+                    y = getDoubleCellValue(cells.next());
+                    z = getDoubleCellValue(cells.next());
+                    JoinPointDto current = new JoinPointDto(name, x, y, z);
                     joinPoints.add(current);
+                    logger.info("readJoinPoints reads join point {} from file", name);
                 }
             }
             return joinPoints;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.warn("readJoinPoints read trouble detected: {}", joinPointsFile.getName());
         }
         return null;
     }
 
-    public List<Equipment> readEquipments(File equipmentsFile) {
-        List<Equipment> equipments = new ArrayList<>();
+    public List<EquipmentDto> readEquipments(File equipmentsFile) {
+        List<EquipmentDto> equipments = new ArrayList<>();
         try {
             Iterator<Row> it = getWorkbookSheetIterator(equipmentsFile);
             int stringNumber = 1;
@@ -71,15 +80,15 @@ public class ExcelDBService {
                     if (equipmentKKS.equals("")) {
                         equipmentKKS = extractKKS(equipmentName);
                     }
-                    Double[] xyz = new Double[3];
-                    for (int i = 0; i < 3; i++) {
-                        xyz[i] = getDoubleCellValue(cells.next());
-                    }
+                    Double x = getDoubleCellValue(cells.next());
+                    Double y = getDoubleCellValue(cells.next());
+                    Double z = getDoubleCellValue(cells.next());
+
                     Cell cellF = cells.next();
-                    JoinPoint closestTracePoint = null;
+                    JoinPointDto closestTracePoint = null;
                     if (cellF != null) {
                         String closestPointName = getStringCellValue(cellF);
-                        closestTracePoint = joinPointDao.read(closestPointName);
+                        closestTracePoint = joinPointService.read(closestPointName);
                     }
                     Cell cellG = cells.next();
                     int extraCableLength = 0;
@@ -90,23 +99,20 @@ public class ExcelDBService {
                             ex.printStackTrace();
                         }
                     }
-                    Equipment current = new Equipment(equipmentKKS, equipmentName, extraCableLength, xyz, closestTracePoint);
-
-                    //TODO logging
-                    //System.out.println(current);
-
+                    EquipmentDto current = new EquipmentDto(equipmentKKS, equipmentName, extraCableLength, x, y, z, closestTracePoint);
                     equipments.add(current);
+                    logger.info("readEquipments read equipment {} from file", equipmentName);
                 }
             }
             return equipments;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.warn("readEquipments read trouble detected: {}", equipmentsFile);
         }
         return null;
     }
 
-    public List<Route> readRoutes(File routesFile) {
-        List<Route> routes = new ArrayList<>();
+    public List<RouteDto> readRoutes(File routesFile) {
+        List<RouteDto> routes = new ArrayList<>();
         try {
             Iterator<Row> it = getWorkbookSheetIterator(routesFile);
             int stringNumber = 1;
@@ -116,33 +122,32 @@ public class ExcelDBService {
                 if (stringNumber > 3) {
                     Iterator<Cell> cells = row.iterator();
                     String routeKks = getStringCellValue(cells.next());
-                    String routeType = getStringCellValue(cells.next());
+                    RouteTypeDto routeType = routeTypeService.read(getStringCellValue(cells.next()));
                     double length = getDoubleCellValue(cells.next());
-                    JoinPoint point1 = joinPointDao.read(getStringCellValue(cells.next()));
+                    JoinPointDto point1 = joinPointService.read(getStringCellValue(cells.next()));
                     cells.next();
                     cells.next();
                     cells.next();
-                    JoinPoint point2 = joinPointDao.read(getStringCellValue(cells.next()));
+                    JoinPointDto point2 = joinPointService.read(getStringCellValue(cells.next()));
                     cells.next();
                     cells.next();
                     cells.next();
                     int shelvesCount = getDoubleCellValue(cells.next()).intValue();
                     Double height = getDoubleCellValue(cells.next());
-                    Route current = new Route(routeKks, routeType, length, height, shelvesCount, point1, point2);
-                    //TODO logging
-                    //System.out.println(current);
+                    RouteDto current = new RouteDto(routeKks, routeType, length, height, shelvesCount, point1, point2);
                     routes.add(current);
+                    logger.info("readRoutes read route {} from file", routeKks);
                 }
             }
             return routes;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.warn("readRoutes read trouble detected: {}", routesFile);
         }
         return null;
     }
 
-    public Journal readJournal(File journalFile) {
-        List<Cable> cables = new ArrayList<>();
+    public JournalDto readJournal(File journalFile) {
+        List<CableDto> cables = new ArrayList<>();
         try {
             Iterator<Row> it = getWorkbookSheetIterator(journalFile);
             int stringNumber = 1;
@@ -154,36 +159,42 @@ public class ExcelDBService {
                     int numberInJournal = getDoubleCellValue(cells.next()).intValue();
                     String cableKKSCode = getStringCellValue(cells.next());
                     String reserving = getStringCellValue(cells.next());
-                    String[] cableType = {getStringCellValue(cells.next()), getStringCellValue(cells.next())};
-                    Equipment startEquip = equipmentDao.read(getStringCellValue(cells.next()));
+                    String cableType = getStringCellValue(cells.next());
+                    String dimentions = getStringCellValue(cells.next());
+                    EquipmentDto startEquip = equipmentService.read(getStringCellValue(cells.next()));
                     cells.next();
                     cells.next();
                     cells.next();
-                    Equipment endEquip = equipmentDao.read(getStringCellValue(cells.next()));
+                    EquipmentDto endEquip = equipmentService.read(getStringCellValue(cells.next()));
                     cells.next();
                     cells.next();
                     cells.next();
                     int previousLength = getIntCellValue(cells.next());
-                    List<Route> previouslyDefinedRoutes = parceRoutes(getStringCellValue(cells.next()));
-                    Cable cable = new Cable(cableKKSCode, journalFile.getName(), numberInJournal, cableType,
-                            reserving, startEquip, endEquip, previouslyDefinedRoutes, previousLength);
+                    boolean isTraced = false;
+                    List<RouteDto> previouslyDefinedRoutes = parceRoutes(getStringCellValue(cells.next()));
+                    if (previouslyDefinedRoutes != null && !previouslyDefinedRoutes.isEmpty()) {
+                        isTraced = true;
+                    }
+                    CableDto cable = new CableDto(cableKKSCode, journalFile.getName(), numberInJournal, cableType,
+                            dimentions, reserving, startEquip, endEquip, previousLength, previouslyDefinedRoutes, isTraced);
                     cables.add(cable);
+                    logger.info("readJournal read cable {} from journal {}", cableKKSCode, journalFile.getName());
                 }
             }
-            return new Journal(journalFile.getAbsolutePath(), journalFile.getName(), cables);
+            return new JournalDto(journalFile.getName(), journalFile, cables);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.warn("readJournal read trouble detected: {}", journalFile.getName());
         }
         return null;
     }
 
 
-    private List<Route> parceRoutes(String routesString) {
+    private List<RouteDto> parceRoutes(String routesString) {
         if (routesString.isEmpty() || routesString.equals("")) return null;
-        List<Route> actualRoutes = new ArrayList<>();
+        List<RouteDto> actualRoutes = new ArrayList<>();
         String[] fragments = routesString.split(";");
         Stream.of(fragments).forEachOrdered(o -> {
-            Route r = routeDao.read(o.trim());
+            RouteDto r = routeService.read(o.trim());
             if (r != null) actualRoutes.add(r);
         });
         return actualRoutes;

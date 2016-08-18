@@ -13,7 +13,15 @@ public class LineDto {
     private List<RouteDto> routesList;
     private boolean traced;
 
-    public LineDto() {}
+    public LineDto() {
+    }
+
+    public LineDto(JoinPointDto startPoint, JoinPointDto endPoint, List<RouteDto> routesList, boolean traced) {
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.routesList = routesList;
+        this.traced = traced;
+    }
 
     public Integer getId() {
         return id;

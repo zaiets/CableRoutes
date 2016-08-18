@@ -1,35 +1,41 @@
-package app.service.functionalityTODO.utils;
+package app.service.functionalityTODO.strategies;
 
 
 import app.repository.entities.business.JoinPoint;
 import app.repository.entities.business.Line;
 import app.repository.entities.business.Route;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public final class TracingLogic {
-    static private int INF = Integer.MAX_VALUE / 2;
-    static private int n; // количество вершин в орграфе
-    static private int m; // количествое дуг в орграфе
-    static private ArrayList<Integer> adj[]; // список смежности
-    static private ArrayList<Integer> weight[]; // вес ребра в орграфе
-    static private boolean used[]; // массив для хранения информации о
-    // пройденных и не пройденных вершинах
-    static private int dist[]; // массив для хранения расстояния от стартовой
-    // вершины
-    static private int pred[]; // массив предков, необходимых для восстановления
-    // кратчайшего пути из стартовой вершины
-    static int startPoint; // стартовая вершина, от которой ищется расстояние до
-    // всех
-    // других
-    private TracingLogic() {
+@Component
+public final class TracingSimpleStrategy {
+    private int INF = Integer.MAX_VALUE / 2;
+    //количество вершин в орграфе
+    private int n;
+    //количествое дуг в орграфе
+    private int m;
+    //список смежности
+    private ArrayList<Integer> adj[];
+    //вес ребра в орграфе
+    private ArrayList<Integer> weight[];
+    //массив для хранения информации о пройденных и не пройденных вершинах
+    private boolean used[];
+    //массив для хранения расстояния от стартовой вершины
+    private int dist[];
+    //массив предков, необходимых для восстановления кратчайшего пути из стартовой вершины
+    private int pred[];
+    //стартовая вершина, от которой ищется расстояние до всех других
+    private int startPoint;
+
+
+    public TracingSimpleStrategy() {
     }
 
-
-
-    public static List<Route> defineTrace(Line cable, List<JoinPoint> points, List<Route> routes) {
+    //Defines avaliable shortest list of routes between two end of cable
+    public List<Route> defineTrace(Line cable, List<JoinPoint> points, List<Route> routes) {
         setData(cable.getStartPoint(), points, routes);
         dejkstra(startPoint);
         List<Route> trace = new ArrayList<>();
@@ -51,7 +57,7 @@ public final class TracingLogic {
         return trace;
     }
 
-    private static List<Integer> addWay(int v, List<Integer> stock) {
+    private List<Integer> addWay(int v, List<Integer> stock) {
         if (v == -1) {
             return stock;
         }
@@ -60,23 +66,16 @@ public final class TracingLogic {
         return stock;
     }
 
-    private static void setData(JoinPoint joinPoint, List<JoinPoint> joinPoints, List<Route> routes) {
+    @SuppressWarnings("unchecked")
+    private void setData(JoinPoint joinPoint, List<JoinPoint> joinPoints, List<Route> routes) {
+        //кол-во всех точек, возможных для прохода
+        n = joinPoints.size();
+        //кол-во всех трасс, возможных для прохода
+        m = routes.size();
+        //адрес ячейки в массиве, определенный для оборудования,
+        //от которого мы ищем путь инициализируем списка смежности графа размерности n
+        startPoint = joinPoints.indexOf(joinPoint);
 
-        n = joinPoints.size(); // кол-во всех точек, возможных
-        // для прохода
-        m = routes.size(); // кол-во всех трасс,
-        // возможных для прохода
-
-        startPoint = joinPoints.indexOf(joinPoint); // адрес ячейки в
-        // массиве,
-        // определенный
-        // для
-        // оборудования,
-        // от
-        // которого мы
-        // ищем
-        // путь
-        // инициализируем списка смежности графа размерности n
         adj = new ArrayList[n];
         for (int i = 0; i < n; ++i) {
             adj[i] = new ArrayList<>();
@@ -107,7 +106,7 @@ public final class TracingLogic {
     }
 
     // процедура запуска алгоритма Дейкстры из стартовой вершины
-    private static void dejkstra(int s) {
+    private void dejkstra(int s) {
         dist[s] = 0; // кратчайшее расстояние до стартовой вершины равно 0
         for (int iter = 0; iter < n; ++iter) {
             int v = -1;

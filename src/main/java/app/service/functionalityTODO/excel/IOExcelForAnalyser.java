@@ -1,8 +1,8 @@
 package app.service.functionalityTODO.excel;
 
 
-import app.service.functionalityTODO.properties.PropertiesHolder;
-import app.service.functionalityTODO.utils.CommonUtil;
+import app.service.functionalityTODO.properties.PropertiesManager;
+import app.service.functionalityTODO.service.CommonService;
 import app.repository.dao.business.IDao;
 import app.repository.entities.business.Equipment;
 import app.repository.entities.business.JoinPoint;
@@ -21,10 +21,10 @@ import static app.service.functionalityTODO.excel.utils.ExcelUtils.*;
 public class IOExcelForAnalyser {
 
     @Autowired
-    private ExcelDBService excelDBService;
+    private ExcelDataReader excelDataReader;
 
     @Autowired
-    private PropertiesHolder propertiesHolder;
+    private PropertiesManager propertiesManager;
 
     public IOExcelForAnalyser() {
     }
@@ -120,10 +120,10 @@ public class IOExcelForAnalyser {
                     }
                 }
             }
-            String outputPathName = targetPath != null && targetPath.isDirectory() ? targetPath.getAbsolutePath() : propertiesHolder.get("output.path");
+            String outputPathName = targetPath != null && targetPath.isDirectory() ? targetPath.getAbsolutePath() : propertiesManager.get("output.path");
             String journalName = journalFile.getName();
-            String newMessage = propertiesHolder.get("output.suffix.analysedJournals");
-            String fileExtension = propertiesHolder.get("default.excel.type");
+            String newMessage = propertiesManager.get("output.suffix.analysedJournals");
+            String fileExtension = propertiesManager.get("default.excel.type");
             String targetFileName = buildFileName(outputPathName, null, journalName, newMessage, fileExtension);
 
             writeWorkbook(workbook, new File(targetFileName));
@@ -135,13 +135,13 @@ public class IOExcelForAnalyser {
 
     public boolean writeToFileAllAdditionalEquipment(String projectName, List<String[]> addEquip, File targetPath) {
         try {
-            String equipmentsFileName = propertiesHolder.get("default.equipmentsFileName");
-            String equipmentsPathName = propertiesHolder.get("default.inputPathName");
-            String fileExtension = propertiesHolder.get("default.excel.type");
-            String newMessage = propertiesHolder.get("output.suffix.newEquipmentDefined");
+            String equipmentsFileName = propertiesManager.get("default.equipmentsFileName");
+            String equipmentsPathName = propertiesManager.get("default.inputPathName");
+            String fileExtension = propertiesManager.get("default.excel.type");
+            String newMessage = propertiesManager.get("output.suffix.newEquipmentDefined");
             String targetFileName;
             if (targetPath == null || !targetPath.isDirectory()) {
-                String journalPathName = propertiesHolder.get("output.path");
+                String journalPathName = propertiesManager.get("output.path");
 
                 targetFileName = buildFileName(journalPathName, projectName, equipmentsFileName, newMessage, fileExtension);
             } else {
@@ -174,31 +174,31 @@ public class IOExcelForAnalyser {
 
     public boolean analyseAndDefineClosestPointsOfEquipment(String projectName, File equipmentFile, File targetPath, IDao<JoinPoint> joinPointDao) {
         try {
-            String equipmentsFileName = propertiesHolder.get("default.equipmentsFileName");
+            String equipmentsFileName = propertiesManager.get("default.equipmentsFileName");
 
-            String fileExtension = propertiesHolder.get("default.excel.type");
-            String newMessage = propertiesHolder.get("output.suffix.pointsForEquipmentDefined");
-            String equipmentPath = propertiesHolder.get("default.inputPathName");
+            String fileExtension = propertiesManager.get("default.excel.type");
+            String newMessage = propertiesManager.get("output.suffix.pointsForEquipmentDefined");
+            String equipmentPath = propertiesManager.get("default.inputPathName");
             if (equipmentFile == null) {
                 equipmentFile = new File(buildFileName(equipmentPath, projectName, equipmentsFileName, null, fileExtension));
             }
             String targetFileName;
             if (targetPath == null || !targetPath.isDirectory()) {
-                String journalPathName = propertiesHolder.get("output.path");
+                String journalPathName = propertiesManager.get("output.path");
                 targetFileName = buildFileName(journalPathName, null, equipmentsFileName, newMessage, fileExtension);
             } else {
                 targetFileName = buildFileName(targetPath.getAbsolutePath(), null, equipmentsFileName, newMessage, fileExtension);
             }
             File targetFile = new File(targetFileName);
-            List<Equipment> allEquipment = excelDBService.readEquipments(equipmentFile);
+            List<Equipment> allEquipment = excelDataReader.readEquipments(equipmentFile);
             if (allEquipment == null) return false;
             List<Equipment> targetEquipment = new ArrayList<>();
             allEquipment.forEach(o -> {
                 if (o.getJoinPoint() == null || o.getJoinPoint().getCommonKks().equals("")) targetEquipment.add(o);
             });
             for (Equipment equipment : targetEquipment) {
-                double reserveRatio = propertiesHolder.get("reserveRatio.approximateDeterminationOfTrace", Double.class);
-                Object[] result = CommonUtil.defineNearestPoint(equipment.getXyz(), joinPointDao.getAll(), reserveRatio);
+                double reserveRatio = propertiesManager.get("reserveRatio.approximateDeterminationOfTrace", Double.class);
+                Object[] result = CommonService.defineNearestPointData(equipment.getXyz(), joinPointDao.getAll(), reserveRatio);
                 JoinPoint joinPointDefined = ((JoinPoint) result[0]);
                 int extraLength = (int) result[1];
                 equipment.setJoinPoint(joinPointDefined);

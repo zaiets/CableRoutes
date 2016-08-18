@@ -5,10 +5,14 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+/**
+ * This is temporary solution, all properties will be transferred into 'project' entity
+ * (TODO this later)
+ */
 @Component
-@PropertySource("classpath:/props/application.properties")
-public class PropertiesHolder {
-    public PropertiesHolder() {
+@PropertySource("classpath:/props/functionality.properties")
+public class PropertiesManager {
+    public PropertiesManager() {
     }
 
     @Autowired

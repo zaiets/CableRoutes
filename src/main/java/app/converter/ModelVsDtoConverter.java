@@ -97,7 +97,10 @@ public final class ModelVsDtoConverter {
     public static JournalDto transformJournal(Journal journal) {
         JournalDto journalDto = new JournalDto();
         journalDto.setKksName(journal.getKksName());
-        journalDto.setFileName(journal.getFileName());
+
+        //TODO fileserver???
+
+        journalDto.setFile(null);
         List<Cable> cables = journal.getCables();
         if (cables != null && !cables.isEmpty()) {
             List<CableDto> cableDtos = new ArrayList<>();
@@ -109,7 +112,7 @@ public final class ModelVsDtoConverter {
     public static Journal transformJournalDto(JournalDto journalDto, List<Cable> cables) {
         Journal journal = new Journal();
         journal.setKksName(journalDto.getKksName());
-        journal.setFileName(journalDto.getFileName());
+        journal.setFileName(journalDto.getFile().getName());
         journal.setCables(cables);
         return journal;
     }

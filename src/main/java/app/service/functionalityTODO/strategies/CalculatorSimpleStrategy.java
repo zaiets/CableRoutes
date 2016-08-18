@@ -1,16 +1,18 @@
-package app.service.functionalityTODO.utils;
+package app.service.functionalityTODO.strategies;
 
 import app.repository.entities.business.Cable;
 import app.repository.entities.business.Route;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class CalculatorUtil {
-
+@Component
+public final class CalculatorSimpleStrategy {
+    //Value, predefined due to standards
     public static final int FIRST_HEIGHT_MARKER = 2;
 
-    private CalculatorUtil() {
+    public CalculatorSimpleStrategy() {
     }
 
     public static List<Long> getInfo(Cable cable) {
@@ -34,7 +36,10 @@ public final class CalculatorUtil {
             if (route.getKksName().contains("*")) {
                 existingRoutes += length;
             }
-            String type = route.getRouteType();
+
+            //TODO rewrite with less directive definition of types.
+            //*Need to make this more dynamic
+            String type = route.getRouteType().getMarker();
             if (type.contains("B")) {
                 if (route.getHeight() < FIRST_HEIGHT_MARKER) b_low += length;
                 else b_high += length;

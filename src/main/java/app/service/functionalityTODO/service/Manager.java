@@ -1,7 +1,7 @@
 package app.service.functionalityTODO.service;
 
-import app.service.functionalityTODO.excel.ExcelDBService;
-import app.service.functionalityTODO.properties.PropertiesHolder;
+import app.service.functionalityTODO.excel.ExcelDataReader;
+import app.service.functionalityTODO.properties.PropertiesManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import app.repository.dao.business.IDao;
@@ -16,9 +16,9 @@ import static app.service.functionalityTODO.excel.utils.ExcelUtils.buildFileName
 @Repository
 public final class Manager {
     @Autowired
-    private ExcelDBService excelDBService;
+    private ExcelDataReader excelDataReader;
     @Autowired
-    private PropertiesHolder propertiesHolder;
+    private PropertiesManager propertiesManager;
     @Autowired
     private IDao<JoinPoint> joinPointDao;
     @Autowired
@@ -33,13 +33,13 @@ public final class Manager {
 
     public boolean initJoinPoints(String projectName, File joinPointsFile) {
         if (joinPointsFile == null || !joinPointsFile.canRead()) {
-            String path = propertiesHolder.get("default.inputPathName");
-            String fileExtension = propertiesHolder.get("default.excel.type");
-            String joinPointsFileName = propertiesHolder.get("default.joinPointsFileName");
+            String path = propertiesManager.get("default.inputPathName");
+            String fileExtension = propertiesManager.get("default.excel.type");
+            String joinPointsFileName = propertiesManager.get("default.joinPointsFileName");
             joinPointsFile = new File(buildFileName(path, projectName, joinPointsFileName, null, fileExtension));
         }
         try {
-            List<JoinPoint> joinPoints = excelDBService.readJoinPoints(joinPointsFile);
+            List<JoinPoint> joinPoints = excelDataReader.readJoinPoints(joinPointsFile);
             if (joinPoints != null && !joinPoints.isEmpty()) {
                 joinPoints.forEach(o -> joinPointDao.createOrUpdate(o));
                 return true;
@@ -52,13 +52,13 @@ public final class Manager {
 
     public boolean initEquipments(String projectName, File equipmentsFile) {
         if (equipmentsFile == null || !equipmentsFile.canRead()) {
-            String path = propertiesHolder.get("default.inputPathName");
-            String fileExtension = propertiesHolder.get("default.excel.type");
-            String equipmentsFileName = propertiesHolder.get("default.equipmentsFileName");
+            String path = propertiesManager.get("default.inputPathName");
+            String fileExtension = propertiesManager.get("default.excel.type");
+            String equipmentsFileName = propertiesManager.get("default.equipmentsFileName");
             equipmentsFile = new File(buildFileName(path, projectName, equipmentsFileName, null, fileExtension));
         }
         try {
-            List<Equipment> equipments = excelDBService.readEquipments(equipmentsFile);
+            List<Equipment> equipments = excelDataReader.readEquipments(equipmentsFile);
             if (equipments != null && !equipments.isEmpty()) {
                 equipments.forEach(o -> equipmentDao.createOrUpdate(o));
                 return true;
@@ -71,13 +71,13 @@ public final class Manager {
 
     public boolean initRoutes(String projectName, File routesFile) {
         if (routesFile == null || !routesFile.canRead()) {
-            String path = propertiesHolder.get("default.inputPathName");
-            String fileExtension = propertiesHolder.get("default.excel.type");
-            String routesFileName = propertiesHolder.get("default.routesFileName");
+            String path = propertiesManager.get("default.inputPathName");
+            String fileExtension = propertiesManager.get("default.excel.type");
+            String routesFileName = propertiesManager.get("default.routesFileName");
             routesFile = new File(buildFileName(path, projectName, routesFileName, null, fileExtension));
         }
         try {
-            List<Route> routes = excelDBService.readRoutes(routesFile);
+            List<Route> routes = excelDataReader.readRoutes(routesFile);
             if (routes != null && !routes.isEmpty()) {
                 routes.forEach(o -> routeDao.createOrUpdate(o));
                 return true;
@@ -91,7 +91,7 @@ public final class Manager {
     public boolean initJournals(String projectName, List<File> journals) {
         File journalsPath;
         if (journals == null || journals.isEmpty()) {
-            String journalsPathName = propertiesHolder.get("input.journalsPath").concat(projectName).concat("/");
+            String journalsPathName = propertiesManager.get("input.journalsPath").concat(projectName).concat("/");
             journalsPath = new File(journalsPathName);
             File[] journalMassive = journalsPath.listFiles();
             if (journalMassive != null) {
@@ -100,7 +100,7 @@ public final class Manager {
         }
         for (File current : journals) {
             try {
-                Journal journal = excelDBService.readJournal(current);
+                Journal journal = excelDataReader.readJournal(current);
                 if (journal != null) {
                     List<Cable> cables = journal.getCables();
                     if (cables != null && !cables.isEmpty()) {

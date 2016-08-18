@@ -1,6 +1,6 @@
 package app.configurationTODO;
 
-import app.service.functionalityTODO.properties.PropertiesHolder;
+import app.service.functionalityTODO.properties.PropertiesManager;
 import app.converter.RoleToUserProfileConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -63,8 +63,8 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public PropertiesHolder propertiesHolder() {
-	    return new PropertiesHolder ();
+	public PropertiesManager propertiesHolder() {
+	    return new PropertiesManager();
 	}
     
     /**Optional. It's only required when handling '.' in @PathVariables which otherwise ignore everything after last '.' in @PathVaidables argument.

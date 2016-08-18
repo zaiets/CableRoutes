@@ -1,8 +1,10 @@
 package app.service.functionalityTODO.service;
 
 
+import app.repository.dao.business.IEquipmentDao;
+import app.repository.dao.business.IJoinPointDao;
 import app.service.functionalityTODO.excel.IOExcelForAnalyser;
-import app.service.functionalityTODO.properties.PropertiesHolder;
+import app.service.functionalityTODO.properties.PropertiesManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import app.repository.dao.business.IDao;
@@ -17,41 +19,12 @@ import java.util.List;
 public final class Analyser {
 
 	@Autowired
-	private PropertiesHolder propertiesHolder;
-	//models.excel writer
-	@Autowired
-	IOExcelForAnalyser ioExcelForAnalyser;
-	@Autowired
-	private IDao<JoinPoint> joinPointDao;
-	@Autowired
-	private IDao<Equipment> equipmentDao;
-	@Autowired
-	private IDao<Cable> cableDao;
-	@Autowired
-	private IDao<Journal> journalDao;
-	@Autowired
-	private IDao<Route> routeDao;
+	private PropertiesManager propertiesManager;
 
-
-	public void analyseEnglishLettersInEquiments() {
-		//TODO
-	}
-
-	public void analyseEnglishLettersInJournals() {
-		//TODO
-	}
-
-	public void analyseEnglishLettersInPoints() {
-		//TODO
-	}
-
-	public void analyseEquipmentsActual() {
-		//TODO
-	}
-
-	public void analysePointsActual() {
-		//TODO
-	}
+	@Autowired
+	private IJoinPointDao joinPointDao;
+	@Autowired
+	private IEquipmentDao equipmentDao;
 
 	public boolean defineEquipmentsClosestPoints(String projectName, File equipmentsFile, File targetPath) {
 		return ioExcelForAnalyser.analyseAndDefineClosestPointsOfEquipment(projectName, equipmentsFile, targetPath, joinPointDao);
@@ -60,7 +33,7 @@ public final class Analyser {
 	public boolean findNewEquipmentsInJournals(String projectName, List<File> journals, File targetPath) {
 		File journalsPath;
 		if (journals == null || journals.isEmpty()) {
-			String journalsPathName = propertiesHolder.get("input.journalsPath").concat(projectName).concat("/");
+			String journalsPathName = propertiesManager.get("input.journalsPath").concat(projectName).concat("/");
 			journalsPath = new File(journalsPathName);
 			File[] journalMassive = journalsPath.listFiles();
 			if (journalMassive != null) {

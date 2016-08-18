@@ -5,18 +5,16 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Component
 public final class ExcelUtils {
     public static final int FIRST_SHEET_INDEX = 0;
 
-    public ExcelUtils() {
+    private ExcelUtils() {
     }
 
     /**

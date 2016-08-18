@@ -14,7 +14,6 @@ public class EquipmentDto {
 
 	public EquipmentDto(){}
 
-	//TODO delete
 	public EquipmentDto(String fullName, String commonKks, Integer cableConnectionAddLength,
 						Double x, Double y, Double z, JoinPointDto joinPoint) {
 		this.fullName = fullName;
