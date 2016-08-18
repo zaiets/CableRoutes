@@ -1,7 +1,7 @@
 package app.validate;
 
 
-import app.dto.users.UserDto;
+import app.dto.common.UserDto;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

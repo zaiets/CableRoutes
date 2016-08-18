@@ -1,10 +1,10 @@
-package app.service.functionalityTODO.excelworkers;
+package app.service.functionality.excelworkers;
 
 import app.repository.entities.business.Cable;
 import app.repository.entities.business.Journal;
 import app.properties.PropertiesManager;
-import app.service.functionalityTODO.strategies.ICalculatorStrategy;
-import app.service.functionalityTODO.strategies.IDataManagementStrategy;
+import app.service.functionality.strategies.ICalculatorStrategy;
+import app.service.functionality.strategies.IDataManagementStrategy;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static app.service.functionalityTODO.excelworkers.ExcelUtils.*;
+import static app.service.functionality.excelworkers.ExcelUtils.*;
 
 @Component
 public final class JournalsToExcelWriter {

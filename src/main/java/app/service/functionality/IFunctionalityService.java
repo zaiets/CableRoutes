@@ -1,11 +1,13 @@
-package app.service.functionalityTODO;
+package app.service.functionality;
 
 import app.dto.models.*;
 
 import java.io.File;
 import java.util.List;
 
-
+/**
+ * Main app functions description
+ */
 public interface IFunctionalityService {
     /**
      * for initial data parsing (excel files)

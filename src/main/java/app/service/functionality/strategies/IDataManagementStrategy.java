@@ -1,11 +1,8 @@
-package app.service.functionalityTODO.strategies;
+package app.service.functionality.strategies;
 
 import app.dto.models.CableDto;
 import app.repository.entities.business.Line;
 
-/**
- * Created by Levsha on 18.08.2016.
- */
 public interface IDataManagementStrategy {
     String getRoutesListForExcel(Line line);
 

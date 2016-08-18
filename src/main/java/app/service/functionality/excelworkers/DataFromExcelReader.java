@@ -1,4 +1,4 @@
-package app.service.functionalityTODO.excelworkers;
+package app.service.functionality.excelworkers;
 
 import app.dto.models.*;
 import app.service.entities.IEquipmentService;
@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static app.service.functionalityTODO.excelworkers.ExcelUtils.*;
+import static app.service.functionality.excelworkers.ExcelUtils.*;
 
 @Service
 public final class DataFromExcelReader {
