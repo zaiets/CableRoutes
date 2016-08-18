@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name="CABLE")
+@Table(name="LINE")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "JOURNAL_KKS")
 public class Line {
@@ -17,7 +17,10 @@ public class Line {
     private JoinPoint startPoint;
     @JoinColumn(name = "END_JOIN_POINT_KKS")
     private JoinPoint endPoint;
-    @JoinColumn(name = "ROUTE_ID")
+    @ManyToMany
+    @JoinTable(name = "LINES_ROUTES",
+            joinColumns = @JoinColumn(name = "ROUTE_KKS"),
+            inverseJoinColumns = @JoinColumn(name = "LINE_ID"))
     private List<Route> routesList;
     @Basic
     @Column(name = "TRACED")
