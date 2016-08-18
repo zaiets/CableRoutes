@@ -1,6 +1,6 @@
 package app.service.functionalityTODO.strategies;
 
-import app.repository.entities.business.Cable;
+import app.dto.models.CableDto;
 import app.repository.entities.business.Line;
 
 /**
@@ -9,7 +9,7 @@ import app.repository.entities.business.Line;
 public interface IDataManagementStrategy {
     String getRoutesListForExcel(Line line);
 
-    Cable defineAndSetCableLength(Cable cable, boolean useDirect);
+    CableDto defineAndSetCableLength(CableDto cable, boolean useDirect);
 
     Object[] defineNearestPointData(double a, double b, double c, double reserveRatio);
 }

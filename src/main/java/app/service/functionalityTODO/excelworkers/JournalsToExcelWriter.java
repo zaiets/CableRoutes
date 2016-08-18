@@ -2,10 +2,12 @@ package app.service.functionalityTODO.excelworkers;
 
 import app.repository.entities.business.Cable;
 import app.repository.entities.business.Journal;
-import app.service.functionalityTODO.properties.PropertiesManager;
+import app.properties.PropertiesManager;
 import app.service.functionalityTODO.strategies.ICalculatorStrategy;
 import app.service.functionalityTODO.strategies.IDataManagementStrategy;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,14 +16,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static app.service.functionalityTODO.utils.ExcelUtils.*;
+import static app.service.functionalityTODO.excelworkers.ExcelUtils.*;
 
 @Component
-public class IOExcelForJournals {
+public final class JournalsToExcelWriter {
+
+    @Autowired
+    static final Logger logger = LoggerFactory.getLogger(JournalsToExcelWriter.class);
 
     public static final int START_CELL_IN_TEMPLATE_FOR_CALC = 16;
     public static final int LAST_TITLE_ROW_NUM_IN_TEMPLATE = 5;
-    private File templateJournalFile;
 
     @Autowired
     private PropertiesManager propertiesManager;
@@ -30,11 +34,7 @@ public class IOExcelForJournals {
     @Autowired
     private ICalculatorStrategy calculatorStrategy;
 
-    {
-        templateJournalFile = new File(propertiesManager.get("tracer.journalTemplateFile"));
-    }
-
-    public IOExcelForJournals() {
+    public JournalsToExcelWriter() {
     }
 
     /**
@@ -42,12 +42,13 @@ public class IOExcelForJournals {
      */
     public File createTracedJournalFile(Journal journal) {
         try {
+            logger.info("createTracedJournalFile generates xlsx file of journal: {}", journal.getKksName());
             String newMessage = propertiesManager.get("output.suffix.tracedJournals");
             String dataTimeStamp = LocalDate.now().format(DateTimeFormatter.ofPattern("hh-mm-uuuu-MM-dd"));
             String targetFileName = buildFileName(null, null, journal.getKksName(), newMessage, dataTimeStamp);
             String fileSuffix = propertiesManager.get("default.excel.type");
             File targetFile = File.createTempFile(targetFileName, fileSuffix);
-
+            File templateJournalFile = new File(propertiesManager.get("tracer.journalTemplateFile"));
             Workbook workbook = getWorkbook(templateJournalFile);
             Sheet sheet = workbook.getSheetAt(FIRST_SHEET_INDEX);
             workbook.setSheetName(0, journal.getKksName());
@@ -111,7 +112,7 @@ public class IOExcelForJournals {
             writeWorkbook(workbook, targetFile);
             return targetFile;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.warn("Can't create generate xlsx file of traced journal: {}", journal.getKksName());
         }
         return null;
     }
@@ -122,12 +123,13 @@ public class IOExcelForJournals {
      */
     public File createEstimatedJournalFile(Journal journal) {
         try {
+            logger.info("createEstimatedJournalFile generates xlsx file of journal: {}", journal.getKksName());
             String newMessage = propertiesManager.get("output.suffix.calculatedJournals");
             String dataTimeStamp = LocalDate.now().format(DateTimeFormatter.ofPattern("hh-mm-uuuu-MM-dd"));
             String targetFileName = buildFileName(null, null, journal.getKksName(), newMessage, dataTimeStamp);
             String fileSuffix = propertiesManager.get("default.excel.type");
             File targetFile = File.createTempFile(targetFileName, fileSuffix);
-
+            File templateJournalFile = new File(propertiesManager.get("calc.journalTemplateFile"));
             Workbook workbook = getWorkbook(templateJournalFile);
             Sheet sheet = workbook.getSheetAt(0);
             workbook.setSheetName(0, journal.getKksName());
@@ -243,7 +245,7 @@ public class IOExcelForJournals {
             writeWorkbook(workbook, targetFile);
             return targetFile;
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.warn("Can't create generate xlsx file of estimated journal: {}", journal.getKksName());
         }
         return null;
     }

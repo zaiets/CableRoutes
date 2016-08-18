@@ -1,14 +1,20 @@
 package app.service.functionalityTODO;
 
 import app.dto.models.*;
+import app.properties.PropertiesManager;
 import app.repository.dao.business.IJournalDao;
 import app.repository.entities.business.Journal;
-import app.service.entities.*;
+import app.service.entities.ICableService;
+import app.service.entities.IEquipmentService;
+import app.service.entities.IJoinPointService;
+import app.service.entities.IRouteService;
 import app.service.functionalityTODO.excelworkers.DataFromExcelReader;
-import app.service.functionalityTODO.excelworkers.IOExcelForJournals;
-import app.service.functionalityTODO.properties.PropertiesManager;
+import app.service.functionalityTODO.excelworkers.ExcelUtils;
+import app.service.functionalityTODO.excelworkers.JournalsToExcelWriter;
 import app.service.functionalityTODO.strategies.IDataManagementStrategy;
-import app.service.functionalityTODO.utils.ExcelUtils;
+import app.service.functionalityTODO.strategies.ITracingStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +24,17 @@ import java.util.List;
 
 /**
  * Implements all main app functions like:
- * tracing of cables, calculating the cables lengths for estimate calculations ect.
+ * tracing of cables, calculating the cables lengths for estimate calculations, generates excel files ect.
  */
 @Service
-public class FunctionalityServiceImpl implements IFunctionalityService {
+public final class FunctionalityServiceImpl implements IFunctionalityService {
+    @Autowired
+    static final Logger logger = LoggerFactory.getLogger(FunctionalityServiceImpl.class);
 
+    @Autowired
+    private PropertiesManager propertiesManager;
+
+    //entities
     @Autowired
     private ICableService cableService;
     @Autowired
@@ -34,14 +46,16 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
     @Autowired
     private IJournalDao journalDao;
 
+    //strategies
     @Autowired
-    private PropertiesManager propertiesManager;
+    private ITracingStrategy tracingStrategy;
     @Autowired
     private IDataManagementStrategy dataManagementStrategy;
+    //excel
     @Autowired
     private DataFromExcelReader dataFromExcelReader;
     @Autowired
-    private IOExcelForJournals ioExcelForJournals;
+    private JournalsToExcelWriter journalsToExcelWriter;
 
     /**
      * parsing journals files (.xlsx format, corresponding to default template)
@@ -57,7 +71,7 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
      * parsing equipments file (.xlsx format, corresponding to default template)
      */
     @Override
-    public List<EquipmentDto> parseNewEquipmentDataFile(File xlsxfile){
+    public List<EquipmentDto> parseNewEquipmentDataFile(File xlsxfile) {
         return dataFromExcelReader.readEquipments(xlsxfile);
     }
 
@@ -65,7 +79,7 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
      * parsing join points file (.xlsx format, corresponding to default template)
      */
     @Override
-    public List<JoinPointDto> parseNewJoinPointDataFile(File xlsxfile){
+    public List<JoinPointDto> parseNewJoinPointDataFile(File xlsxfile) {
         return dataFromExcelReader.readJoinPoints(xlsxfile);
     }
 
@@ -73,32 +87,47 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
      * parsing routes file (.xlsx format, corresponding to default template)
      */
     @Override
-    public List<RouteDto> parseNewRouteFile(File xlsxfile){
+    public List<RouteDto> parseNewRouteFile(File xlsxfile) {
         return dataFromExcelReader.readRoutes(xlsxfile);
     }
 
 
-    //main program functionality
+    /**
+     * main program functionality - cable tracing (input - cables list)
+     */
     @Override
-    public List<CableDto> traceCables(List<CableDto> cables){
-        return null;
+    public List<CableDto> traceCablesAndDefineLengths(List<CableDto> cables) {
+
+        //TODO сделать проверку валидности системы трассировки?
+
+        for (CableDto cable : cables) {
+            List<RouteDto> routes = tracingStrategy.defineTrace(cable, joinPointService.getAll(), routeService.getAll());
+            if (!routes.isEmpty()) {
+                cable.setTraced(true);
+                cable.setRoutesList(routes);
+            }
+            // define length after tracing cable
+            boolean useDirect = propertiesManager.get("tracer.use.directLengthDefinitionForNotTracedCables", Boolean.class);
+            dataManagementStrategy.defineAndSetCableLength(cable, useDirect);
+        }
+        return cables;
     }
+    /**
+     * main program functionality - cable tracing (input - journals list)
+     */
     @Override
-    public List<CableDto> traceJournals(List<JournalDto> journals){
-        return null;
-    }
-    @Override
-    public List<CableDto> calculateCables(List<CableDto> cables){
-        return null;
-    }
-    @Override
-    public List<CableDto> calculateJournals(List<JournalDto> journals){
-        return null;
+    public List<CableDto> traceJournalsAndDefineLengths(List<JournalDto> journals) {
+        List<CableDto> cablesList = new ArrayList<>();
+        for (JournalDto journalDto : journals) {
+            cablesList.addAll(traceCablesAndDefineLengths(journalDto.getCables()));
+        }
+        return cablesList;
     }
 
 
-
-    //defines closest joinpoints in equipments
+    /**
+     * defines closest joinpoints in equipments
+     */
     @Override
     public List<EquipmentDto> defineEquipmentsClosestPoints(List<EquipmentDto> equipments) {
         List<EquipmentDto> targetEquipmentList = new ArrayList<>();
@@ -118,7 +147,9 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
         return targetEquipmentList;
     }
 
-    //defines all new equipments in journals
+    /**
+     * defines all new equipments in journals
+     */
     @Override
     public List<EquipmentDto> findNewEquipmentsInJournals(List<JournalDto> journals) {
         List<EquipmentDto> addEquip = new ArrayList<>();
@@ -135,24 +166,32 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
         return addEquip;
     }
 
-    //generates journal file .xlsx with previously traced cables
+    /**
+     * generates journal file .xlsx with previously traced cables
+     */
     @Override
     public List<File> generateJournalInExcelFormatTraced(List<String> journalNames) {
         List<File> files = new ArrayList<>();
         for (String journalName : journalNames) {
             Journal journal = journalDao.read(journalName);
-            if (journal != null) files.add(ioExcelForJournals.createTracedJournalFile(journal));
+            if (journal != null) files.add(journalsToExcelWriter.createTracedJournalFile(journal));
         }
         return files;
     }
 
-    //generates journal file .xlsx with previously calculated and traced cables
+    /**
+     * generates calculated journal file .xlsx with previously traced cables
+     */
     @Override
     public List<File> generateJournalInExcelFormatCalculated(List<String> journalNames) {
+
+        //TODO сделать проверку валидности системы калькуляции?
+        //Признаки: кабели протрассированы, выполнена проверка оборудования и тд
+
         List<File> files = new ArrayList<>();
         for (String journalName : journalNames) {
             Journal journal = journalDao.read(journalName);
-            if (journal != null) files.add(ioExcelForJournals.createEstimatedJournalFile(journal));
+            if (journal != null) files.add(journalsToExcelWriter.createEstimatedJournalFile(journal));
         }
         return files;
     }

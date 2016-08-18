@@ -11,24 +11,16 @@ public interface IFunctionalityService {
      * for initial data parsing (excel files)
      */
     List<JournalDto> parseNewJournalFiles(List<File> filesList);
-
     List<EquipmentDto> parseNewEquipmentDataFile(File file);
-
     List<JoinPointDto> parseNewJoinPointDataFile(File file);
-
     List<RouteDto> parseNewRouteFile(File file);
 
     /**
      * Main app functions like:
      * tracing of cables, calculating the cables lengths for estimate calculations ect.
      */
-    List<CableDto> traceCables(List<CableDto> cables);
-
-    List<CableDto> traceJournals(List<JournalDto> journals);
-
-    List<CableDto> calculateCables(List<CableDto> cables);
-
-    List<CableDto> calculateJournals(List<JournalDto> journals);
+    List<CableDto> traceCablesAndDefineLengths(List<CableDto> cables);
+    List<CableDto> traceJournalsAndDefineLengths(List<JournalDto> journals);
 
     /**
      * find closest joinpoints in equipments

@@ -1,8 +1,8 @@
 package app.service.functionalityTODO.strategies;
 
-import app.repository.entities.business.JoinPoint;
-import app.repository.entities.business.Line;
-import app.repository.entities.business.Route;
+import app.dto.models.JoinPointDto;
+import app.dto.models.LineDto;
+import app.dto.models.RouteDto;
 
 import java.util.List;
 
@@ -11,5 +11,5 @@ import java.util.List;
  */
 public interface ITracingStrategy {
     //Defines avaliable shortest list of routes between two end of cable
-    List<Route> defineTrace(Line cable, List<JoinPoint> points, List<Route> routes);
+    List<RouteDto> defineTrace(LineDto cable, List<JoinPointDto> points, List<RouteDto> routes);
 }

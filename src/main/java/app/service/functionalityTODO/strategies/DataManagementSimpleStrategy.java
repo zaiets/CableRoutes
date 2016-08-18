@@ -1,12 +1,14 @@
 package app.service.functionalityTODO.strategies;
 
 
+import app.dto.models.CableDto;
+import app.dto.models.RouteDto;
+import app.properties.PropertiesManager;
 import app.repository.dao.business.IJoinPointDao;
 import app.repository.entities.business.Cable;
 import app.repository.entities.business.JoinPoint;
 import app.repository.entities.business.Line;
 import app.repository.entities.business.Route;
-import app.service.functionalityTODO.properties.PropertiesManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +16,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 @Component
-public class DataManagementSimpleStrategy implements IDataManagementStrategy {
+public final class DataManagementSimpleStrategy implements IDataManagementStrategy {
     //This coef was defined by manual testing of program results
     public static final double COEFICIENT_OF_REALICTIC_LENGTH_DEFINITION = 0.7;
 
@@ -38,11 +40,11 @@ public class DataManagementSimpleStrategy implements IDataManagementStrategy {
             String secondWord = null;
             String beforeLastWord = null;
             String lastWord = null;
-            if (propertiesManager.get("tracer.showAlternatePointsInTrace", Boolean.class)) {
+            if (propertiesManager.get("tracer.show.alternatePointsInTrace", Boolean.class)) {
                 firstWord = line.getStartPoint().getUniqueName();
                 lastWord = line.getEndPoint().getUniqueName();
             }
-            if (propertiesManager.get("tracer.showApproximateDeterminationOfTraceMessage", Boolean.class)) {
+            if (propertiesManager.get("tracer.show.approximateDeterminationOfTraceMessage", Boolean.class)) {
                 if (line instanceof Cable) {
                     if (((Cable) line).getStart().getCableConnectionAddLength() >= propertiesManager.get("cableLength.minimalForApproxDetermMessage", Double.class)) {
                         secondWord = propertiesManager.get("message.approximateDeterminationOfTrace");
@@ -74,7 +76,7 @@ public class DataManagementSimpleStrategy implements IDataManagementStrategy {
                 builder.append("]");
             }
             return builder.toString();
-        } else if (propertiesManager.get("tracer.showInTracesListWarningNoTrace", Boolean.class)) {
+        } else if (propertiesManager.get("tracer.show.inTracesListWarningNoTrace", Boolean.class)) {
             return (propertiesManager.get("message.warningNoTrace"));
         } else
             return propertiesManager.get("message.approximateDeterminationOfTrace");
@@ -85,10 +87,10 @@ public class DataManagementSimpleStrategy implements IDataManagementStrategy {
      * or directly by XYZ of its start and end points
      */
     @Override
-    public Cable defineAndSetCableLength(Cable cable, boolean useDirect) {
+    public CableDto defineAndSetCableLength(CableDto cable, boolean useDirect) {
         double cableLength = 0;
         if (!(cable.getRoutesList() == null)) {
-            for (Route r : cable.getRoutesList()) {
+            for (RouteDto r : cable.getRoutesList()) {
                 cableLength += r.getLength();
             }
             if (cableLength > propertiesManager.get("reserveRatio.step2", Integer.class)) {

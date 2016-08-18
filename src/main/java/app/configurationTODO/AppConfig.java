@@ -1,6 +1,6 @@
 package app.configurationTODO;
 
-import app.service.functionalityTODO.properties.PropertiesManager;
+import app.properties.PropertiesManager;
 import app.converter.RoleToUserProfileConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

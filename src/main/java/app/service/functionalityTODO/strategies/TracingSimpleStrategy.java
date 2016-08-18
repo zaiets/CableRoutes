@@ -1,9 +1,9 @@
 package app.service.functionalityTODO.strategies;
 
 
-import app.repository.entities.business.JoinPoint;
-import app.repository.entities.business.Line;
-import app.repository.entities.business.Route;
+import app.dto.models.JoinPointDto;
+import app.dto.models.LineDto;
+import app.dto.models.RouteDto;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -36,16 +36,16 @@ public final class TracingSimpleStrategy implements ITracingStrategy {
 
     //Defines avaliable shortest list of routes between two end of cable
     @Override
-    public List<Route> defineTrace(Line cable, List<JoinPoint> points, List<Route> routes) {
+    public List<RouteDto> defineTrace(LineDto cable, List<JoinPointDto> points, List<RouteDto> routes) {
         setData(cable.getStartPoint(), points, routes);
         dejkstra(startPoint);
-        List<Route> trace = new ArrayList<>();
+        List<RouteDto> trace = new ArrayList<>();
         List<Integer> list = addWay(points.indexOf(cable.getEndPoint()), new ArrayList<>());
         // System.out.println(list);
         for (int i = 0; i < list.size() - 1; i++) {
-            JoinPoint thisPoint = points.get(list.get(i));
-            JoinPoint nextPoint = points.get(list.get(i + 1));
-            for (Route rou : routes) {
+            JoinPointDto thisPoint = points.get(list.get(i));
+            JoinPointDto nextPoint = points.get(list.get(i + 1));
+            for (RouteDto rou : routes) {
                 if (thisPoint.equals(rou.getFirstEnd()) && nextPoint.equals(rou.getSecondEnd())) {
                     trace.add(rou);
                     break;
@@ -68,7 +68,7 @@ public final class TracingSimpleStrategy implements ITracingStrategy {
     }
 
     @SuppressWarnings("unchecked")
-    private void setData(JoinPoint joinPoint, List<JoinPoint> joinPoints, List<Route> routes) {
+    private void setData(JoinPointDto joinPoint, List<JoinPointDto> joinPoints, List<RouteDto> routes) {
         //кол-во всех точек, возможных для прохода
         n = joinPoints.size();
         //кол-во всех трасс, возможных для прохода
@@ -88,10 +88,10 @@ public final class TracingSimpleStrategy implements ITracingStrategy {
         }
         // считываем граф, заданный списком ребер
         for (int i = 0; i < m; ++i) {
-            Route route = routes.get(i);
+            RouteDto route = routes.get(i);
             int u = joinPoints.indexOf(route.getFirstEnd());
             int v = joinPoints.indexOf(route.getSecondEnd());
-            int w = (int) route.getLength();
+            int w = route.getLength().intValue();
             adj[u].add(v);
             weight[u].add(w);
             adj[v].add(u);

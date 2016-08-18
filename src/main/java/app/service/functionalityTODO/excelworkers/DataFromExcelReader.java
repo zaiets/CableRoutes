@@ -18,10 +18,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static app.service.functionalityTODO.utils.ExcelUtils.*;
+import static app.service.functionalityTODO.excelworkers.ExcelUtils.*;
 
 @Service
-public class DataFromExcelReader {
+public final class DataFromExcelReader {
     @Autowired
     static final Logger logger = LoggerFactory.getLogger(DataFromExcelReader.class);
     @Autowired

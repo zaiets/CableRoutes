@@ -1,7 +1,7 @@
 package app.exceptionsTODO;
 
 //@Controller
-class ExceptionController {
+public class ExceptionController extends Exception{
 //    TODO
 //   @ExceptionHandler(???.class)
 //   public ResponseData handleNotFound(){
