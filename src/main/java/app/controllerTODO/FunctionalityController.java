@@ -12,4 +12,5 @@ public class FunctionalityController {
     IFunctionalityService functionalityService;
 
     //TODO else
+
 }

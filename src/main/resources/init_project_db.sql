@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS line (
+  id   INT AUTO_INCREMENT PRIMARY KEY,
+
+  #TODO
+
+);
+
+

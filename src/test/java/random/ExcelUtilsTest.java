@@ -23,6 +23,5 @@ public class ExcelUtilsTest {
         String expected = "00SАС40ФФ002";
         String actual = ExcelUtils.extractKKS(targetText);
         Assert.assertEquals("Extract KKS test", expected, actual);
-        Assert.assertEquals("Extract KKS test", false, "AAA.AA".contains("\\*"));
     }
 }
