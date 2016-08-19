@@ -36,11 +36,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/")
+        http.authorizeRequests().antMatchers("*")
                 .access("hasRole('USER') or hasRole('ADMIN')").and().formLogin()
                 .usernameParameter("login").passwordParameter("password").and()
                 .rememberMe().tokenRepository(tokenRepository)
-                .tokenValiditySeconds(86400).and().csrf().disable();
+                .tokenValiditySeconds(3600).and().csrf().disable();
     }
 
     @Bean
