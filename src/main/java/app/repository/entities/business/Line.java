@@ -28,13 +28,6 @@ public class Line {
 
     public Line () {}
 
-    //TODO delete
-    public Line(JoinPoint startPoint, JoinPoint endPoint) {
-        setStartPoint(startPoint);
-        setEndPoint(endPoint);
-
-    }
-
     public int getId() {
         return id;
     }

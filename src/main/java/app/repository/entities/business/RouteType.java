@@ -16,13 +16,6 @@ public class RouteType implements INamedByUniqueName {
 
     public RouteType () {}
 
-
-    //TODO delete
-    public RouteType(String name, String type) {
-        this.name = name;
-        this.marker = type;
-    }
-
     public String getName() {
         return name;
     }

@@ -18,14 +18,6 @@ public class JoinPoint implements INamedByUniqueName {
 
 	public JoinPoint(){}
 
-	//TODO delete
-	public JoinPoint(String kksName, double [] xyz) {
-		setKksName(kksName);
-		setX(xyz[0]);
-		setY(xyz[1]);
-		setZ(xyz[2]);
-	}
-
 	public void setKksName(String kksName) {
 		this.kksName = kksName;
 	}

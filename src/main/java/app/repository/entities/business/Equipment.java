@@ -33,17 +33,6 @@ public class Equipment implements INamedByUniqueName {
 
 	public Equipment (){}
 
-	//TODO delete
-	public Equipment(String commonKks, String fullName, int cableConnectionAddLength, Double[] xyz, JoinPoint joinPoint) {
-		setCommonKks(commonKks);
-		setFullName(fullName);
-		setCableConnectionAddLength(cableConnectionAddLength);
-		setX(xyz[0]);
-		setY(xyz[1]);
-		setZ(xyz[2]);
-		setJoinPoint(joinPoint);
-	}
-
 	public String getFullName() {
 		return fullName;
 	}

@@ -1,8 +1,10 @@
 package app.service.entities.impl;
 
+import app.dto.models.CableDto;
 import app.dto.models.JournalDto;
 import app.repository.dao.business.ICableDao;
 import app.repository.dao.business.IJournalDao;
+import app.repository.entities.business.Cable;
 import app.repository.entities.business.Journal;
 import app.service.entities.IJournalService;
 import org.slf4j.Logger;
@@ -13,7 +15,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static app.converter.ModelVsDtoConverter.*;
+import static app.converter.ModelVsDtoConverter.transformCable;
+import static app.converter.ModelVsDtoConverter.transformJournal;
+import static app.converter.ModelVsDtoConverter.transformJournalDto;
 
 @Service
 public class JournalServiceImpl implements IJournalService {
@@ -40,7 +44,12 @@ public class JournalServiceImpl implements IJournalService {
     @Override
     public JournalDto read(String kks) {
         logger.info("journalService is reading journal by kks: {}", kks);
-        return transformJournal(journalDao.read(kks));
+        List<CableDto> cableDtoList = new ArrayList<>();
+        List<Cable> cableList = cableDao.readAllByJournal(kks);
+        if (cableList != null && !cableList.isEmpty()) {
+            cableList.forEach(o -> cableDtoList.add(transformCable(o)));
+        }
+        return transformJournal(journalDao.read(kks), cableDtoList);
     }
 
     @Override
@@ -60,7 +69,16 @@ public class JournalServiceImpl implements IJournalService {
         logger.info("journalService is reading all journals");
         List<JournalDto> journalDtoList = new ArrayList<>();
         List<Journal> journalList = journalDao.getAll();
-        if (journalList != null && !journalList.isEmpty())journalList.forEach(o -> journalDtoList.add(transformJournal(o)));
+        if (journalList != null && !journalList.isEmpty()) {
+            journalList.forEach(jou -> {
+                List<CableDto> cableDtoList = new ArrayList<>();
+                List<Cable> cableList = cableDao.readAllByJournal(jou.getKksName());
+                if (cableList != null && !cableList.isEmpty()) {
+                    cableList.forEach(cable -> cableDtoList.add(transformCable(cable)));
+                }
+                journalDtoList.add(transformJournal(jou, cableDtoList));
+            });
+        }
         return journalDtoList;
     }
 

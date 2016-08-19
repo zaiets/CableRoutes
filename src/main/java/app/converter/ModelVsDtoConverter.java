@@ -56,6 +56,7 @@ public final class ModelVsDtoConverter {
         }
         return null;
     }
+
     public static EquipmentDto transformEquipment(Equipment equipment) {
         EquipmentDto equipmentDto = new EquipmentDto();
         equipmentDto.setFullName(equipment.getFullName());
@@ -67,6 +68,7 @@ public final class ModelVsDtoConverter {
         equipmentDto.setZ(equipment.getZ());
         return equipmentDto;
     }
+
     public static Equipment transformEquipmentDto(EquipmentDto equipmentDto) {
         Equipment equipment = new Equipment();
         equipment.setFullName(equipmentDto.getFullName());
@@ -78,6 +80,7 @@ public final class ModelVsDtoConverter {
         equipment.setZ(equipmentDto.getZ());
         return equipment;
     }
+
     public static JoinPointDto transformJoinPoint(JoinPoint joinPoint) {
         JoinPointDto joinPointDto = new JoinPointDto();
         joinPointDto.setKksName(joinPoint.getKksName());
@@ -86,6 +89,7 @@ public final class ModelVsDtoConverter {
         joinPointDto.setZ(joinPoint.getZ());
         return joinPointDto;
     }
+
     public static JoinPoint transformJoinPointDto(JoinPointDto joinPointDto) {
         JoinPoint joinPoint = new JoinPoint();
         joinPoint.setKksName(joinPointDto.getKksName());
@@ -94,28 +98,23 @@ public final class ModelVsDtoConverter {
         joinPoint.setZ(joinPointDto.getZ());
         return joinPoint;
     }
-    public static JournalDto transformJournal(Journal journal) {
+
+    public static JournalDto transformJournal(Journal journal, List<CableDto> cableDtos) {
         JournalDto journalDto = new JournalDto();
         journalDto.setKksName(journal.getKksName());
-
-        //TODO fileserver???
-
-        journalDto.setFile(null);
-        List<Cable> cables = journal.getCables();
-        if (cables != null && !cables.isEmpty()) {
-            List<CableDto> cableDtos = new ArrayList<>();
-            cables.forEach(o -> cableDtos.add(transformCable(o)));
-            journalDto.setCables(cableDtos);
-        }
+        journalDto.setFile(journal.getFile());
+        journalDto.setCables(cableDtos);
         return journalDto;
     }
+
     public static Journal transformJournalDto(JournalDto journalDto, List<Cable> cables) {
         Journal journal = new Journal();
         journal.setKksName(journalDto.getKksName());
-        journal.setFileName(journalDto.getFile().getName());
+        journal.setFile(journalDto.getFile());
         journal.setCables(cables);
         return journal;
     }
+
     public static LineDto transformLine(Line line) {
         LineDto lineDto = new LineDto();
         lineDto.setId(line.getId());
@@ -130,6 +129,7 @@ public final class ModelVsDtoConverter {
         }
         return lineDto;
     }
+
     public static Line transformLineDto(LineDto lineDto) {
         Line line = new Line();
         line.setId(lineDto.getId());
@@ -144,6 +144,7 @@ public final class ModelVsDtoConverter {
         }
         return line;
     }
+
     public static RouteDto transformRoute(Route route) {
         RouteDto routeDto = new RouteDto();
         routeDto.setKksName(route.getKksName());
@@ -155,6 +156,7 @@ public final class ModelVsDtoConverter {
         routeDto.setRouteType(transformRouteType(route.getRouteType()));
         return routeDto;
     }
+
     public static Route transformRouteDto(RouteDto routeDto) {
         Route route = new Route();
         route.setKksName(routeDto.getKksName());
@@ -166,12 +168,14 @@ public final class ModelVsDtoConverter {
         route.setRouteType(transformRouteTypeDto(routeDto.getRouteType()));
         return route;
     }
+
     public static RouteTypeDto transformRouteType(RouteType routeType) {
         RouteTypeDto routeTypeDto = new RouteTypeDto();
         routeTypeDto.setMarker(routeType.getMarker());
         routeTypeDto.setName(routeType.getName());
         return routeTypeDto;
     }
+
     public static RouteType transformRouteTypeDto(RouteTypeDto routeTypeDto) {
         RouteType routeType = new RouteType();
         routeType.setMarker(routeTypeDto.getMarker());
