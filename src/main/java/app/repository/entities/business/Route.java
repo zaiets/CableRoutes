@@ -5,6 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="ROUTE")
 public class Route implements INamedByUniqueName {
+	@Id
 	@Column(name = "KKS", unique = true)
 	private String kksName;
 	@JoinColumn(name = "ROUTE_TYPE_MARKER")

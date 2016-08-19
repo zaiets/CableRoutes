@@ -107,11 +107,10 @@ public final class ModelVsDtoConverter {
         return journalDto;
     }
 
-    public static Journal transformJournalDto(JournalDto journalDto, List<Cable> cables) {
+    public static Journal transformJournalDto(JournalDto journalDto) {
         Journal journal = new Journal();
         journal.setKksName(journalDto.getKksName());
         journal.setFile(journalDto.getFile());
-        journal.setCables(cables);
         return journal;
     }
 

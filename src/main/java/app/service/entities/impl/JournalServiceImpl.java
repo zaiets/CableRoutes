@@ -32,13 +32,13 @@ public class JournalServiceImpl implements IJournalService {
     @Override
     public boolean create(JournalDto journalDto) {
         logger.info("journalService is creating new journal: {}", journalDto.getKksName());
-        return journalDao.create(transformJournalDto(journalDto, cableDao.readAllByJournal(journalDto.getKksName())));
+        return journalDao.create(transformJournalDto(journalDto));
     }
 
     @Override
     public boolean createOrUpdate(JournalDto journalDto) {
         logger.info("journalService is creating new journal: {}", journalDto.getKksName());
-        return journalDao.createOrUpdate(transformJournalDto(journalDto, cableDao.readAllByJournal(journalDto.getKksName())));
+        return journalDao.createOrUpdate(transformJournalDto(journalDto));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class JournalServiceImpl implements IJournalService {
     @Override
     public boolean update(String kks, JournalDto journalDto) {
         logger.info("journalService is updating journal: {}", journalDto.getKksName());
-        return journalDao.update(kks, transformJournalDto(journalDto, cableDao.readAllByJournal(journalDto.getKksName())));
+        return journalDao.update(kks, transformJournalDto(journalDto));
     }
 
     @Override

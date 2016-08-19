@@ -4,7 +4,6 @@ import app.repository.dao.AbstractDao;
 import app.repository.dao.business.IJournalDao;
 import app.repository.entities.business.Journal;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +33,7 @@ public class JournalDaoImpl extends AbstractDao<String, Journal> implements IJou
     @Override
     public Journal read(String kks) {
         logger.info("Reading journal by KKS: {}", kks);
-        Journal journal = getByKey(kks);
-        //TODO test this necessary
-        if(journal!=null){
-            journal.getCables().forEach(Hibernate::initialize);
-        }
-        return journal;
+        return getByKey(kks);
     }
 
     @Override
@@ -66,12 +60,7 @@ public class JournalDaoImpl extends AbstractDao<String, Journal> implements IJou
         logger.info("Reading all journals");
         Criteria criteria = createEntityCriteria().addOrder(Order.asc("KKS"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-        List<Journal> journals = (List<Journal>) criteria.list();
-        //TODO test this necessary
-        if(journals!=null){
-            journals.forEach(jou -> jou.getCables().forEach(Hibernate::initialize));
-        }
-        return journals;
+        return (List<Journal>) criteria.list();
     }
 
 }

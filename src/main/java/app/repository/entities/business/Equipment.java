@@ -9,12 +9,13 @@ public class Equipment implements INamedByUniqueName {
 	 * This field <b>must</b> contain correct equipment fullName from current one cable journal.
 	 * This field is unique identification of current equipment in current project (instead of commonKks)
 	 */
+	@Id
 	@Column(name = "FULL_NAME", unique = true)
 	private String fullName;
 	/**
 	 * You can have dozens of equipments in one project named by the same commonKks
 	 */
-	@Column(name = "KKS", unique = false)
+	@Column(name = "KKS")
 	private String commonKks;
 	@Basic
 	@Column(name = "ADD_LENGTH")

@@ -1,16 +1,14 @@
 package app.repository.entities.business;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "ROUTE_TYPE")
 public class RouteType implements INamedByUniqueName {
-    @Basic
+    @Id
     @Column(name = "NAME")
     private String name;
+    @Basic
     @Column(name = "MARKER", nullable = false, unique = true)
     private String marker;
 

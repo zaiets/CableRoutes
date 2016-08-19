@@ -2,11 +2,13 @@ package app.repository.entities.business;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="JOIN_POINT")
 public class JoinPoint implements INamedByUniqueName {
+	@Id
 	@Column(name = "KKS", unique = true)
 	private String kksName;
 	@Column(name = "X")
