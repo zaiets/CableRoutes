@@ -69,10 +69,6 @@ public class CommonController {
         if(userList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        //test marker
-        System.out.println("get all users = " + userList);
-
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
