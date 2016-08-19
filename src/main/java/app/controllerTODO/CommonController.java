@@ -65,15 +65,15 @@ public class CommonController {
     //GET ALL USERS
     @RequestMapping(value = "/user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> listAllUsers() {
-        List<User> users = userService.findAllUsers();
-        if(users.isEmpty()){
+        List<User> userList = userService.findAllUsers();
+        if(userList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         //test marker
-        System.out.println("get all users = " + users);
+        System.out.println("get all users = " + userList);
 
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
     //UPDATE USER
