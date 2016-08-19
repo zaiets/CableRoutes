@@ -15,6 +15,7 @@ public class Equipment implements INamedByUniqueName {
 	/**
 	 * You can have dozens of equipments in one project named by the same commonKks
 	 */
+	@Basic
 	@Column(name = "KKS")
 	private String commonKks;
 	@Basic
@@ -29,6 +30,7 @@ public class Equipment implements INamedByUniqueName {
 	@Basic
 	@Column(name = "Z")
 	private Double z;
+	@OneToOne
 	@JoinColumn(name = "JOIN_POINT_KKS")
 	private JoinPoint joinPoint;
 

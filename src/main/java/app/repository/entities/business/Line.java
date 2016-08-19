@@ -6,15 +6,16 @@ import java.util.List;
 
 @Entity
 @Table(name="LINE")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "JOURNAL_KKS")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Line {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "ID")
     private int id;
+    @OneToOne
     @JoinColumn(name = "START_JOIN_POINT_KKS")
     private JoinPoint startPoint;
+    @OneToOne
     @JoinColumn(name = "END_JOIN_POINT_KKS")
     private JoinPoint endPoint;
     @ManyToMany

@@ -1,8 +1,11 @@
 package app.repository.entities.business;
 
+import org.springframework.context.annotation.Lazy;
+
 import javax.persistence.*;
 
 @Entity
+@Table(name="CABLE")
 public class Cable extends Line implements INamedByUniqueName {
     @Column(name = "KKS", unique = true)
     private String kksName;
@@ -18,8 +21,12 @@ public class Cable extends Line implements INamedByUniqueName {
     @Basic
     @Column(name = "DIMENSIONS")
     private String cableDimensions;
+    @OneToOne
+    @Lazy
     @JoinColumn(name = "EQUIPMENT_START_NAME")
     private Equipment start;
+    @OneToOne
+    @Lazy
     @JoinColumn(name = "EQUIPMENT_END_NAME")
     private Equipment end;
     @Basic

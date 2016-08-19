@@ -10,7 +10,7 @@ public class Journal implements INamedByUniqueName {
 	@Column(name = "KKS", unique = true)
 	private String kksName;
 	@Basic
-	@Column(name = "FULL_NAME")
+	@Column(name = "FILE")
 	private File file;
 
 	public Journal () {}

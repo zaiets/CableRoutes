@@ -1,5 +1,6 @@
 package app.service.functionality.excelworkers;
 
+import app.repository.dao.business.ICableDao;
 import app.repository.entities.business.Cable;
 import app.repository.entities.business.Journal;
 import app.properties.PropertiesManager;
@@ -33,6 +34,8 @@ public final class JournalsToExcelWriter {
     private IDataManagementStrategy dataManagementStrategy;
     @Autowired
     private ICalculatorStrategy calculatorStrategy;
+    @Autowired
+    private ICableDao cableDao;
 
     public JournalsToExcelWriter() {
     }
@@ -82,7 +85,7 @@ public final class JournalsToExcelWriter {
             CellStyle style3 = sheet.getRow(0).getCell(8).getCellStyle();
 
             int lastTitleRow = 5;
-            for (Cable cable : journal.getCables()) {
+            for (Cable cable : cableDao.readAllByJournal(journal.getKksName())) {
                 row = sheet.createRow(lastTitleRow++);
                 row.createCell(0).setCellValue(cable.getNumberInJournal());
                 row.createCell(1).setCellValue(cable.getKksName());
@@ -189,7 +192,7 @@ public final class JournalsToExcelWriter {
 
             int calcStartCell = START_CELL_IN_TEMPLATE_FOR_CALC;
             int lastTitleRow = LAST_TITLE_ROW_NUM_IN_TEMPLATE;
-            for (Cable cable : journal.getCables()) {
+            for (Cable cable : cableDao.readAllByJournal(journal.getKksName())) {
                 row = sheet.createRow(lastTitleRow++);
                 row.createCell(0).setCellValue(cable.getNumberInJournal());
                 row.createCell(1).setCellValue(cable.getKksName());

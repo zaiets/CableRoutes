@@ -8,6 +8,7 @@ public class Route implements INamedByUniqueName {
 	@Id
 	@Column(name = "KKS", unique = true)
 	private String kksName;
+	@OneToOne
 	@JoinColumn(name = "ROUTE_TYPE_MARKER")
 	private RouteType routeType;
 	@Basic
@@ -19,8 +20,10 @@ public class Route implements INamedByUniqueName {
 	@Basic
 	@Column(name = "SHELVES_COUNT")
 	private int shelvesCount;
+	@OneToOne
 	@JoinColumn(name = "FIRST_JOIN_POINT_KKS", nullable=false)
 	private JoinPoint firstEnd;
+	@OneToOne
 	@JoinColumn(name = "SECOND_JOIN_POINT_KKS", nullable=false)
 	private JoinPoint secondEnd;
 
