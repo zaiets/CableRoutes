@@ -147,19 +147,28 @@ public class FunctionalityController {
 
     @RequestMapping(value = "/generate/traced", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<File>> generateJournalInExcelFormatTraced(@RequestBody @NotNull List<String> journalNames) {
-        logger.info("Requested to generate files (xlsx) by journals: {}", journalNames.toString());
-        List<File> files = null;
+        logger.info("Requested to generate files (xlsx) of traced journals: {}", journalNames.toString());
+        List<File> files;
         try {
             files = functionalityService.generateJournalInExcelFormatTraced(journalNames);
         } catch (Exception ex) {
-            logger.warn("Unable to generate files (xlsx) by journals, reason: {}", ex.getLocalizedMessage());
+            logger.warn("Unable to generate files (xlsx) of traced journals, reason: {}", ex.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
 
-
-
-        //TODO else
+    @RequestMapping(value = "/generate/calculated", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<File>> generateJournalInExcelFormatCalculated(@RequestBody @NotNull List<String> journalNames) {
+        logger.info("Requested to generate files (xlsx) of calculated journals: {}", journalNames.toString());
+        List<File> files;
+        try {
+            files = functionalityService.generateJournalInExcelFormatCalculated(journalNames);
+        } catch (Exception ex) {
+            logger.warn("Unable to generate files (xlsx) of calculated journals, reason: {}", ex.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>(files, HttpStatus.OK);
+    }
 
 }
