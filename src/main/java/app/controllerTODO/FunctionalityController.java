@@ -79,7 +79,7 @@ public class FunctionalityController {
         cablesKksList.forEach(kks -> {
             CableDto cable = cableService.read(kks);
             if (cable == null) {
-                logger.warn("Unable to find cable: {}", kks);
+                logger.warn("Unable to find cable in DB: {}", kks);
             } else {
                 cableDtoList.add(cable);
             }
@@ -99,7 +99,7 @@ public class FunctionalityController {
         journalsKksList.forEach(kks -> {
             List<CableDto> currentList = cableService.readAllByJournal(kks);
             if (currentList == null || currentList.isEmpty()) {
-                logger.warn("Unable to find cable: {}", kks);
+                logger.warn("Unable to find cable in DB: {}", kks);
             } else {
                 cableDtoList.addAll(currentList);
             }
