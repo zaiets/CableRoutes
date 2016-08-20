@@ -32,7 +32,7 @@ public interface IFunctionalityService {
     /**
      * find all new equipments in journals
      */
-    List<EquipmentDto> findNewEquipmentsInJournals(List<JournalDto> journals);
+    List<EquipmentDto> defineNewEquipmentsInJournals(List<JournalDto> journals);
 
     /**
      * generate excel files from DB journals(to be able to transfer them to users)

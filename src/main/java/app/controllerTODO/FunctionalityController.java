@@ -2,6 +2,7 @@ package app.controllerTODO;
 
 import app.dto.models.*;
 import app.service.entities.ICableService;
+import app.service.entities.IJournalService;
 import app.service.functionality.IFunctionalityService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
 import java.io.File;
@@ -25,6 +29,8 @@ public class FunctionalityController {
     IFunctionalityService functionalityService;
     @Autowired
     ICableService cableService;
+    @Autowired
+    IJournalService journalService;
 
 
     @RequestMapping(value = "/parse/journals", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -95,24 +101,38 @@ public class FunctionalityController {
     @RequestMapping(value = "/trace/cables", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CableDto>> traceJournalsAndDefineLengths(@RequestBody @NotNull List<String> journalsKksList) {
         logger.info("Requested to trace journals: {}", journalsKksList);
-        List<CableDto> cableDtoList = new ArrayList<>();
+        List<JournalDto> journalDtoList = new ArrayList<>();
         journalsKksList.forEach(kks -> {
-            List<CableDto> currentList = cableService.readAllByJournal(kks);
-            if (currentList == null || currentList.isEmpty()) {
-                logger.warn("Unable to find cable in DB: {}", kks);
+            JournalDto journalDto = journalService.read(kks);
+            if (journalDto == null) {
+                logger.warn("Unable to find journal in DB: {}", kks);
             } else {
-                cableDtoList.addAll(currentList);
+                journalDtoList.add(journalDto);
             }
         });
-        if (cableDtoList.isEmpty()) {
+        if (journalDtoList.isEmpty()) {
             logger.warn("Unable to trace all received journals");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        List<CableDto> result = functionalityService.traceCablesAndDefineLengths(cableDtoList);
+        List<CableDto> result = functionalityService.traceJournalsAndDefineLengths(journalDtoList);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/define/pointsbyequips", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<EquipmentDto>> defineEquipmentsClosestPoints(@RequestBody @NotNull List<EquipmentDto> equipments) {
+        logger.info("Requested to define equipment closest points");
+        List<EquipmentDto> equipmentDtoList = null;
+        try {
+            equipmentDtoList = functionalityService.defineEquipmentsClosestPoints(equipments);
+        } catch (Exception ex) {
+            logger.warn("Unable to define equipments closest points, reason: {}", ex.getLocalizedMessage());
+        }
+        return new ResponseEntity<>(equipmentDtoList, HttpStatus.OK);
 
-    //TODO else
+    }
+
+
+
+        //TODO else
 
 }
