@@ -186,6 +186,10 @@ public final class FunctionalityServiceImpl implements IFunctionalityService {
     @Override
     public List<File> generateJournalInExcelFormatTraced(List<String> journalNames) {
         logger.info("generateJournalInExcelFormatTraced generating journal list");
+
+        //TODO сделать проверку валидности системы?
+        //Признаки: все данные в модели актуальны и полны, выполнена проверка оборудования и тд
+
         List<File> files = new ArrayList<>();
         for (String journalName : journalNames) {
             Journal journal = journalDao.read(journalName);
@@ -201,7 +205,7 @@ public final class FunctionalityServiceImpl implements IFunctionalityService {
     public List<File> generateJournalInExcelFormatCalculated(List<String> journalNames) {
         logger.info("generateJournalInExcelFormatCalculated generating journal list");
 
-        //TODO сделать проверку валидности системы калькуляции?
+        //TODO сделать проверку валидности системы?
         //Признаки: кабели протрассированы, выполнена проверка оборудования и тд
 
         List<File> files = new ArrayList<>();

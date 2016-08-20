@@ -125,11 +125,39 @@ public class FunctionalityController {
         try {
             equipmentDtoList = functionalityService.defineEquipmentsClosestPoints(equipments);
         } catch (Exception ex) {
-            logger.warn("Unable to define equipments closest points, reason: {}", ex.getLocalizedMessage());
+            logger.warn("Unable to define journalDtoList closest points, reason: {}", ex.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
         return new ResponseEntity<>(equipmentDtoList, HttpStatus.OK);
 
     }
+
+    @RequestMapping(value = "/define/equipsinjournal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<EquipmentDto>> defineNewEquipmentsInJournals(@RequestBody @NotNull List<JournalDto> journalDtoList) {
+        logger.info("Requested to define equipment closest points");
+        List<EquipmentDto> equipmentDtoList = null;
+        try {
+            equipmentDtoList = functionalityService.defineNewEquipmentsInJournals(journalDtoList);
+        } catch (Exception ex) {
+            logger.warn("Unable to define equipments in journals, reason: {}", ex.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>(equipmentDtoList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/generate/traced", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<File>> generateJournalInExcelFormatTraced(@RequestBody @NotNull List<String> journalNames) {
+        logger.info("Requested to generate files (xlsx) by journals: {}", journalNames.toString());
+        List<File> files = null;
+        try {
+            files = functionalityService.generateJournalInExcelFormatTraced(journalNames);
+        } catch (Exception ex) {
+            logger.warn("Unable to generate files (xlsx) by journals, reason: {}", ex.getLocalizedMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+        return new ResponseEntity<>(files, HttpStatus.OK);
+    }
+
 
 
         //TODO else
