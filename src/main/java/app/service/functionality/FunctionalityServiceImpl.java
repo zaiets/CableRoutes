@@ -147,6 +147,7 @@ public final class FunctionalityServiceImpl implements IFunctionalityService {
                     equipment.getZ(), reserveRatio);
             JoinPointDto joinPointDefined = ((JoinPointDto) result[0]);
             int extraLength = (int) result[1];
+            logger.info("Defined point {} for equipment {}", joinPointDefined.getKksName(), equipment.getFullName());
             equipment.setJoinPoint(joinPointDefined);
             equipment.setCableConnectionAddLength(equipment.getCableConnectionAddLength() + extraLength);
         }
@@ -157,16 +158,22 @@ public final class FunctionalityServiceImpl implements IFunctionalityService {
      * defines all new equipments in journals
      */
     @Override
-    public List<EquipmentDto> findNewEquipmentsInJournals(List<JournalDto> journals) {
-        logger.info("findNewEquipmentsInJournals operates with journals");
+    public List<EquipmentDto> defineNewEquipmentsInJournals(List<JournalDto> journals) {
+        logger.info("defineNewEquipmentsInJournals operates with journals");
         List<EquipmentDto> addEquip = new ArrayList<>();
         for (JournalDto journal : journals) {
             List<CableDto> cables = journal.getCables();
             cables.forEach(cable -> {
                 EquipmentDto eq1 = cable.getStart();
                 EquipmentDto eq2 = cable.getEnd();
-                if (eq1 != null && equipmentService.read(eq1.getFullName()) == null) addEquip.add(eq1);
-                if (eq2 != null && equipmentService.read(eq2.getFullName()) == null) addEquip.add(eq2);
+                if (eq1 != null && !addEquip.contains(eq1) && equipmentService.read(eq1.getFullName()) == null) {
+                    addEquip.add(eq1);
+                    logger.info("Defined new equipment {} in journal {}", eq1.getFullName(), journal.getKksName());
+                }
+                if (eq2 != null && !addEquip.contains(eq2) && equipmentService.read(eq2.getFullName()) == null) {
+                    addEquip.add(eq2);
+                    logger.info("Defined new equipment {} in journal {}", eq2.getFullName(), journal.getKksName());
+                }
             });
         }
         if (!addEquip.isEmpty()) addEquip.forEach(eq -> eq.setCommonKks(ExcelUtils.extractKKS(eq.getFullName())));
