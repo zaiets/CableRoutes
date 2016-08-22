@@ -134,7 +134,7 @@ public class CommonController {
      */
     //TODO test this
     @RequestMapping(value="/currentuser", method = RequestMethod.GET)
-    private String getPrincipal(){
+    public String getPrincipal(){
         String userName;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
