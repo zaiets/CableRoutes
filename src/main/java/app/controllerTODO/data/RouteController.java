@@ -1,7 +1,7 @@
 package app.controllerTODO.data;
 
-import app.dto.models.JournalDto;
-import app.service.entities.IJournalService;
+import app.dto.models.RouteDto;
+import app.service.entities.IRouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,67 +13,67 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/journal")
-public class JournalController {
+@RequestMapping(value = "/route")
+public class RouteController {
     @Autowired
-    IJournalService journalService;
+    IRouteService routeService;
 
-    //CREATE ONE JOURNAL
+    //CREATE ONE ROUTE
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createCable(@RequestBody HttpHeaders headers, @Valid JournalDto entityDto) {
-        boolean isCreated = journalService.create(entityDto);
+    public ResponseEntity<Void> createCable(@RequestBody HttpHeaders headers, @Valid RouteDto entityDto) {
+        boolean isCreated = routeService.create(entityDto);
         if (!isCreated) {
             return new ResponseEntity<>(headers, HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    //GET JOURNAL
+    //GET ROUTE
     @RequestMapping(value = "/{kks}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JournalDto> readCable (@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
-        JournalDto currentDto = journalService.read(kks);
+    public ResponseEntity<RouteDto> readCable (@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
+        RouteDto currentDto = routeService.read(kks);
         if (currentDto == null) {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(currentDto, headers, HttpStatus.OK);
     }
 
-    //CREATE OR UPDATE JOURNAL
+    //CREATE OR UPDATE ROUTE
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrUpdateCable(@RequestBody HttpHeaders headers,
-                                                    @RequestBody @Valid JournalDto entityDto) {
-        if (journalService.createOrUpdate(entityDto)) {
+                                                    @RequestBody @Valid RouteDto entityDto) {
+        if (routeService.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
     }
 
-    //UPDATE JOURNAL
+    //UPDATE ROUTE
     @RequestMapping(value = "/{kks}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateCable(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks,
-                                            @RequestBody @Valid JournalDto entityDto) {
-        if (journalService.update(kks, entityDto)) {
+                                            @RequestBody @Valid RouteDto entityDto) {
+        if (routeService.update(kks, entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
     }
 
-    //DELETE JOURNAL
+    //DELETE ROUTE
     @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteCable(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
-        if (journalService.delete(kks)) {
+        if (routeService.delete(kks)) {
             return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
     }
 
-    //GET ALL JOURNALS
+    //GET ALL ROUTES
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<JournalDto>> listAllCables(@RequestBody HttpHeaders headers) {
-        List<JournalDto> entityDtoList = journalService.getAll();
+    public ResponseEntity<List<RouteDto>> listAllCables(@RequestBody HttpHeaders headers) {
+        List<RouteDto> entityDtoList = routeService.getAll();
         if(entityDtoList.isEmpty()){
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
