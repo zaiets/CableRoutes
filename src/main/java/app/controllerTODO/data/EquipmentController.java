@@ -1,7 +1,7 @@
 package app.controllerTODO.data;
 
-import app.dto.models.JournalDto;
-import app.service.entities.IJournalService;
+import app.dto.models.EquipmentDto;
+import app.service.entities.IEquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,14 +13,14 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/journal")
-public class JournalController {
+@RequestMapping(value = "/equipment")
+public class EquipmentController {
     @Autowired
-    IJournalService service;
+    IEquipmentService service;
 
-    //CREATE ONE JOURNAL
+    //CREATE ONE ROUTE
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> create(@RequestBody HttpHeaders headers, @Valid JournalDto entityDto) {
+    public ResponseEntity<Void> create(@RequestBody HttpHeaders headers, @Valid EquipmentDto entityDto) {
         boolean isCreated = service.create(entityDto);
         if (!isCreated) {
             return new ResponseEntity<>(headers, HttpStatus.CONFLICT);
@@ -28,20 +28,20 @@ public class JournalController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    //GET JOURNAL
+    //GET ROUTE
     @RequestMapping(value = "/{kks}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JournalDto> read (@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
-        JournalDto currentDto = service.read(kks);
+    public ResponseEntity<EquipmentDto> read (@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
+        EquipmentDto currentDto = service.read(kks);
         if (currentDto == null) {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(currentDto, headers, HttpStatus.OK);
     }
 
-    //CREATE OR UPDATE JOURNAL
+    //CREATE OR UPDATE ROUTE
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrUpdate(@RequestBody HttpHeaders headers,
-                                                    @RequestBody @Valid JournalDto entityDto) {
+                                                    @RequestBody @Valid EquipmentDto entityDto) {
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
@@ -49,10 +49,10 @@ public class JournalController {
         }
     }
 
-    //UPDATE JOURNAL
+    //UPDATE ROUTE
     @RequestMapping(value = "/{kks}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks,
-                                            @RequestBody @Valid JournalDto entityDto) {
+                                            @RequestBody @Valid EquipmentDto entityDto) {
         if (service.update(kks, entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
@@ -60,7 +60,7 @@ public class JournalController {
         }
     }
 
-    //DELETE JOURNAL
+    //DELETE ROUTE
     @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
         if (service.delete(kks)) {
@@ -70,10 +70,10 @@ public class JournalController {
         }
     }
 
-    //GET ALL JOURNALS
+    //GET ALL ROUTES
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<JournalDto>> listAll(@RequestBody HttpHeaders headers) {
-        List<JournalDto> entityDtoList = service.getAll();
+    public ResponseEntity<List<EquipmentDto>> listAll(@RequestBody HttpHeaders headers) {
+        List<EquipmentDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
