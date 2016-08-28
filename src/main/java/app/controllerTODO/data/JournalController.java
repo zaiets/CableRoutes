@@ -16,12 +16,12 @@ import java.util.List;
 @RequestMapping(value = "/journal")
 public class JournalController {
     @Autowired
-    IJournalService journalService;
+    IJournalService service;
 
     //CREATE ONE JOURNAL
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createCable(@RequestBody HttpHeaders headers, @Valid JournalDto entityDto) {
-        boolean isCreated = journalService.create(entityDto);
+        boolean isCreated = service.create(entityDto);
         if (!isCreated) {
             return new ResponseEntity<>(headers, HttpStatus.CONFLICT);
         }
@@ -31,7 +31,7 @@ public class JournalController {
     //GET JOURNAL
     @RequestMapping(value = "/{kks}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JournalDto> readCable (@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
-        JournalDto currentDto = journalService.read(kks);
+        JournalDto currentDto = service.read(kks);
         if (currentDto == null) {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
@@ -42,7 +42,7 @@ public class JournalController {
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrUpdateCable(@RequestBody HttpHeaders headers,
                                                     @RequestBody @Valid JournalDto entityDto) {
-        if (journalService.createOrUpdate(entityDto)) {
+        if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
@@ -53,7 +53,7 @@ public class JournalController {
     @RequestMapping(value = "/{kks}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateCable(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks,
                                             @RequestBody @Valid JournalDto entityDto) {
-        if (journalService.update(kks, entityDto)) {
+        if (service.update(kks, entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
@@ -63,7 +63,7 @@ public class JournalController {
     //DELETE JOURNAL
     @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteCable(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
-        if (journalService.delete(kks)) {
+        if (service.delete(kks)) {
             return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
@@ -73,7 +73,7 @@ public class JournalController {
     //GET ALL JOURNALS
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<JournalDto>> listAllCables(@RequestBody HttpHeaders headers) {
-        List<JournalDto> entityDtoList = journalService.getAll();
+        List<JournalDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }

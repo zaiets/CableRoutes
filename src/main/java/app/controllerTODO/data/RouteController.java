@@ -16,12 +16,12 @@ import java.util.List;
 @RequestMapping(value = "/route")
 public class RouteController {
     @Autowired
-    IRouteService routeService;
+    IRouteService service;
 
     //CREATE ONE ROUTE
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createCable(@RequestBody HttpHeaders headers, @Valid RouteDto entityDto) {
-        boolean isCreated = routeService.create(entityDto);
+        boolean isCreated = service.create(entityDto);
         if (!isCreated) {
             return new ResponseEntity<>(headers, HttpStatus.CONFLICT);
         }
@@ -31,7 +31,7 @@ public class RouteController {
     //GET ROUTE
     @RequestMapping(value = "/{kks}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RouteDto> readCable (@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
-        RouteDto currentDto = routeService.read(kks);
+        RouteDto currentDto = service.read(kks);
         if (currentDto == null) {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
@@ -42,7 +42,7 @@ public class RouteController {
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrUpdateCable(@RequestBody HttpHeaders headers,
                                                     @RequestBody @Valid RouteDto entityDto) {
-        if (routeService.createOrUpdate(entityDto)) {
+        if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
@@ -53,7 +53,7 @@ public class RouteController {
     @RequestMapping(value = "/{kks}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateCable(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks,
                                             @RequestBody @Valid RouteDto entityDto) {
-        if (routeService.update(kks, entityDto)) {
+        if (service.update(kks, entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
@@ -63,7 +63,7 @@ public class RouteController {
     //DELETE ROUTE
     @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteCable(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
-        if (routeService.delete(kks)) {
+        if (service.delete(kks)) {
             return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
@@ -73,7 +73,7 @@ public class RouteController {
     //GET ALL ROUTES
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RouteDto>> listAllCables(@RequestBody HttpHeaders headers) {
-        List<RouteDto> entityDtoList = routeService.getAll();
+        List<RouteDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }

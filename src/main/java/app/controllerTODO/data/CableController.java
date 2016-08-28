@@ -16,12 +16,12 @@ import java.util.List;
 @RequestMapping(value = "/cable")
 public class CableController {
     @Autowired
-    ICableService cableService;
+    ICableService service;
 
     //CREATE ONE CABLE
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createCable(@RequestBody HttpHeaders headers, @Valid CableDto entityDto) {
-        boolean isCreated = cableService.create(entityDto);
+        boolean isCreated = service.create(entityDto);
         if (!isCreated) {
             return new ResponseEntity<>(headers, HttpStatus.CONFLICT);
         }
@@ -31,7 +31,7 @@ public class CableController {
     //GET CABLE
     @RequestMapping(value = "/{kks}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CableDto> readCable (@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
-        CableDto currentCableDto = cableService.read(kks);
+        CableDto currentCableDto = service.read(kks);
         if (currentCableDto == null) {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
@@ -41,7 +41,7 @@ public class CableController {
     //CREATE OR UPDATE CABLE
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrUpdateCable(@RequestBody HttpHeaders headers, @RequestBody @Valid CableDto entityDto) {
-        if (cableService.createOrUpdate(entityDto)) {
+        if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
@@ -51,7 +51,7 @@ public class CableController {
     //UPDATE CABLE
     @RequestMapping(value = "/{kks}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateCable(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks, @RequestBody @Valid CableDto entityDto) {
-        if (cableService.update(kks, entityDto)) {
+        if (service.update(kks, entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
@@ -61,7 +61,7 @@ public class CableController {
     //DELETE CABLE
     @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteCable(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
-        if (cableService.delete(kks)) {
+        if (service.delete(kks)) {
             return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
@@ -71,7 +71,7 @@ public class CableController {
     //GET ALL CABLES
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CableDto>> listAllCables(@RequestBody HttpHeaders headers) {
-        List<CableDto> entityDtoList = cableService.getAll();
+        List<CableDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
