@@ -18,7 +18,7 @@ public class LineController {
     @Autowired
     ILineService service;
 
-    //CREATE ONE ROUTE
+    //CREATE ONE LINE
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@RequestBody HttpHeaders headers, @Valid LineDto entityDto) {
         boolean isCreated = service.create(entityDto);
@@ -28,7 +28,7 @@ public class LineController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    //GET ROUTE
+    //GET LINE
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LineDto> read (@RequestBody HttpHeaders headers, @PathVariable("id") int id) {
         LineDto currentDto = service.read(id);
@@ -38,7 +38,7 @@ public class LineController {
         return new ResponseEntity<>(currentDto, headers, HttpStatus.OK);
     }
 
-    //CREATE OR UPDATE ROUTE
+    //CREATE OR UPDATE LINE
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrUpdate(@RequestBody HttpHeaders headers,
                                                     @RequestBody @Valid LineDto entityDto) {
@@ -49,7 +49,7 @@ public class LineController {
         }
     }
 
-    //UPDATE ROUTE
+    //UPDATE LINE
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@RequestBody HttpHeaders headers, @PathVariable("id") int id,
                                             @RequestBody @Valid LineDto entityDto) {
@@ -60,7 +60,7 @@ public class LineController {
         }
     }
 
-    //DELETE ROUTE
+    //DELETE LINE
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@RequestBody HttpHeaders headers, @PathVariable("id") int id) {
         if (service.delete(id)) {
@@ -70,7 +70,7 @@ public class LineController {
         }
     }
 
-    //GET ALL ROUTES
+    //GET ALL LINES
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<LineDto>> listAll(@RequestBody HttpHeaders headers) {
         List<LineDto> entityDtoList = service.getAll();

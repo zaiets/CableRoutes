@@ -18,7 +18,7 @@ public class JoinPointController {
     @Autowired
     IJoinPointService service;
 
-    //CREATE ONE ROUTE
+    //CREATE ONE JOINPOINT
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@RequestBody HttpHeaders headers, @Valid JoinPointDto entityDto) {
         boolean isCreated = service.create(entityDto);
@@ -28,7 +28,7 @@ public class JoinPointController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    //GET ROUTE
+    //GET JOINPOINT
     @RequestMapping(value = "/{kks}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JoinPointDto> read (@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
         JoinPointDto currentDto = service.read(kks);
@@ -38,7 +38,7 @@ public class JoinPointController {
         return new ResponseEntity<>(currentDto, headers, HttpStatus.OK);
     }
 
-    //CREATE OR UPDATE ROUTE
+    //CREATE OR UPDATE JOINPOINT
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrUpdate(@RequestBody HttpHeaders headers,
                                                     @RequestBody @Valid JoinPointDto entityDto) {
@@ -49,7 +49,7 @@ public class JoinPointController {
         }
     }
 
-    //UPDATE ROUTE
+    //UPDATE JOINPOINT
     @RequestMapping(value = "/{kks}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks,
                                             @RequestBody @Valid JoinPointDto entityDto) {
@@ -70,7 +70,7 @@ public class JoinPointController {
         }
     }
 
-    //GET ALL ROUTES
+    //GET ALL JOINPOINTS
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<JoinPointDto>> listAll(@RequestBody HttpHeaders headers) {
         List<JoinPointDto> entityDtoList = service.getAll();

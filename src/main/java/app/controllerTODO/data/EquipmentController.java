@@ -18,7 +18,7 @@ public class EquipmentController {
     @Autowired
     IEquipmentService service;
 
-    //CREATE ONE ROUTE
+    //CREATE ONE EQUIPMENT
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@RequestBody HttpHeaders headers, @Valid EquipmentDto entityDto) {
         boolean isCreated = service.create(entityDto);
@@ -28,7 +28,7 @@ public class EquipmentController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    //GET ROUTE
+    //GET EQUIPMENT
     @RequestMapping(value = "/{kks}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EquipmentDto> read (@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
         EquipmentDto currentDto = service.read(kks);
@@ -38,7 +38,7 @@ public class EquipmentController {
         return new ResponseEntity<>(currentDto, headers, HttpStatus.OK);
     }
 
-    //CREATE OR UPDATE ROUTE
+    //CREATE OR UPDATE EQUIPMENT
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrUpdate(@RequestBody HttpHeaders headers,
                                                     @RequestBody @Valid EquipmentDto entityDto) {
@@ -49,7 +49,7 @@ public class EquipmentController {
         }
     }
 
-    //UPDATE ROUTE
+    //UPDATE EQUIPMENT
     @RequestMapping(value = "/{kks}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks,
                                             @RequestBody @Valid EquipmentDto entityDto) {
@@ -60,7 +60,7 @@ public class EquipmentController {
         }
     }
 
-    //DELETE ROUTE
+    //DELETE EQUIPMENT
     @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
         if (service.delete(kks)) {
@@ -70,7 +70,7 @@ public class EquipmentController {
         }
     }
 
-    //GET ALL ROUTES
+    //GET ALL EQUIPMENTS
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EquipmentDto>> listAll(@RequestBody HttpHeaders headers) {
         List<EquipmentDto> entityDtoList = service.getAll();
