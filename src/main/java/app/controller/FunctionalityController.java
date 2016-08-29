@@ -10,16 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.validation.constraints.NotNull;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/functionality")
+@MultipartConfig(fileSizeThreshold = 20971520)
 public class FunctionalityController {
     static final Logger logger = LoggerFactory.getLogger(FunctionalityController.class);
 
@@ -41,6 +38,9 @@ public class FunctionalityController {
     @RequestMapping(value = "/parse/journals", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<JournalDto>> parseNewJournalFiles(@RequestBody List<File> filesList) {
+
+        //TODO filereader
+
         logger.info("Requested to parse journal files");
         List<JournalDto> journalDtoList = functionalityService.parseNewJournalFiles(filesList);
         if (journalDtoList == null) {
@@ -53,6 +53,9 @@ public class FunctionalityController {
     @RequestMapping(value = "/parse/equipment", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EquipmentDto>> parseNewEquipmentDataFile(@RequestBody File file) {
+
+        //TODO filereader
+
         logger.info("Requested to parse equipment files");
         List<EquipmentDto> equipmentDtoList = functionalityService.parseNewEquipmentDataFile(file);
         if (equipmentDtoList == null) {
@@ -64,14 +67,15 @@ public class FunctionalityController {
 
     @RequestMapping(value = "/parse/joinpoint", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<JoinPointDto>> parseNewJoinPointDataFile(@RequestBody InputStream fileIS) {
+    public ResponseEntity<List<JoinPointDto>> parseNewJoinPointDataFile(@RequestParam("file") MultipartFile fileRef) {
         logger.info("Requested to parse joinpoint files");
         List<JoinPointDto> joinPointDtoList = null;
         String tempFileName = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-uuuu - hh-mm-ss"));
         File file;
         try {
             file = File.createTempFile(tempFileName, null);
-            try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
+            try (FileInputStream fileIS = (FileInputStream) fileRef.getInputStream();
+                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
                 logger.info("Reading joinpoint file to temp file: {}", file.getName());
                 int read;
                 while ((read = fileIS.read()) != -1) {
@@ -96,6 +100,9 @@ public class FunctionalityController {
     @RequestMapping(value = "/parse/route", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RouteDto>> parseNewRouteFile(@RequestBody File file) {
+
+        //TODO filereader
+
         logger.info("Requested to parse route files");
         List<RouteDto> routeDtoList = functionalityService.parseNewRouteFile(file);
         if (routeDtoList == null) {
@@ -185,6 +192,9 @@ public class FunctionalityController {
             logger.warn("Unable to generate files (xlsx) of traced journals, reason: {}", ex.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
+
+        //TODO file converter and transfer
+
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
 
@@ -198,6 +208,9 @@ public class FunctionalityController {
             logger.warn("Unable to generate files (xlsx) of calculated journals, reason: {}", ex.getLocalizedMessage());
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
+
+        //TODO file converter and transfer
+
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
 
