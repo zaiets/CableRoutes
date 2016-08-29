@@ -1,7 +1,7 @@
 package app.configurationTODO;
 
-import app.properties.PropertiesManager;
 import app.converter.RoleToUserProfileConverter;
+import app.properties.PropertiesManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -65,6 +67,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public PropertiesManager propertiesHolder() {
 	    return new PropertiesManager();
+	}
+
+	@Bean
+	public MultipartResolver multipartResolver(){
+		return new CommonsMultipartResolver();
 	}
     
     /**Optional. It's only required when handling '.' in @PathVariables which otherwise ignore everything after last '.' in @PathVaidables argument.

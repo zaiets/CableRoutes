@@ -13,9 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.annotation.MultipartConfig;
 import javax.validation.constraints.NotNull;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -23,7 +25,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/functionality")
-@MultipartConfig(fileSizeThreshold = 20971520)
 public class FunctionalityController {
     static final Logger logger = LoggerFactory.getLogger(FunctionalityController.class);
 
