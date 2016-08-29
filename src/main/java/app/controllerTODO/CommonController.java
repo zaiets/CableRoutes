@@ -41,7 +41,8 @@ public class CommonController {
 
     //USER
     //CREATE USER
-    @RequestMapping(value = "/user", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/user", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createUser(@RequestBody  @Valid UserDto userDto, UriComponentsBuilder ucBuilder) {
         User registered = createUserAccount(userDto);
         if (registered == null) {
@@ -73,7 +74,8 @@ public class CommonController {
     }
 
     //UPDATE USER
-    @RequestMapping(value = "/user/{login}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/user/{login}", method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> updateUser(@PathVariable("login") String login, @RequestBody @Valid UserDto userDto) {
 
         User currentUser = userService.findByLogin(login);

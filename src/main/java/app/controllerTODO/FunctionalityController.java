@@ -33,7 +33,8 @@ public class FunctionalityController {
     IJournalService journalService;
 
 
-    @RequestMapping(value = "/parse/journals", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/parse/journals", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<JournalDto>> parseNewJournalFiles(@RequestBody List<File> filesList) {
         logger.info("Requested to parse journal files");
         List<JournalDto> journalDtoList = functionalityService.parseNewJournalFiles(filesList);
@@ -44,7 +45,8 @@ public class FunctionalityController {
         return new ResponseEntity<>(journalDtoList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/parse/equipments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/parse/equipment", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EquipmentDto>> parseNewEquipmentDataFile(@RequestBody File file) {
         logger.info("Requested to parse equipment files");
         List<EquipmentDto> equipmentDtoList = functionalityService.parseNewEquipmentDataFile(file);
@@ -55,7 +57,8 @@ public class FunctionalityController {
         return new ResponseEntity<>(equipmentDtoList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/parse/joinpoints", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/parse/joinpoint", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<JoinPointDto>> parseNewJoinPointDataFile(@RequestBody File file) {
         logger.info("Requested to parse joinpoint files");
         List<JoinPointDto> joinPointDtoList = functionalityService.parseNewJoinPointDataFile(file);
@@ -66,7 +69,8 @@ public class FunctionalityController {
         return new ResponseEntity<>(joinPointDtoList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/parse/equipments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/parse/route", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RouteDto>> parseNewRouteFile(@RequestBody File file) {
         logger.info("Requested to parse route files");
         List<RouteDto> routeDtoList = functionalityService.parseNewRouteFile(file);
@@ -78,7 +82,7 @@ public class FunctionalityController {
     }
 
 
-    @RequestMapping(value = "/trace/cables", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/trace/cable", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CableDto>> traceCablesAndDefineLengths(@RequestBody @NotNull List<String> cablesKksList) {
         logger.info("Requested to trace cables: {}", cablesKksList);
         List<CableDto> cableDtoList = new ArrayList<>();
@@ -98,7 +102,7 @@ public class FunctionalityController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/trace/cables", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/trace/journal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CableDto>> traceJournalsAndDefineLengths(@RequestBody @NotNull List<String> journalsKksList) {
         logger.info("Requested to trace journals: {}", journalsKksList);
         List<JournalDto> journalDtoList = new ArrayList<>();
@@ -118,7 +122,8 @@ public class FunctionalityController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/define/pointsbyequips", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/define/pointsbyequips", method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EquipmentDto>> defineEquipmentsClosestPoints(@RequestBody @NotNull List<EquipmentDto> equipments) {
         logger.info("Requested to define equipment closest points");
         List<EquipmentDto> equipmentDtoList = null;
@@ -132,7 +137,8 @@ public class FunctionalityController {
 
     }
 
-    @RequestMapping(value = "/define/equipsinjournal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/define/equipsinjournal", method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EquipmentDto>> defineNewEquipmentsInJournals(@RequestBody @NotNull List<JournalDto> journalDtoList) {
         logger.info("Requested to define equipment closest points");
         List<EquipmentDto> equipmentDtoList = null;
