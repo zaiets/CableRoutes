@@ -1,4 +1,4 @@
-package app.controllerTODO;
+package app.controller;
 
 import app.dto.common.UserDto;
 import app.exceptionsTODO.EmailExistsException;

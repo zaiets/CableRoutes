@@ -1,7 +1,7 @@
-package app.controllerTODO.data;
+package app.controller.data;
 
-import app.dto.models.RouteDto;
-import app.service.entities.IRouteService;
+import app.dto.models.LineDto;
+import app.service.entities.ILineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,14 +13,14 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/route")
-public class RouteController {
+@RequestMapping(value = "/line")
+public class LineController {
     @Autowired
-    IRouteService service;
+    ILineService service;
 
-    //CREATE ONE ROUTE
+    //CREATE ONE LINE
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> create(@RequestBody HttpHeaders headers, @Valid RouteDto entityDto) {
+    public ResponseEntity<Void> create(@RequestBody HttpHeaders headers, @Valid LineDto entityDto) {
         boolean isCreated = service.create(entityDto);
         if (!isCreated) {
             return new ResponseEntity<>(headers, HttpStatus.CONFLICT);
@@ -28,20 +28,20 @@ public class RouteController {
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    //GET ROUTE
-    @RequestMapping(value = "/{kks}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RouteDto> read (@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
-        RouteDto currentDto = service.read(kks);
+    //GET LINE
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<LineDto> read (@RequestBody HttpHeaders headers, @PathVariable("id") int id) {
+        LineDto currentDto = service.read(id);
         if (currentDto == null) {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(currentDto, headers, HttpStatus.OK);
     }
 
-    //CREATE OR UPDATE ROUTE
+    //CREATE OR UPDATE LINE
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateOrUpdate(@RequestBody HttpHeaders headers,
-                                                    @RequestBody @Valid RouteDto entityDto) {
+                                                    @RequestBody @Valid LineDto entityDto) {
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
@@ -49,31 +49,31 @@ public class RouteController {
         }
     }
 
-    //UPDATE ROUTE
-    @RequestMapping(value = "/{kks}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> update(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks,
-                                            @RequestBody @Valid RouteDto entityDto) {
-        if (service.update(kks, entityDto)) {
+    //UPDATE LINE
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> update(@RequestBody HttpHeaders headers, @PathVariable("id") int id,
+                                            @RequestBody @Valid LineDto entityDto) {
+        if (service.update(id, entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
     }
 
-    //DELETE ROUTE
-    @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> delete(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
-        if (service.delete(kks)) {
+    //DELETE LINE
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> delete(@RequestBody HttpHeaders headers, @PathVariable("id") int id) {
+        if (service.delete(id)) {
             return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
     }
 
-    //GET ALL ROUTES
+    //GET ALL LINES
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RouteDto>> listAll(@RequestBody HttpHeaders headers) {
-        List<RouteDto> entityDtoList = service.getAll();
+    public ResponseEntity<List<LineDto>> listAll(@RequestBody HttpHeaders headers) {
+        List<LineDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
             return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }

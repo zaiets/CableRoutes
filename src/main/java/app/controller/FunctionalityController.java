@@ -1,4 +1,4 @@
-package app.controllerTODO;
+package app.controller;
 
 import app.dto.models.*;
 import app.service.entities.ICableService;
@@ -16,7 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.NotNull;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +56,7 @@ public class FunctionalityController {
         logger.info("Requested to parse equipment files");
         List<EquipmentDto> equipmentDtoList = functionalityService.parseNewEquipmentDataFile(file);
         if (equipmentDtoList == null) {
-            logger.warn("Unable to parse equipment files");
+            logger.warn("Unable to parse equipment file");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(equipmentDtoList, HttpStatus.OK);
@@ -59,9 +64,28 @@ public class FunctionalityController {
 
     @RequestMapping(value = "/parse/joinpoint", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<JoinPointDto>> parseNewJoinPointDataFile(@RequestBody File file) {
+    public ResponseEntity<List<JoinPointDto>> parseNewJoinPointDataFile(@RequestBody InputStream fileIS) {
         logger.info("Requested to parse joinpoint files");
-        List<JoinPointDto> joinPointDtoList = functionalityService.parseNewJoinPointDataFile(file);
+        List<JoinPointDto> joinPointDtoList = null;
+        String tempFileName = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-uuuu - hh-mm-ss"));
+        File file;
+        try {
+            file = File.createTempFile(tempFileName, null);
+            try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
+                logger.info("Reading joinpoint file to temp file: {}", file.getName());
+                int read;
+                while ((read = fileIS.read()) != -1) {
+                    bos.write(read);
+                }
+                bos.flush();
+                joinPointDtoList = functionalityService.parseNewJoinPointDataFile(file);
+            } catch (Exception ex) {
+                logger.warn("Exception while trying to parse joinpoint file");
+            }
+        } catch (Exception ex) {
+            logger.warn("Exception while trying to create temp joinpoint file");
+        }
+
         if (joinPointDtoList == null) {
             logger.warn("Unable to parse joinpoint files");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -75,7 +99,7 @@ public class FunctionalityController {
         logger.info("Requested to parse route files");
         List<RouteDto> routeDtoList = functionalityService.parseNewRouteFile(file);
         if (routeDtoList == null) {
-            logger.warn("Unable to parse route files");
+            logger.warn("Unable to parse route file");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(routeDtoList, HttpStatus.OK);
