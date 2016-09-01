@@ -40,13 +40,20 @@ public class FunctionalityController {
 
     @RequestMapping(value = "/parse/journals", method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<JournalDto>> parseNewJournalFiles(@RequestBody List<File> filesList) {
-
-        //TODO filereader
-
-        logger.info("Requested to parse journal files");
-        List<JournalDto> journalDtoList = functionalityService.parseNewJournalFiles(filesList);
-        if (journalDtoList == null) {
+    public ResponseEntity<List<JournalDto>> parseNewJournalFiles(@RequestParam("uploadedFilesList") List<MultipartFile> filesRef) {
+        logger.info("Requested to read journal files");
+        List<File> fileList = new ArrayList<>();
+        filesRef.forEach(file -> fileList.add(readUploadedToTempFile(file)));
+        List<JournalDto> journalDtoList = null;
+        if (!fileList.isEmpty()) {
+            try {
+                logger.debug("Requested to parse journal files");
+                journalDtoList = functionalityService.parseNewJournalFiles(fileList);
+            } catch (Exception ex) {
+                logger.warn("Exception while trying to parse journal files");
+            }
+        }
+        if (journalDtoList == null || journalDtoList.isEmpty()) {
             logger.warn("Unable to parse journal files");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -56,7 +63,7 @@ public class FunctionalityController {
     @RequestMapping(value = "/parse/equipment", method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EquipmentDto>> parseNewEquipmentDataFile(@RequestParam("uploadedFile") MultipartFile fileRef) {
-        logger.debug("Requested to read Equipment file");
+        logger.info("Requested to read Equipment file");
         File file = readUploadedToTempFile(fileRef);
         List<EquipmentDto> equipmentDtoList = null;
         if (file != null) {
@@ -64,7 +71,7 @@ public class FunctionalityController {
                 logger.debug("Requested to parse Equipment file");
                 equipmentDtoList = functionalityService.parseNewEquipmentDataFile(file);
             } catch (Exception ex) {
-                logger.warn("Exception while trying to create temp Equipment file");
+                logger.warn("Exception while trying to parse Equipment file");
             }
         }
         if (equipmentDtoList == null) {
@@ -77,7 +84,7 @@ public class FunctionalityController {
     @RequestMapping(value = "/parse/joinPoints", method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<JoinPointDto>> parseNewJoinPointDataFile(@RequestParam("uploadedFile") MultipartFile fileRef) {
-        logger.debug("Requested to read joinPoint file");
+        logger.info("Requested to read joinPoint file");
         File file = readUploadedToTempFile(fileRef);
         List<JoinPointDto> joinPointDtoList = null;
         if (file != null) {
@@ -98,7 +105,7 @@ public class FunctionalityController {
     @RequestMapping(value = "/parse/route", method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RouteDto>> parseNewRouteFile(@RequestParam("uploadedFile") MultipartFile fileRef) {
-        logger.debug("Requested to read Route file");
+        logger.info("Requested to read Route file");
         File file = readUploadedToTempFile(fileRef);
         List<RouteDto> routeDtoList = null;
         if (file != null) {
