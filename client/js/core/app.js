@@ -1,1 +1,1 @@
-var app = angular.module('a1',["ngRoute"]);
+var app = angular.module('cableroutes',["ngRoute"]);

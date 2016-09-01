@@ -1,12 +1,7 @@
 app.config(function ($routeProvider) {
     $routeProvider
-        .when("/first", {
-            templateUrl: 'views/first.html',
-            controller: 'firstController'
+        .when("/joinPointsPage", {
+            templateUrl: 'views/joinPointActionsPage.html',
+            controller: 'joinPointController'
         })
-        .when("/second", {
-            templateUrl: 'views/second.html',
-            controller: 'secondController'
-        })
-
 });

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+</head>
+<body>
+<p>1. Add new Join Points from new file:</p>
+<form method="POST" enctype="multipart/form-data"
+      action="http://localhost:8080/test">
+    File to parse: <input type="file" name="uploadedFile"><br />
+    <input type="submit" value="Parse">
+</form>
+
+<p>2. Add new Join Points manually:</p>
+<form method="get" ng-model="newJoinPoint">
+    KKS:<input type="text" ng-model="newJoinPoint.kksName"><br/>
+    Coordinates:<br/>
+    X:<input type="text" ng-model="newJoinPoint.x"><br/>
+    Y:<input type="text" ng-model="newJoinPoint.y"><br/>
+    Z:<input type="text" ng-model="newJoinPoint.z"><br/>
+    <button ng-click="addJoinPoint()">Add new JP</button>
+</form>
+
+<p>3. List of Join Points in DB:</p>
+<table>
+    <tr ng-repeat="joinPoint in joinPoints">
+        <td><span
+            data-ng-bind="joinPoint"></span></td>
+    </tr>
+</table>
+
+</body>
+</html>
