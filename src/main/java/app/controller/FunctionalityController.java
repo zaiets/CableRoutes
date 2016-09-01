@@ -13,18 +13,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.validation.constraints.NotNull;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/functionality")
+@MultipartConfig(fileSizeThreshold = 20971520)  //max file size
 public class FunctionalityController {
     static final Logger logger = LoggerFactory.getLogger(FunctionalityController.class);
 
@@ -37,7 +39,7 @@ public class FunctionalityController {
 
 
     @RequestMapping(value = "/parse/journals", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<JournalDto>> parseNewJournalFiles(@RequestBody List<File> filesList) {
 
         //TODO filereader
@@ -52,94 +54,61 @@ public class FunctionalityController {
     }
 
     @RequestMapping(value = "/parse/equipment", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<EquipmentDto>> parseNewEquipmentDataFile(@RequestParam("file") MultipartFile fileRef) {
-        logger.info("Requested to parse Equipment file");
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<EquipmentDto>> parseNewEquipmentDataFile(@RequestParam("uploadedFile") MultipartFile fileRef) {
+        logger.debug("Requested to read Equipment file");
+        File file = readUploadedToTempFile(fileRef);
         List<EquipmentDto> equipmentDtoList = null;
-        String tempFileName = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-uuuu - hh-mm-ss"));
-        File file;
-        try {
-            file = File.createTempFile(tempFileName, null);
-            try (FileInputStream fileIS = (FileInputStream) fileRef.getInputStream();
-                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
-                logger.info("Reading Equipment file to temp file: {}", file.getName());
-                int read;
-                while ((read = fileIS.read()) != -1) {
-                    bos.write(read);
-                }
-                bos.flush();
+        if (file != null) {
+            try {
+                logger.debug("Requested to parse Equipment file");
                 equipmentDtoList = functionalityService.parseNewEquipmentDataFile(file);
             } catch (Exception ex) {
-                logger.warn("Exception while trying to parse Equipment file");
+                logger.warn("Exception while trying to create temp Equipment file");
             }
-        } catch (Exception ex) {
-            logger.warn("Exception while trying to create temp Equipment file");
         }
-
         if (equipmentDtoList == null) {
-            logger.warn("Unable to parse Route files");
+            logger.warn("Unable to parse Equipment files");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(equipmentDtoList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/parse/joinpoint", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<JoinPointDto>> parseNewJoinPointDataFile(@RequestParam("file") MultipartFile fileRef) {
-        logger.info("Requested to parse joinpoint file");
+    @RequestMapping(value = "/parse/joinPoints", method = RequestMethod.POST,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<JoinPointDto>> parseNewJoinPointDataFile(@RequestParam("uploadedFile") MultipartFile fileRef) {
+        logger.debug("Requested to read joinPoint file");
+        File file = readUploadedToTempFile(fileRef);
         List<JoinPointDto> joinPointDtoList = null;
-        String tempFileName = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-uuuu - hh-mm-ss"));
-        File file;
-        try {
-            file = File.createTempFile(tempFileName, null);
-            try (FileInputStream fileIS = (FileInputStream) fileRef.getInputStream();
-                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
-                logger.info("Reading joinpoint file to temp file: {}", file.getName());
-                int read;
-                while ((read = fileIS.read()) != -1) {
-                    bos.write(read);
-                }
-                bos.flush();
+        if (file != null) {
+            try {
+                logger.debug("Requested to parse joinPoint file");
                 joinPointDtoList = functionalityService.parseNewJoinPointDataFile(file);
             } catch (Exception ex) {
-                logger.warn("Exception while trying to parse joinpoint file");
+                logger.warn("Exception while trying to parse joinPoint file");
             }
-        } catch (Exception ex) {
-            logger.warn("Exception while trying to create temp joinpoint file");
         }
-
         if (joinPointDtoList == null) {
-            logger.warn("Unable to parse joinpoint files");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            logger.warn("Unable to parse joinPoint files");
+            new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(joinPointDtoList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/parse/route", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RouteDto>> parseNewRouteFile(@RequestParam("file") MultipartFile fileRef) {
-        logger.info("Requested to parse Route file");
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RouteDto>> parseNewRouteFile(@RequestParam("uploadedFile") MultipartFile fileRef) {
+        logger.debug("Requested to read Route file");
+        File file = readUploadedToTempFile(fileRef);
         List<RouteDto> routeDtoList = null;
-        String tempFileName = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-uuuu - hh-mm-ss"));
-        File file;
-        try {
-            file = File.createTempFile(tempFileName, null);
-            try (FileInputStream fileIS = (FileInputStream) fileRef.getInputStream();
-                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
-                logger.info("Reading Route file to temp file: {}", file.getName());
-                int read;
-                while ((read = fileIS.read()) != -1) {
-                    bos.write(read);
-                }
-                bos.flush();
+        if (file != null) {
+            try {
+                logger.debug("Requested to parse Route file");
                 routeDtoList = functionalityService.parseNewRouteFile(file);
             } catch (Exception ex) {
                 logger.warn("Exception while trying to parse Route file");
             }
-        } catch (Exception ex) {
-            logger.warn("Exception while trying to create temp Route file");
         }
-
         if (routeDtoList == null) {
             logger.warn("Unable to parse Route files");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -250,5 +219,27 @@ public class FunctionalityController {
     }
 
 
+    private File readUploadedToTempFile(MultipartFile fileRef) {
+        String tempFileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-uuuu - hh-mm-ss"));
+        logger.debug("Trying to create temp file named '{}' for original file {}", tempFileName, fileRef.getOriginalFilename());
+        File file = null;
+        try {
+            file = File.createTempFile(tempFileName, null);
+            try (FileInputStream fileIS = (FileInputStream) fileRef.getInputStream();
+                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
+                logger.debug("Reading file to temp file: {}", tempFileName);
+                int read;
+                while ((read = fileIS.read()) != -1) {
+                    bos.write(read);
+                }
+                bos.flush();
+            } catch (Exception ex) {
+                logger.warn("Exception while trying to write data into {}", tempFileName);
+            }
+        } catch (Exception ex) {
+            logger.warn("Can't create file {}", tempFileName);
+        }
+        return file;
+    }
 
 }
