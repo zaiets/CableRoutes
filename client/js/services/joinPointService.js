@@ -3,7 +3,8 @@ app.service('joinPointService', function ($http) {
     console.log('core app.joinPointService initialized');
 
     this.getJoinPoints = function (result) {
-        $http.get('http://localhost:8080/joinPoint/')
+        console.log('joinPointService works... -> getJoinPoints');
+        $http.get('http://localhost:8080/joinPoint')
             .then(function (response) {
                 console.log(response.data);
                 result(response.data);
@@ -11,7 +12,8 @@ app.service('joinPointService', function ($http) {
     };
 
     this.postNewEntriesToDatabase = function (entries) {
-        entries.foreach($http.put('http://localhost:8080/joinPoint/')
+        console.log('joinPointService works... -> postNewEntriesToDatabase');
+        entries.forEach($http.put('http://localhost:8080/joinPoint')
             .then(function (response) {
                 console.log(response.data)
             }));

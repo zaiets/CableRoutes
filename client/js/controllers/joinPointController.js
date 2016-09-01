@@ -1,17 +1,18 @@
 app.controller('joinPointController' , function ($scope, joinPointService) {
 
-    console.log('joinPointController works...');
     $scope.joinPoints = [];
 
     joinPointService.getJoinPoints(function (data) {
+        console.log('joinPointController works... -> getJoinPoints');
         $scope.joinPoints = data;
     });
 
     $scope.newJoinPoint = {};
 
     $scope.addJoinPoint = function () {
-        console.log(newJoinPoint);
+        console.log('joinPointController works... -> addJoinPoint');
         var joinPoint = angular.copy($scope.newJoinPoint);
+        console.log(newJoinPoint.x);
         $scope.joinPoints.push(joinPoint)
     }
 });
