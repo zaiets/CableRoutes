@@ -11,14 +11,13 @@ app.service('joinPointService', function ($http) {
             });
     };
 
-    this.postNewEntriesToDatabase = function (entries) {
+    this.postNewEntriesToDatabase = function () {
         console.log('joinPointService works... -> postNewEntriesToDatabase');
-        entries.forEach($http.put('http://localhost:8080/joinPoint')
+        $scope.joinPoints.forEach($http.put('http://localhost:8080/joinPoint')
             .then(function (response) {
                 console.log(response.data)
             }));
         return alert("Create or update done!");
     };
-
 
 });

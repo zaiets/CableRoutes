@@ -1,11 +1,10 @@
 <p>0. Send into DB Join Points listed below this page:</p>
-<button ng-click="postNewEntriesToDatabase($scope.joinPoints)">ACCEPT</button>
+<button ng-click="postNewEntriesToDatabase()">ACCEPT</button>
 
 <p>1. Add new Join Points from new file:</p>
-<form method="POST" enctype="multipart/form-data"
-      action="http://localhost:8080/functionality/parse/joinPoints">
-    File to parse: <input type="file" name="uploadedFile"><br />
-    <input type="submit" value="Parse">
+<form ng-model="uploadedFile">
+    Choose Join Points file to parse: <input type="file" name="uploadedFile" file-model="uploadedFile"><br />
+    <button ng-click="submit()">READ FILE</button>
 </form>
 
 <p>2. Add new Join Points manually:</p>
