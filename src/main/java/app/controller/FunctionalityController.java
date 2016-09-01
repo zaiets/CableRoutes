@@ -53,14 +53,31 @@ public class FunctionalityController {
 
     @RequestMapping(value = "/parse/equipment", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<EquipmentDto>> parseNewEquipmentDataFile(@RequestBody File file) {
+    public ResponseEntity<List<EquipmentDto>> parseNewEquipmentDataFile(@RequestParam("file") MultipartFile fileRef) {
+        logger.info("Requested to parse Equipment file");
+        List<EquipmentDto> equipmentDtoList = null;
+        String tempFileName = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-uuuu - hh-mm-ss"));
+        File file;
+        try {
+            file = File.createTempFile(tempFileName, null);
+            try (FileInputStream fileIS = (FileInputStream) fileRef.getInputStream();
+                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
+                logger.info("Reading Equipment file to temp file: {}", file.getName());
+                int read;
+                while ((read = fileIS.read()) != -1) {
+                    bos.write(read);
+                }
+                bos.flush();
+                equipmentDtoList = functionalityService.parseNewEquipmentDataFile(file);
+            } catch (Exception ex) {
+                logger.warn("Exception while trying to parse Equipment file");
+            }
+        } catch (Exception ex) {
+            logger.warn("Exception while trying to create temp Equipment file");
+        }
 
-        //TODO filereader
-
-        logger.info("Requested to parse equipment files");
-        List<EquipmentDto> equipmentDtoList = functionalityService.parseNewEquipmentDataFile(file);
         if (equipmentDtoList == null) {
-            logger.warn("Unable to parse equipment file");
+            logger.warn("Unable to parse Route files");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(equipmentDtoList, HttpStatus.OK);
@@ -69,7 +86,7 @@ public class FunctionalityController {
     @RequestMapping(value = "/parse/joinpoint", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<JoinPointDto>> parseNewJoinPointDataFile(@RequestParam("file") MultipartFile fileRef) {
-        logger.info("Requested to parse joinpoint files");
+        logger.info("Requested to parse joinpoint file");
         List<JoinPointDto> joinPointDtoList = null;
         String tempFileName = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-uuuu - hh-mm-ss"));
         File file;
@@ -100,14 +117,31 @@ public class FunctionalityController {
 
     @RequestMapping(value = "/parse/route", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RouteDto>> parseNewRouteFile(@RequestBody File file) {
+    public ResponseEntity<List<RouteDto>> parseNewRouteFile(@RequestParam("file") MultipartFile fileRef) {
+        logger.info("Requested to parse Route file");
+        List<RouteDto> routeDtoList = null;
+        String tempFileName = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-uuuu - hh-mm-ss"));
+        File file;
+        try {
+            file = File.createTempFile(tempFileName, null);
+            try (FileInputStream fileIS = (FileInputStream) fileRef.getInputStream();
+                 BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file))) {
+                logger.info("Reading Route file to temp file: {}", file.getName());
+                int read;
+                while ((read = fileIS.read()) != -1) {
+                    bos.write(read);
+                }
+                bos.flush();
+                routeDtoList = functionalityService.parseNewRouteFile(file);
+            } catch (Exception ex) {
+                logger.warn("Exception while trying to parse Route file");
+            }
+        } catch (Exception ex) {
+            logger.warn("Exception while trying to create temp Route file");
+        }
 
-        //TODO filereader
-
-        logger.info("Requested to parse route files");
-        List<RouteDto> routeDtoList = functionalityService.parseNewRouteFile(file);
         if (routeDtoList == null) {
-            logger.warn("Unable to parse route file");
+            logger.warn("Unable to parse Route files");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(routeDtoList, HttpStatus.OK);
@@ -214,5 +248,7 @@ public class FunctionalityController {
 
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
+
+
 
 }
