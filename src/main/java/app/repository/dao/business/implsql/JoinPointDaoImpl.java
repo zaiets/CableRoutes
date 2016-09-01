@@ -9,10 +9,12 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
+@Transactional
 public class JoinPointDaoImpl extends AbstractDao<String, JoinPoint> implements IJoinPointDao {
 
     static final Logger logger = LoggerFactory.getLogger(JoinPointDaoImpl.class);
@@ -59,7 +61,7 @@ public class JoinPointDaoImpl extends AbstractDao<String, JoinPoint> implements 
     @SuppressWarnings("unchecked")
     public List<JoinPoint> getAll() {
         logger.info("Reading all joinPoints");
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("KKS"));
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("kksName"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return (List<JoinPoint>) criteria.list();
     }

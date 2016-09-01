@@ -3,7 +3,7 @@
 
 <p>1. Add new Join Points from new file:</p>
 <form method="POST" enctype="multipart/form-data"
-      action="http://localhost:8080/test">
+      action="http://localhost:8080/functionality/parse/joinPoints">
     File to parse: <input type="file" name="uploadedFile"><br />
     <input type="submit" value="Parse">
 </form>
@@ -18,9 +18,10 @@
     <button ng-click="addJoinPoint()">Add new JP</button>
 </form>
 
-<p>3. List of Join Points in DB:</p>
-<table>
+<p>3. List of Join Points currently in DB:</p>
+<table border=3 cellspacing=0>
+    <tr bgcolor="#d3d3d3"><td>KKS</td><td>X</td><td>Y</td><td>Z</td></tr>
     <tr ng-repeat="joinPoint in joinPoints">
-        <td>{{joinPoint}}</td>
+        <td>{{joinPoint.kksName}}</td><td>{{joinPoint.x}}</td><td>{{joinPoint.y}}</td><td>{{joinPoint.z}}</td>
     </tr>
 </table>
