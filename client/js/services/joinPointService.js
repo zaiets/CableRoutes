@@ -1,21 +1,21 @@
 app.service('joinPointService', function ($http) {
 
-    console.log('core app.service initialized');
+    console.log('core app.joinPointService initialized');
 
     this.getJoinPoints = function (result) {
-        $http.get('http://localhost:8080/joinPoint')
+        $http.get('http://localhost:8080/joinPoint/')
             .then(function (response) {
                 console.log(response.data);
                 result(response.data);
             });
     };
 
-    this.getCurrentUser = function () {
-        $http.get('http://localhost:8080/currentuser')
+    this.postNewEntriesToDatabase = function (entries) {
+        entries.foreach($http.put('http://localhost:8080/joinPoint/')
             .then(function (response) {
                 console.log(response.data)
-            });
-        return 'Hello ' + (counting++);
+            }));
+        return alert("Create or update done!");
     };
 
 

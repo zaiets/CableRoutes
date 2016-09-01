@@ -228,7 +228,7 @@ public class FunctionalityController {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
 
-        //TODO file converter and transfer
+        //TODO file converter and transfer??
 
         return new ResponseEntity<>(files, HttpStatus.OK);
     }
@@ -244,7 +244,7 @@ public class FunctionalityController {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
 
-        //TODO file converter and transfer
+        //TODO file converter and transfer??
 
         return new ResponseEntity<>(files, HttpStatus.OK);
     }

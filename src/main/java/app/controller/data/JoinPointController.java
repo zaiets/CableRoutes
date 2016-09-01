@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/joinpoint")
+@RequestMapping(value = "/joinPoint")
 public class JoinPointController {
     @Autowired
     IJoinPointService service;
@@ -60,7 +60,7 @@ public class JoinPointController {
         }
     }
 
-    //DELETE ROUTE
+    //DELETE JOINPOINT
     @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@RequestBody HttpHeaders headers, @PathVariable("kks") String kks) {
         if (service.delete(kks)) {

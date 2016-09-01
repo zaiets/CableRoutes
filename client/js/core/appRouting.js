@@ -1,6 +1,6 @@
 app.config(function ($routeProvider) {
     $routeProvider
-        .when("/joinPointsPage", {
+        .when("/joinPointPage", {
             templateUrl: 'views/joinPointActionsPage.html',
             controller: 'joinPointController'
         })

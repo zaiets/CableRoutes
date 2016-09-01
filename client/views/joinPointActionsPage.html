@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<p>0. Send into DB Join Points listed below this page:</p>
+<button ng-click="postNewEntriesToDatabase($scope.joinPoints)">ACCEPT</button>
 
-</head>
-<body>
 <p>1. Add new Join Points from new file:</p>
 <form method="POST" enctype="multipart/form-data"
       action="http://localhost:8080/test">
@@ -28,6 +25,3 @@
             data-ng-bind="joinPoint"></span></td>
     </tr>
 </table>
-
-</body>
-</html>
