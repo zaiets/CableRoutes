@@ -7,19 +7,34 @@ app.controller('joinPointController', function ($scope, multipartForm, joinPoint
     });
 
     $scope.newJoinPoint = {};
+    $scope.newJoinPoints = [];
 
     $scope.addJoinPoint = function () {
-        console.log('joinPointController works... -> addJoinPoint');
+        console.log('joinPointController works... -> addNewJoinPoint ');
         var joinPoint = angular.copy($scope.newJoinPoint);
-        console.log(newJoinPoint.x);
-        $scope.joinPoints.push(joinPoint)
+        $scope.newJoinPoints.push(joinPoint);
+        console.log(joinPoint);
     };
+
+    $scope.sendNewEntriesToDatabase = function () {
+        console.log('joinPointController works... -> sendNewEntriesToDatabase');
+        var uploadUrl = 'http://localhost:8080/joinPoint';
+        joinPointService.createOrUpdate(uploadUrl, $scope.newJoinPoints, function (result) {
+            var joinPointsList = angular.copy($scope.joinPoints);
+            joinPointsList.concat(result);
+            $scope.joinPoints = joinPointsList;
+        });
+
+    };
+
 
     $scope.uploadedFile = {};
 
-    $scope.submit = function(){
-        uploadUrl = 'http://localhost:8080/functionality/parse/joinPoints';
-        multipartForm.post(uploadUrl, $scope.uploadedFile);
-    }
-
+    $scope.submit = function () {
+        console.log('joinPointController works... -> submit file for parsing');
+        var uploadUrl = 'http://localhost:8080/functionality/parse/joinPoints';
+        multipartForm.post(uploadUrl, $scope.uploadedFile, function (result) {
+            $scope.newJoinPoints = result;
+        })
+    };
 });

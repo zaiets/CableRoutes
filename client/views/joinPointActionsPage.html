@@ -1,6 +1,3 @@
-<p>0. Send into DB Join Points listed below this page:</p>
-<button ng-click="postNewEntriesToDatabase()">ACCEPT</button>
-
 <p>1. Add new Join Points from new file:</p>
 <form ng-model="uploadedFile">
     Choose Join Points file to parse: <input type="file" name="uploadedFile" file-model="uploadedFile"><br />
@@ -22,5 +19,15 @@
     <tr bgcolor="#d3d3d3"><td>KKS</td><td>X</td><td>Y</td><td>Z</td></tr>
     <tr ng-repeat="joinPoint in joinPoints">
         <td>{{joinPoint.kksName}}</td><td>{{joinPoint.x}}</td><td>{{joinPoint.y}}</td><td>{{joinPoint.z}}</td>
+    </tr>
+</table>
+
+<p>4. List of new Join Points entered/parsed (need to accept):</p>
+* to send this Join Points to DB, press this button:
+<button ng-click="sendNewEntriesToDatabase()">ACCEPT</button>
+<table border=3 cellspacing=0 >
+    <tr bgcolor="#e0ffff"><td>KKS</td><td>X</td><td>Y</td><td>Z</td></tr>
+    <tr ng-repeat="newJoinPoint in newJoinPoints">
+        <td>{{newJoinPoint.kksName}}</td><td>{{newJoinPoint.x}}</td><td>{{newJoinPoint.y}}</td><td>{{newJoinPoint.z}}</td>
     </tr>
 </table>
