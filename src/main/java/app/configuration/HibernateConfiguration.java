@@ -1,4 +1,4 @@
-package app.configurationTODO;
+package app.configuration;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

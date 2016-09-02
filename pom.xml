@@ -223,7 +223,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.4</version>
                 <configuration>
-                    <warSourceDirectory>web</warSourceDirectory>
+                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
                     <warName>CableroutesWebApp</warName>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>

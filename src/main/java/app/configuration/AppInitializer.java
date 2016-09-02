@@ -1,4 +1,4 @@
-package app.configurationTODO;
+package app.configuration;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

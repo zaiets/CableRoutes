@@ -118,7 +118,7 @@ public class CommonController {
         if (isCurrentAuthenticationAnonymous()) {
             return "login";
         } else {
-            return "redirect:/user";
+            return "redirect:/";
         }
     }
 
@@ -132,7 +132,7 @@ public class CommonController {
             persistentTokenBasedRememberMeServices.logout(request, response, auth);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
-        return "redirect:/login?logout";
+        return "redirect:/";
     }
 
     /**
