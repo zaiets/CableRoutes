@@ -1,21 +1,23 @@
 app.controller('commonNavController', function ($scope, commonService) {
     console.log('core app.commonNavController initialized');
 
-    $scope.currentUserName = 'Anonymous';
-
-    this.authenticated = function() {
-        commonService.getAuth(function(userName) {
-            if (userName !== null) {
-                $scope.currentUserName = userName;
-                return true;
-            }
-            return false;
-        });
+    $scope.currentUser = {
+        name: function () {
+            console.log('this.authenticated called');
+            commonService.getAuth(function (userName) {
+                console.log('this.authenticated got ' + userName);
+                if (userName != null) {
+                    return userName;
+                } else {
+                    return 'Anonymous';
+                }
+            });
+        },
+        isAuthenticated: name !== 'Anonymous'
     };
 
-    this.logout = function() {
+    $scope.logout = function () {
         console.log('commonService works... -> logout');
-        $scope.currentUserName = 'Anonymous';
         commonService.logout();
     }
 });

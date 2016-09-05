@@ -4,6 +4,8 @@ import app.dto.common.UserDto;
 import app.exceptionsTODO.EmailExistsException;
 import app.repository.entities.common.User;
 import app.service.common.IUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/")
 public class CommonController {
+    static final Logger logger = LoggerFactory.getLogger(FunctionalityController.class);
 
     @Autowired
     private IUserService userService;
@@ -126,13 +129,14 @@ public class CommonController {
      * This method handles logout requests.
      */
     @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<String> logoutPage (HttpServletRequest request, HttpServletResponse response){
+        logger.info("CommonController called for logoutPage()");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
             persistentTokenBasedRememberMeServices.logout(request, response, auth);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
-        return "redirect:/";
+        return new ResponseEntity<>("redirect:/", HttpStatus.OK);
     }
 
     /**
@@ -140,7 +144,8 @@ public class CommonController {
      */
     //TODO test this
     @RequestMapping(value="/currentuser", method = RequestMethod.GET)
-    public String getPrincipal(){
+    public ResponseEntity<String> getPrincipal(){
+        logger.info("CommonController called for getPrincipal()");
         String userName;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
@@ -148,7 +153,7 @@ public class CommonController {
         } else {
             userName = principal.toString();
         }
-        return userName;
+        return new ResponseEntity<>(userName, HttpStatus.OK);
     }
 
     /**

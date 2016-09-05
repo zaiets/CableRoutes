@@ -4,7 +4,7 @@ app.service('commonService', function ($http) {
 
     this.getAuth = function (result) {
         console.log('commonService works... -> getAuth');
-        $http.get('http://localhost:8080/currentuser')
+        $http.get('http://localhost:8080/usercurrentuser')
             .then(function (response) {
                 console.log(response.data);
                 result(response.data);
