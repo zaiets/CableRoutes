@@ -32,7 +32,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/")
 public class CommonController {
-    static final Logger logger = LoggerFactory.getLogger(FunctionalityController.class);
+    static final Logger logger = LoggerFactory.getLogger(CommonController.class);
 
     @Autowired
     private IUserService userService;
@@ -118,8 +118,9 @@ public class CommonController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
+        logger.info("CommonController called for loginPage()");
         if (isCurrentAuthenticationAnonymous()) {
-            return "login";
+            return "/login";
         } else {
             return "redirect:/";
         }
@@ -136,13 +137,12 @@ public class CommonController {
             persistentTokenBasedRememberMeServices.logout(request, response, auth);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
-        return new ResponseEntity<>("redirect:/", HttpStatus.OK);
+        return new ResponseEntity<>("redirect:/login", HttpStatus.OK);
     }
 
     /**
      * This method returns the principal[user-name] of logged-in user.
      */
-    //TODO test this
     @RequestMapping(value="/currentuser", method = RequestMethod.GET)
     public ResponseEntity<String> getPrincipal(){
         logger.info("CommonController called for getPrincipal()");
@@ -160,6 +160,7 @@ public class CommonController {
      * This method returns true if users is already authenticated [logged-in], else false.
      */
     private boolean isCurrentAuthenticationAnonymous() {
+        logger.info("CommonController called for isCurrentAuthenticationAnonymous()");
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authenticationTrustResolver.isAnonymous(authentication);
     }

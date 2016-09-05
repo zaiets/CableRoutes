@@ -6,14 +6,9 @@ app.controller('commonNavController', function ($scope, commonService) {
             console.log('this.authenticated called');
             commonService.getAuth(function (userName) {
                 console.log('this.authenticated got ' + userName);
-                if (userName != null) {
-                    return userName;
-                } else {
-                    return 'Anonymous';
-                }
+                return userName;
             });
-        },
-        isAuthenticated: name !== 'Anonymous'
+        }
     };
 
     $scope.logout = function () {

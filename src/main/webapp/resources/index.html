@@ -18,13 +18,15 @@
     <script src="/resources/js/services/joinPointService.js"></script>
 </head>
 
-<body ng-init="commonNavController.authenticated()" ng-cloak>
-Hello, {{$scope.currentUser.name()}}!
+<body ng-cloak>
+<div class="hello" ng-controller="commonNavController" ng-model="currentUser">
+    Hello, {{$scope.currentUser}}!
+    <button name="logoutButton" ng-click="logout()">Logout</button>
+</div>
 <div class="container">
-    <button name="logoutButton" ng-show="currentUser.isAuthenticated" ng-click="commonNavController.logout()">Logout</button>
     <ul class="tabs" role="tablist">
-        <li ng-show="!currentUser.isAuthenticated"><a href="#/joinPointPage">joinPointActionsPage</a></li>
-        <li ng-show="currentUser.isAuthenticated"><a href="#/equipments">equipmentsTODO</a></li>
+        <li ng-show=true><a href="#/joinPointPage">joinPointActionsPage</a></li>
+        <li ng-show=false><a href="#/equipments">equipmentsTODO</a></li>
     </ul>
 </div>
 <div ng-view class="container"></div>
