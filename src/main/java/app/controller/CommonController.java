@@ -117,12 +117,12 @@ public class CommonController {
      * If users is already logged-in and tries to goto login page again, will be redirected to list page.
      */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage() {
+    public ResponseEntity<String> loginPage() {
         logger.info("CommonController called for loginPage()");
         if (isCurrentAuthenticationAnonymous()) {
-            return "/login";
+            return new ResponseEntity<>("/login", HttpStatus.OK);
         } else {
-            return "redirect:/";
+            return new ResponseEntity<>("redirect:/", HttpStatus.OK);
         }
     }
 
