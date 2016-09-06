@@ -21,16 +21,11 @@ app.controller('adminController', function ($scope, adminService) {
     $scope.addNewUser = function () {
         console.log('adminController works... -> addNewUser');
         var newUser = angular.copy($scope.newUser);
-        adminService.addNewUser(newUser, function (answer) {
-            if (answer == 201) {
-                users.push(newUser);
-            }
-        })
+        adminService.addNewUser(newUser)
     };
 
     $scope.delete = function (loginToDelete) {
         console.log('adminController works... -> delete user: ' + loginToDelete);
         adminService.delete(loginToDelete)
-            .then(alert('user ' + loginToDelete + ' deleted!'));
     };
 });

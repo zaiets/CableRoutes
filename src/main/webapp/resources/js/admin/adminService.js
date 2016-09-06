@@ -3,12 +3,12 @@ app.service('adminService', function ($http) {
     console.log('core adminService initialized');
 
 
-    this.addNewUser = function (newUser, result) {
+    this.addNewUser = function (newUser) {
         console.log('adminService works... -> addNewUser');
         $http.post('/admin/user', newUser)
             .then(function (response) {
                 console.log(response.status);
-                result(response.status);
+                location.reload();
             });
     };
 
