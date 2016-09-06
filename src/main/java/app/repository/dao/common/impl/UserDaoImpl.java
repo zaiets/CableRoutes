@@ -59,10 +59,10 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements IUserDao 
 		
 		// No need to fetch userProfiles since we are not showing them on list page. Let them lazy load. 
 		// Uncomment below lines for eagerly fetching of userProfiles if you want.
-		/*
 		for(User user : users){
 			Hibernate.initialize(user.getUserProfile());
-		}*/
+		}
+		//uncommented temporary
 		return users;
 	}
 
