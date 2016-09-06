@@ -3,6 +3,7 @@ package app.controller;
 import app.dto.common.UserDto;
 import app.exceptionsTODO.EmailExistsException;
 import app.repository.entities.common.User;
+import app.service.common.IUserProfileService;
 import app.service.common.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +31,14 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/")
+@RequestMapping(value = "/admin")
 public class CommonController {
     static final Logger logger = LoggerFactory.getLogger(CommonController.class);
 
     @Autowired
     private IUserService userService;
+    @Autowired
+    private IUserProfileService userProfileService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -48,7 +51,7 @@ public class CommonController {
 
     //USER
     //CREATE USER
-    @RequestMapping(value = "/user", method = RequestMethod.POST,
+    @RequestMapping(value = "user", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createUser(@RequestBody  @Valid UserDto userDto, UriComponentsBuilder ucBuilder) {
         User registered = createUserAccount(userDto);
@@ -61,7 +64,7 @@ public class CommonController {
     }
 
     //GET USER
-    @RequestMapping(value = "/user/{login}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "user/{login}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUser (@PathVariable("login") String login) {
         User user = userService.findByLogin(login);
         if (user == null) {
@@ -70,8 +73,8 @@ public class CommonController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    //GET ALL USERS
-    @RequestMapping(value = "/user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    //GET ALL USERS (ADMIN)
+    @RequestMapping(value = "user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> listAllUsers() {
         List<User> userList = userService.findAllUsers();
         if(userList.isEmpty()){
@@ -80,8 +83,8 @@ public class CommonController {
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
-    //UPDATE USER
-    @RequestMapping(value = "/user/{login}", method = RequestMethod.PUT,
+    //UPDATE USER (ADMIN)
+    @RequestMapping(value = "user/{login}", method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> updateUser(@PathVariable("login") String login, @RequestBody @Valid UserDto userDto) {
 
@@ -96,12 +99,13 @@ public class CommonController {
         currentUser.setLastName(userDto.getLastName());
         currentUser.setPatronymic(userDto.getPatronymic());
         currentUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        currentUser.setUserProfile(userProfileService.findByRole(userDto.getRole()));
         userService.updateUser(currentUser);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //DELETE USER
-    @RequestMapping(value = "/user/{login}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    //DELETE USER (ADMIN)
+    @RequestMapping(value = "user/{login}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> deleteUser(@PathVariable("login") String login) {
         User user = userService.findByLogin(login);
         if (user == null) {
@@ -146,13 +150,7 @@ public class CommonController {
     @RequestMapping(value="/currentuser", method = RequestMethod.GET)
     public ResponseEntity<String> getPrincipal(){
         logger.info("CommonController called for getPrincipal()");
-        String userName;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            userName = ((UserDetails)principal).getUsername();
-        } else {
-            userName = principal.toString();
-        }
+        String userName = getCurrentUserName();
         return new ResponseEntity<>(userName, HttpStatus.OK);
     }
 
@@ -174,6 +172,15 @@ public class CommonController {
             return null;
         }
         return registered;
+    }
+
+    private String getCurrentUserName() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            return ((UserDetails)principal).getUsername();
+        } else {
+            return principal.toString();
+        }
     }
 }
 

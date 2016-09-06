@@ -1,4 +1,4 @@
-app.controller('commonNavController', function ($scope, commonService) {
+app.controller('basicController', function ($scope, commonService) {
     console.log('core app.commonNavController initialized');
 
     $scope.currentUser = {

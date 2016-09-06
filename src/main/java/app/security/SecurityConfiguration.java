@@ -38,13 +38,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/public/**").permitAll()
-                .anyRequest().access("hasRole('USER') or hasRole('ADMIN')")
+                .antMatchers("/admin/**").access("hasRole('ADMIN')")
+                .anyRequest().authenticated()
                 .and().formLogin()
                 .defaultSuccessUrl("/resources/index.html")
                 .usernameParameter("login")
                 .passwordParameter("password")
-                .and()
-                .rememberMe()
+                .and().rememberMe()
                 .tokenRepository(tokenRepository)
                 .tokenValiditySeconds(3600)
                 .and().csrf().disable();

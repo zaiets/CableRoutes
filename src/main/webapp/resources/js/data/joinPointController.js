@@ -1,4 +1,4 @@
-app.controller('joinPointController', function ($scope, multipartForm, joinPointService) {
+app.controller('joinPointController', function ($scope, multipartFormService, joinPointService) {
     $scope.joinPoints = [];
 
     joinPointService.getJoinPoints(function (data) {
@@ -18,7 +18,7 @@ app.controller('joinPointController', function ($scope, multipartForm, joinPoint
 
     $scope.sendNewEntriesToDatabase = function () {
         console.log('joinPointController works... -> sendNewEntriesToDatabase');
-        var uploadUrl = 'http://localhost:8080/joinPoint';
+        var uploadUrl = '/joinPoint';
         joinPointService.createOrUpdate(uploadUrl, $scope.newJoinPoints, function (result) {
             var joinPointsList = angular.copy($scope.joinPoints);
             joinPointsList.concat(result);
@@ -32,8 +32,8 @@ app.controller('joinPointController', function ($scope, multipartForm, joinPoint
 
     $scope.submit = function () {
         console.log('joinPointController works... -> submit file for parsing');
-        var uploadUrl = 'http://localhost:8080/functionality/parse/joinPoints';
-        multipartForm.post(uploadUrl, $scope.uploadedFile, function (result) {
+        var uploadUrl = '/functionality/parse/joinPoints';
+        multipartFormService.post(uploadUrl, $scope.uploadedFile, function (result) {
             $scope.newJoinPoints = result;
         })
     };

@@ -4,7 +4,7 @@ app.service('joinPointService', function ($http) {
 
     this.getJoinPoints = function (result) {
         console.log('joinPointService works... -> getJoinPoints');
-        $http.get('http://localhost:8080/joinPoint')
+        $http.get('/joinPoint')
             .then(function (response) {
                 console.log(response.data);
                 result(response.data);

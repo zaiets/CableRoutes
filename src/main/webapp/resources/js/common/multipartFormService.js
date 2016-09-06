@@ -1,4 +1,4 @@
-app.service('multipartForm', ['$http', function($http){
+app.service('multipartFormService', ['$http', function($http){
     this.post = function(uploadUrl, data, result){
         var fd = new FormData();
         fd.append('uploadedFile', data);

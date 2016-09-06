@@ -34,6 +34,8 @@ public class UserDto {
 
     private String patronymic;
 
+    private String role;
+
     public UserDto() {
     }
 
@@ -93,6 +95,14 @@ public class UserDto {
         this.patronymic = patronymic;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,8 +118,11 @@ public class UserDto {
             return false;
         if (getLastName() != null ? !getLastName().equals(userDto.getLastName()) : userDto.getLastName() != null)
             return false;
-        if (getFirstName() != null ? !getFirstName().equals(userDto.getFirstName()) : userDto.getFirstName() != null) return false;
-        return getPatronymic() != null ? getPatronymic().equals(userDto.getPatronymic()) : userDto.getPatronymic() == null;
+        if (getFirstName() != null ? !getFirstName().equals(userDto.getFirstName()) : userDto.getFirstName() != null)
+            return false;
+        if (getPatronymic() != null ? !getPatronymic().equals(userDto.getPatronymic()) : userDto.getPatronymic() != null)
+            return false;
+        return getRole() != null ? getRole().equals(userDto.getRole()) : userDto.getRole() == null;
 
     }
 
@@ -122,6 +135,7 @@ public class UserDto {
         result = 31 * result + (getLastName() != null ? getLastName().hashCode() : 0);
         result = 31 * result + (getFirstName() != null ? getFirstName().hashCode() : 0);
         result = 31 * result + (getPatronymic() != null ? getPatronymic().hashCode() : 0);
+        result = 31 * result + (getRole() != null ? getRole().hashCode() : 0);
         return result;
     }
 }
