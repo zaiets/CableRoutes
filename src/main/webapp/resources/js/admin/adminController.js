@@ -22,7 +22,7 @@ app.controller('adminController', function ($scope, adminService) {
         console.log('adminController works... -> addNewUser');
         var newUser = angular.copy($scope.newUser);
         adminService.addNewUser(newUser, function (answer) {
-            if (answer == 200) {
+            if (answer == 201) {
                 users.push(newUser);
             }
         })
