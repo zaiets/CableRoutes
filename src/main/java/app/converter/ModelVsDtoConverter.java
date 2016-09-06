@@ -19,6 +19,7 @@ public final class ModelVsDtoConverter {
 
     public static UserDto transformUser(User user, Role role, String encodedPassword) {
         UserDto userDto = new UserDto();
+        userDto.setLogin(user.getLogin());
         userDto.setEmail(user.getEmail());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
