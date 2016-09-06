@@ -8,7 +8,6 @@ import app.service.common.IUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +29,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/admin")
+@RequestMapping(value = "/")
 public class CommonController {
     static final Logger logger = LoggerFactory.getLogger(CommonController.class);
 
@@ -51,20 +49,18 @@ public class CommonController {
 
     //USER
     //CREATE USER
-    @RequestMapping(value = "user", method = RequestMethod.POST,
+    @RequestMapping(value = "/admin/user", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createUser(@RequestBody  @Valid UserDto userDto, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> createUser(@RequestBody  @Valid UserDto userDto) {
         User registered = createUserAccount(userDto);
         if (registered == null) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(registered.getId()).toUri());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     //GET USER
-    @RequestMapping(value = "user/{login}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/admin/user/{login}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUser (@PathVariable("login") String login) {
         User user = userService.findByLogin(login);
         if (user == null) {
@@ -74,7 +70,7 @@ public class CommonController {
     }
 
     //GET ALL USERS (ADMIN)
-    @RequestMapping(value = "user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/admin/user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<User>> listAllUsers() {
         List<User> userList = userService.findAllUsers();
         if(userList.isEmpty()){
@@ -84,7 +80,7 @@ public class CommonController {
     }
 
     //UPDATE USER (ADMIN)
-    @RequestMapping(value = "user/{login}", method = RequestMethod.PUT,
+    @RequestMapping(value = "/admin/user/{login}", method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> updateUser(@PathVariable("login") String login, @RequestBody @Valid UserDto userDto) {
 
@@ -105,7 +101,7 @@ public class CommonController {
     }
 
     //DELETE USER (ADMIN)
-    @RequestMapping(value = "user/{login}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/admin/user/{login}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> deleteUser(@PathVariable("login") String login) {
         User user = userService.findByLogin(login);
         if (user == null) {
@@ -147,7 +143,7 @@ public class CommonController {
     /**
      * This method returns the principal[user-name] of logged-in user.
      */
-    @RequestMapping(value="/currentuser", method = RequestMethod.GET)
+    @RequestMapping(value="/current", method = RequestMethod.GET)
     public ResponseEntity<String> getPrincipal(){
         logger.info("CommonController called for getPrincipal()");
         String userName = getCurrentUserName();

@@ -1,0 +1,42 @@
+<p>1. Create new user manually:</p>
+<form name="newUserForm" method="get" ng-model="newUser">
+    Login*:<input type="text" nesess="true" ng-model="newUser.login"><br/>
+    E-mail*:<input type="text" cfm_check="Y_email" ng-model="newUser.email"><br/>
+    Password**:<input type="text" nesess="true" ng-model="newUser.password"><br/>
+    Repeat Password**:<input type="text" nesess="true" ng-model="newUser.matchingPassword"><br/>
+    * - must be not null & unique:<br/>
+    ** - must be not null:<br/>
+    Additional data:<br/>
+    First Name:<input type="text" ng-model="newUser.firstName"><br/>
+    Last Name:<input type="text" ng-model="newUser.lastName"><br/>
+    Patronymic:<input type="text" ng-model="newUser.patronymic"><br/>
+    Role:   <select ng-model="newUser.role">
+                <option value="USER">User
+                <option value="ADMIN">Admin
+            </select>
+    <button ng-click="addNewUser()">Add new user</button>
+</form>
+<br/>
+<br/>
+<p>2. Update user:</p>
+<br/>
+<br/>
+<p>3. Delete user:</p>
+<br/>
+<br/>
+<p>4. Users list in DB:</p>
+<table border=3 cellspacing=0>
+    <tr bgcolor="#d3d3d3">
+        <td ng-repeat="key in newUser">{{key}}</td>
+    </tr>
+    ~~~
+    <tr ng-repeat="user in users">
+        <td>{{user.login}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.password}}</td>
+        <td>{{user.firstName}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.patronymic}}</td>
+        <td>{{user.role}}</td>
+    </tr>
+</table>

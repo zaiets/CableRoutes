@@ -8,23 +8,25 @@
     <script src="/resources/js/core/app.js"></script>
     <script src="/resources/js/core/appRouting.js"></script>
     <!--controllers-->
-    <script src="/js/common/basicController.js"></script>
+    <script src="/resources/js/common/basicController.js"></script>
+    <script src="/resources/js/admin/adminController.js"></script>
     <script src="/resources/js/data/joinPointController.js"></script>
     <!--directives-->
     <script src="/resources/js/directives/fileModel.js"></script>
     <!--services-->
     <script src="/resources/js/common/multipartFormService.js"></script>
-    <script src="/js/common/basicService.js"></script>
+    <script src="/resources/js/common/basicService.js"></script>
+    <script src="/resources/js/admin/adminService.js"></script>
     <script src="/resources/js/data/joinPointService.js"></script>
 </head>
 
 <body ng-cloak>
-<div class="hello" ng-controller="commonController" ng-model="currentUser">
+<div class="hello" ng-controller="basicController" ng-model="currentUser">
     Hello, {{$scope.currentUser}}!
-    <button name="logoutButton" ng-click="logout()">Logout</button>
+    <button name="logoutButton" ng-click="logout()">Logout</button><br/>
     Test functionality:
     <ul class="tabs" role="tablist">
-        <li ng-show="currentUser"><a href="#/joinPointPage">adminsPage</a></li>
+        <li ng-show=true><a href="#/admins">adminsPage</a></li>
         <li ng-show=true><a href="#/joinPointPage">joinPointActionsPage</a></li>
         <li ng-show=false><a href="#/equipments">equipmentsTODO</a></li>
     </ul>

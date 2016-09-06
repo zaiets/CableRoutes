@@ -1,18 +1,19 @@
-app.controller('basicController', function ($scope, commonService) {
-    console.log('core app.commonNavController initialized');
+app.controller('basicController', function ($scope, basicService) {
+    console.log('core basicController initialized');
 
     $scope.currentUser = {
-        name: function () {
-            console.log('this.authenticated called');
-            commonService.getAuth(function (userName) {
-                console.log('this.authenticated got ' + userName);
-                return userName;
-            });
-        }
+        name: 'Anonymous',
+        isAuth: name !== 'Anonymous'
     };
 
+    basicService.getAuth(function (userName) {
+        console.log('this.authenticated got ' + userName);
+        $scope.currentUser.name = userName;
+    });
+
     $scope.logout = function () {
-        console.log('commonService works... -> logout');
-        commonService.logout();
-    }
+        console.log('basicController works... -> logout');
+        basicService.logout();
+    };
+
 });

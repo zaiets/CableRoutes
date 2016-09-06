@@ -1,10 +1,10 @@
 app.service('basicService', function ($http) {
 
-    console.log('core app.commonService initialized');
+    console.log('core basicService initialized');
 
     this.getAuth = function (result) {
-        console.log('commonService works... -> getAuth');
-        $http.get('/currentuser')
+        console.log('basicService works... -> getAuth');
+        $http.get('/currentUser')
             .then(function (response) {
                 console.log(response.data);
                 result(response.data);
@@ -12,12 +12,13 @@ app.service('basicService', function ($http) {
     };
 
     this.logout = function () {
-        console.log('commonService works... -> logout');
+        console.log('basicService works... -> logout');
         $http.get('/logout')
             .then(function (response) {
                 console.log(response.data);
-                location.assign(response.data);
+                $window.location.redirectTo(response.data);
             });
-    }
+    };
+
 
 });
