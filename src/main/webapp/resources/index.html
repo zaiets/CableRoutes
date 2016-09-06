@@ -21,9 +21,10 @@
 </head>
 
 <body>
-<div class="hello" ng-controller="basicController" ng-model="currentUser">
-    <p ng-cloak>Hello, {{currentUser.name}}!</p>
-    <button name="logoutButton" ng-click="logout()">Logout</button><br/>
+<div class="hello" ng-controller="basicController" ng-model="currentUser" ng-cloak>
+    <p>Hello, {{currentUser.name}}!</p>
+    <button name="logoutButton" ng-click="logout()">Logout</button>
+    <br/>
     Test functionality:
     <ul class="tabs" role="tablist">
         <li ng-show=currentUser.isAuth><a href="#/admins">adminsPage</a></li>

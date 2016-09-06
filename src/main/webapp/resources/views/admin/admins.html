@@ -27,9 +27,8 @@
 <p>4. Users list in DB:</p>
 <table border=3 cellspacing=0>
     <tr bgcolor="#d3d3d3">
-        <td ng-repeat="key in newUser">{{key}}</td>
+        <td ng-repeat="(key, value) in newUser">{{key}}</td>
     </tr>
-    ~~~
     <tr ng-repeat="user in users">
         <td>{{user.login}}</td>
         <td>{{user.email}}</td>

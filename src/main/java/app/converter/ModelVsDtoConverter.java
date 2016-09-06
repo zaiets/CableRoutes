@@ -1,7 +1,10 @@
 package app.converter;
 
+import app.dto.common.UserDto;
 import app.dto.models.*;
 import app.repository.entities.business.*;
+import app.repository.entities.common.User;
+import app.repository.enumerations.Role;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +16,18 @@ public final class ModelVsDtoConverter {
 
     private ModelVsDtoConverter() {
     }
+
+    public static UserDto transformUser(User user, Role role, String encodedPassword) {
+        UserDto userDto = new UserDto();
+        userDto.setEmail(user.getEmail());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setPatronymic(user.getPatronymic());
+        userDto.setPassword(encodedPassword);
+        userDto.setRole(role.name());
+        return userDto;
+    }
+
 
     public static CableDto transformCable(Cable cable) {
         CableDto cableDto = new CableDto();
@@ -181,4 +196,5 @@ public final class ModelVsDtoConverter {
         routeType.setName(routeTypeDto.getName());
         return routeType;
     }
+
 }

@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.converter.ModelVsDtoConverter;
 import app.dto.common.UserDto;
 import app.exceptionsTODO.EmailExistsException;
 import app.repository.entities.common.User;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -71,12 +73,14 @@ public class CommonController {
 
     //GET ALL USERS (ADMIN)
     @RequestMapping(value = "/admin/user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<User>> listAllUsers() {
+    public ResponseEntity<List<UserDto>> listAllUsers() {
         List<User> userList = userService.findAllUsers();
         if(userList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(userList, HttpStatus.OK);
+        List<UserDto> userDtoList = new ArrayList<>();
+        userList.stream().forEachOrdered(u -> userDtoList.add(ModelVsDtoConverter.transformUser(u, u.getUserProfile().getRole(), passwordEncoder.encode(u.getPassword()))));
+        return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 
     //UPDATE USER (ADMIN)
