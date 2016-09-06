@@ -2,12 +2,13 @@ app.controller('adminController', function ($scope, adminService) {
     console.log('core adminController initialized');
 
     $scope.newUser = {
-        login: 'login',
-        email: 'a@a.com',
-        password: '*****',
-        firstName: 'FirstName',
-        lastName: 'LastName',
-        patronymic: 'Patronymic',
+        login: undefined,
+        email: undefined,
+        password: undefined,
+        matchingPassword: undefined,
+        firstName: undefined,
+        lastName: undefined,
+        patronymic: undefined,
         role: 'USER'
     };
 
@@ -20,8 +21,16 @@ app.controller('adminController', function ($scope, adminService) {
     $scope.addNewUser = function () {
         console.log('adminController works... -> addNewUser');
         var newUser = angular.copy($scope.newUser);
-        adminService.addNewUser(newUser)
-            .success(users.push(newUser));
-        console.log(newUser);
+        adminService.addNewUser(newUser, function (answer) {
+            if (answer == 200) {
+                users.push(newUser);
+            }
+        })
+    };
+
+    $scope.delete = function (loginToDelete) {
+        console.log('adminController works... -> delete user: ' + loginToDelete);
+        adminService.delete(loginToDelete)
+            .then(alert('user ' + loginToDelete + ' deleted!'));
     };
 });

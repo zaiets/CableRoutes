@@ -1,16 +1,15 @@
 package app.service.common.impl;
 
 import app.dto.common.UserDto;
+import app.exceptionsTODO.EmailExistsException;
+import app.repository.dao.common.IUserDao;
+import app.repository.entities.common.User;
+import app.repository.entities.common.UserProfile;
 import app.service.common.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import app.repository.dao.common.IUserDao;
-import app.exceptionsTODO.EmailExistsException;
-import app.repository.entities.common.User;
-import app.repository.entities.common.UserProfile;
-import app.repository.enumerations.Role;
 
 import java.util.List;
 import java.util.Objects;
@@ -83,7 +82,7 @@ public class UserServiceImpl implements IUserService {
 	}
 
 	@Override
-	public User registerNewUserAccount(UserDto userDto) throws EmailExistsException {
+	public User registerNewUserAccount(UserDto userDto, UserProfile userProfile) throws EmailExistsException {
 		if (emailExist(userDto.getEmail())) {
 			throw new EmailExistsException("There is an account with that email adress: " +
 					userDto.getEmail());
@@ -95,8 +94,6 @@ public class UserServiceImpl implements IUserService {
 		user.setFirstName(userDto.getFirstName());
 		user.setPatronymic(userDto.getPatronymic());
 		user.setPassword(userDto.getPassword());
-		UserProfile userProfile = new UserProfile();
-		userProfile.setRole(Role.USER);
 		user.setUserProfile(userProfile);
 		return saveUser(user);
 	}

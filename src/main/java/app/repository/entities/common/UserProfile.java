@@ -10,7 +10,6 @@ import java.io.Serializable;
 public class UserProfile implements Serializable {
 
     @Id
-    @GeneratedValue
     private Integer id;
 
     @Enumerated(EnumType.STRING)

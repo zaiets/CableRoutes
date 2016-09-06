@@ -33,7 +33,7 @@ public class User implements Serializable {
 
 	@OneToOne
 	@Lazy
-	@JoinColumn(name = "USER_PROFILE_ID", nullable = false)
+	@JoinColumn(name = "USER_PROFILE_ID")
 	private UserProfile userProfile;
 
 	public User() {

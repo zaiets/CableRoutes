@@ -2,6 +2,7 @@ package app.repository.dao.common.impl;
 
 import app.repository.dao.AbstractDao;
 import app.repository.dao.common.IUserDao;
+import app.repository.entities.common.User;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.Order;
@@ -9,10 +10,8 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import app.repository.entities.common.User;
 
 import java.util.List;
-
 
 @Repository("userDao")
 public class UserDaoImpl extends AbstractDao<Integer, User> implements IUserDao {

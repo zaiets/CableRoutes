@@ -3,12 +3,12 @@ app.service('adminService', function ($http) {
     console.log('core adminService initialized');
 
 
-    this.addNewUser = function (result) {
+    this.addNewUser = function (newUser, result) {
         console.log('adminService works... -> addNewUser');
-        $http.post('/admin/user')
+        $http.post('/admin/user', newUser)
             .then(function (response) {
-                console.log(response.data);
-                result(response.data);
+                console.log(response.status);
+                result(response.status);
             });
     };
 
@@ -19,6 +19,12 @@ app.service('adminService', function ($http) {
                 console.log(response.data);
                 result(response.data);
             });
+    };
+
+    this.delete = function (loginToDelete) {
+        console.log('adminService works... -> delete user: ' + loginToDelete);
+        $http.delete('/admin/user/' + loginToDelete)
+            .then(location.reload());
     };
 
 });

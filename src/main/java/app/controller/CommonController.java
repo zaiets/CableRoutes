@@ -166,7 +166,7 @@ public class CommonController {
     private User createUserAccount(UserDto newUser) {
         User registered;
         try {
-            registered = userService.registerNewUserAccount(newUser);
+            registered = userService.registerNewUserAccount(newUser, userProfileService.findByRole(newUser.getRole()));
         } catch (EmailExistsException e) {
             return null;
         }

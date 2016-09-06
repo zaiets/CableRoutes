@@ -6,17 +6,17 @@
 
 <p>2. Add new Join Points manually:</p>
 <form method="get" ng-model="newJoinPoint">
-    KKS:<input type="text" ng-model="newJoinPoint.kksName"><br/>
+    KKS:<input type="text" ng-model="newJoinPoint.kksName" required><br/>
     Coordinates:<br/>
-    X:<input type="number" ng-model="newJoinPoint.x"><br/>
-    Y:<input type="number" ng-model="newJoinPoint.y"><br/>
-    Z:<input type="number" ng-model="newJoinPoint.z"><br/>
-    <button ng-click="addJoinPoint()">Add new JP</button>
+    X:<input type="number" ng-model="newJoinPoint.x" step="0.1" required><br/>
+    Y:<input type="number" ng-model="newJoinPoint.y" step="0.1" required><br/>
+    Z:<input type="number" ng-model="newJoinPoint.z" step="0.1" required><br/>
+    <button ng-show="newJoinPoint.kksName && newJoinPoint.x && newJoinPoint.y && newJoinPoint.z" ng-click="addJoinPoint()">Add new JP</button>
 </form>
 
 <p>3. List of Join Points currently in DB:</p>
 <table border=3 cellspacing=0>
-    <tr bgcolor="#d3d3d3"><td>KKS</td><td>X</td><td>Y</td><td>Z</td></tr>
+    <tr bgcolor="#d3d3d3"><td ng-repeat="(key, value) in joinPoints[0]">{{key}}</td></tr>
     <tr ng-repeat="joinPoint in joinPoints">
         <td>{{joinPoint.kksName}}</td><td>{{joinPoint.x}}</td><td>{{joinPoint.y}}</td><td>{{joinPoint.z}}</td>
     </tr>
@@ -25,8 +25,8 @@
 <p>4. List of new Join Points entered/parsed (temporary):</p>
 * to send this Join Points to DB, press this button:
 <button ng-click="sendNewEntriesToDatabase()">ACCEPT</button>
-<table border=3 cellspacing=0 >
-    <tr bgcolor="#e0ffff"><td>KKS</td><td>X</td><td>Y</td><td>Z</td></tr>
+<table border=3 cellspacing=0 ng-show="newJoinPoints[0]">
+    <tr bgcolor="#e0ffff"><td ng-repeat="(key, value) in newJoinPoints[0]">{{key}}</td></tr>
     <tr ng-repeat="newJoinPoint in newJoinPoints">
         <td>{{newJoinPoint.kksName}}</td><td>{{newJoinPoint.x}}</td><td>{{newJoinPoint.y}}</td><td>{{newJoinPoint.z}}</td>
     </tr>

@@ -3,6 +3,7 @@ package app.service.common;
 import app.dto.common.UserDto;
 import app.exceptionsTODO.EmailExistsException;
 import app.repository.entities.common.User;
+import app.repository.entities.common.UserProfile;
 
 import java.util.List;
 
@@ -23,6 +24,6 @@ public interface IUserService {
 	
 	boolean isUserLoginUnique(Integer id, String login);
 
-	User registerNewUserAccount(UserDto userDto) throws EmailExistsException;
+	User registerNewUserAccount(UserDto userDto, UserProfile userProfile) throws EmailExistsException;
 
 }

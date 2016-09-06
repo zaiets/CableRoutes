@@ -2,14 +2,13 @@ package app.repository.dao.common.impl;
 
 import app.repository.dao.AbstractDao;
 import app.repository.dao.common.IUserProfileDao;
+import app.repository.entities.common.UserProfile;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-import app.repository.entities.common.UserProfile;
 
 import java.util.HashSet;
 import java.util.Set;
-
 
 @Repository("userProfileDao")
 public class UserProfileDaoImpl extends AbstractDao<Integer, UserProfile> implements IUserProfileDao {
