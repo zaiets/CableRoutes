@@ -3,8 +3,8 @@ package app.repository.dao.common.impl;
 import app.repository.dao.AbstractDao;
 import app.repository.dao.common.IUserProfileDao;
 import app.repository.entities.common.UserProfile;
+import app.repository.enumerations.Role;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
@@ -18,9 +18,10 @@ public class UserProfileDaoImpl extends AbstractDao<Integer, UserProfile> implem
 	}
 	@Override
 	public UserProfile findByRole(String role) {
-		Criteria crit = createEntityCriteria();
-		crit.add(Restrictions.eq("role", role));
-		return (UserProfile) crit.uniqueResult();
+		for (UserProfile target : findAll()) {
+			if (Role.valueOf(role) == target.getRole()) return target;
+		}
+		return null;
 	}
 	@Override
 	@SuppressWarnings("unchecked")
