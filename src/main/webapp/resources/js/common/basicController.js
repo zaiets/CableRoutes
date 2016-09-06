@@ -7,7 +7,7 @@ app.controller('basicController', function ($scope, basicService) {
     };
 
     basicService.getAuth(function (userName) {
-        console.log('getAuth got ' + userName);
+        console.log('getAuth defined userName as: ' + userName);
         $scope.currentUser.name = userName;
     });
 

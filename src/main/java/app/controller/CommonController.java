@@ -115,7 +115,7 @@ public class CommonController {
     /**
      * This method handles login GET requests.
      * If users is already logged-in and tries to goto login page again, will be redirected to list page.
-     */
+
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> loginPage() {
         logger.info("CommonController called for loginPage()");
@@ -125,11 +125,11 @@ public class CommonController {
             return new ResponseEntity<>("redirect:/", HttpStatus.OK);
         }
     }
-
+    */
     /**
      * This method handles logout requests.
      */
-    @RequestMapping(value="/logout", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/logout", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> logoutPage (HttpServletRequest request, HttpServletResponse response){
         logger.info("CommonController called for logoutPage()");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -137,7 +137,7 @@ public class CommonController {
             persistentTokenBasedRememberMeServices.logout(request, response, auth);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
-        return new ResponseEntity<>("redirect:/login", HttpStatus.OK);
+        return new ResponseEntity<>("/login", HttpStatus.OK);
     }
 
     /**
