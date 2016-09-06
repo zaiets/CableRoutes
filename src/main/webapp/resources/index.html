@@ -20,15 +20,15 @@
     <script src="/resources/js/data/joinPointService.js"></script>
 </head>
 
-<body ng-cloak>
+<body>
 <div class="hello" ng-controller="basicController" ng-model="currentUser">
-    Hello, {{$scope.currentUser}}!
+    <p ng-cloak>Hello, {{currentUser.name}}!</p>
     <button name="logoutButton" ng-click="logout()">Logout</button><br/>
     Test functionality:
     <ul class="tabs" role="tablist">
-        <li ng-show=true><a href="#/admins">adminsPage</a></li>
-        <li ng-show=true><a href="#/joinPointPage">joinPointActionsPage</a></li>
-        <li ng-show=false><a href="#/equipments">equipmentsTODO</a></li>
+        <li ng-show=currentUser.isAuth><a href="#/admins">adminsPage</a></li>
+        <li ng-show=currentUser.isAuth><a href="#/joinPointPage">joinPointActionsPage</a></li>
+        <li ng-show=currentUser.isAuth><a href="#/equipments">equipmentsTODO</a></li>
     </ul>
 </div>
 <div ng-view class="container"></div>

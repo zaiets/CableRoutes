@@ -4,7 +4,7 @@ app.service('basicService', function ($http) {
 
     this.getAuth = function (result) {
         console.log('basicService works... -> getAuth');
-        $http.get('/currentUser')
+        $http.get('/current')
             .then(function (response) {
                 console.log(response.data);
                 result(response.data);
@@ -16,7 +16,7 @@ app.service('basicService', function ($http) {
         $http.get('/logout')
             .then(function (response) {
                 console.log(response.data);
-                $window.location.redirectTo(response.data);
+                location.redirectTo(response.data);
             });
     };
 

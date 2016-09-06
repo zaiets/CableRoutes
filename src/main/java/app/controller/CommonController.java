@@ -101,7 +101,7 @@ public class CommonController {
     }
 
     //DELETE USER (ADMIN)
-    @RequestMapping(value = "/admin/user/{login}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/admin/user/{login}", method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteUser(@PathVariable("login") String login) {
         User user = userService.findByLogin(login);
         if (user == null) {
@@ -116,7 +116,7 @@ public class CommonController {
      * This method handles login GET requests.
      * If users is already logged-in and tries to goto login page again, will be redirected to list page.
      */
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> loginPage() {
         logger.info("CommonController called for loginPage()");
         if (isCurrentAuthenticationAnonymous()) {
@@ -129,7 +129,7 @@ public class CommonController {
     /**
      * This method handles logout requests.
      */
-    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    @RequestMapping(value="/logout", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> logoutPage (HttpServletRequest request, HttpServletResponse response){
         logger.info("CommonController called for logoutPage()");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -143,11 +143,10 @@ public class CommonController {
     /**
      * This method returns the principal[user-name] of logged-in user.
      */
-    @RequestMapping(value="/current", method = RequestMethod.GET)
+    @RequestMapping(value="/current", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getPrincipal(){
         logger.info("CommonController called for getPrincipal()");
-        String userName = getCurrentUserName();
-        return new ResponseEntity<>(userName, HttpStatus.OK);
+        return new ResponseEntity<>(getCurrentUserName(), HttpStatus.OK);
     }
 
     /**
@@ -171,11 +170,16 @@ public class CommonController {
     }
 
     private String getCurrentUserName() {
+        String name;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
-            return ((UserDetails)principal).getUsername();
+            name = ((UserDetails)principal).getUsername();
+            logger.info(name);
+            return name;
         } else {
-            return principal.toString();
+            name = principal.toString();
+            logger.info(name);
+            return name;
         }
     }
 }
