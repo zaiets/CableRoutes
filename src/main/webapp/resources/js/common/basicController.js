@@ -3,12 +3,13 @@ app.controller('basicController', function ($scope, basicService) {
 
     $scope.currentUser = {
         name: 'Anonymous',
-        isAuth: name !== 'Anonymous'
+        role: 'USER'
     };
 
-    basicService.getAuth(function (userName) {
-        console.log('getAuth defined userName as: ' + userName);
-        $scope.currentUser.name = userName;
+    basicService.getAuth(function (data) {
+        console.log('getAuth defined userName as: ' + data);
+        $scope.currentUser.name = data[0];
+        $scope.currentUser.role = data[1];
     });
 
     $scope.logout = function () {

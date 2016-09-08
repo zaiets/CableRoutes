@@ -27,12 +27,12 @@
     <br/>
     <p>Test functionality:</p>
     <ul class="tabs" role="tablist">
-        <li ng-show=currentUser.isAuth><a href="#/admins"><b>ADMIN</b></a></li>
-        <li ng-show=currentUser.isAuth><a href="#/joinPointPage">Join Points</a></li>
-        <li ng-show=currentUser.isAuth><a href="#/equipments">Equipments</a></li>
-        <li ng-show=currentUser.isAuth><a href="#/routes">Routes/Lines</a></li>
-        <li ng-show=currentUser.isAuth><a href="#/journals">Journals/Cables</a></li>
-        <li ng-show=currentUser.isAuth><a href="#/functionality"><b>FUNCTIONALITY</b></a></li>
+        <li ng-show="currentUser.role === 'ADMIN'"><a href="#/admins"><b>ADMIN</b></a></li>
+        <li><a href="#/joinPointPage">Join Points</a></li>
+        <li><a href="#/equipments">Equipments</a></li>
+        <li><a href="#/routes">Routes/Lines</a></li>
+        <li><a href="#/journals">Journals/Cables</a></li>
+        <li><a href="#/functionality"><b>FUNCTIONALITY</b></a></li>
     </ul>
 </div>
 <div ng-view class="container"></div>

@@ -148,10 +148,10 @@ public class CommonController {
     /**
      * This method returns the principal[user-name] of logged-in user.
      */
-    @RequestMapping(value="/current", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> getPrincipal(){
+    @RequestMapping(value="/current", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String[]> getPrincipal(){
         logger.info("CommonController called for getPrincipal()");
-        return new ResponseEntity<>(getCurrentUserName(), HttpStatus.OK);
+        return new ResponseEntity<>(getCurrentUser(), HttpStatus.OK);
     }
 
     /**
@@ -174,18 +174,21 @@ public class CommonController {
         return registered;
     }
 
-    private String getCurrentUserName() {
-        String name;
+    private String[] getCurrentUser() {
+        String login;
+        String role;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
-            name = ((UserDetails)principal).getUsername();
-            logger.info(name);
-            return name;
+            UserDetails userDetails = (UserDetails)principal;
+            login = userDetails.getUsername();
+            role = userService.findByLogin(login).getUserProfile().getRole().name();
+            logger.info(login + ", role: " + role);
         } else {
-            name = principal.toString();
-            logger.info(name);
-            return name;
+            login = principal.toString();
+            role = userService.findByLogin(login).getUserProfile().getRole().name();
+            logger.info(login + ", role: " + role);
         }
+        return new String[]{login, role};
     }
 }
 
