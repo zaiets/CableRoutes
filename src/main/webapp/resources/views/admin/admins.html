@@ -3,12 +3,13 @@
     Login*:<input type="text" ng-model="newUser.login" required><br/>
     E-mail*:<input type="email" ng-model="newUser.email" required><br/>
     Password:<input type="password" ng-model="newUser.password" required>
-    <field ng-show="newUser.password">
-        Repeat password here:<input type="password" ng-model="newUser.matchingPassword"
-                                    required></field>
+    <div ng-show="newUser.password">Repeat password here:<input type="password"
+                                                                ng-model="newUser.matchingPassword"
+                                                                required>
+    </div>
     <br/>
     * - must be unique:<br/>
-    <div ng-show="newUser.login && userForUpdate.email">
+    <div ng-show="newUser.login && newUser.email">
         Extra data:<br/>
         First Name:<input type="text" ng-model="newUser.firstName"><br/>
         Last Name:<input type="text" ng-model="newUser.lastName"><br/>
@@ -18,11 +19,11 @@
             <option value="USER">User
             <option value="ADMIN">Admin
         </select><br/>
-        <button ng-click="addNewUser()"
-                ng-show="newUser.matchingPassword && (newUser.password === newUser.matchingPassword)">
-            Add new user
-        </button>
     </div>
+    <button ng-click="addNewUser()"
+            ng-show="newUser.matchingPassword && (newUser.password === newUser.matchingPassword)">
+        Add new user
+    </button>
 </form>
 <br/>
 <p>2. Update user:</p>
