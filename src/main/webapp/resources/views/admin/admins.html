@@ -8,19 +8,21 @@
                                     required></field>
     <br/>
     * - must be unique:<br/>
-    Extra data:<br/>
-    First Name:<input type="text" ng-model="newUser.firstName"><br/>
-    Last Name:<input type="text" ng-model="newUser.lastName"><br/>
-    Patronymic:<input type="text" ng-model="newUser.patronymic"><br/>
-    Role:
-    <select ng-model="newUser.role">
-        <option value="USER">User
-        <option value="ADMIN">Admin
-    </select><br/>
-    <button ng-click="addNewUser()"
-            ng-show="newUser.matchingPassword && (newUser.password === newUser.matchingPassword)">
-        Add new user
-    </button>
+    <div ng-show="newUser.login && userForUpdate.email">
+        Extra data:<br/>
+        First Name:<input type="text" ng-model="newUser.firstName"><br/>
+        Last Name:<input type="text" ng-model="newUser.lastName"><br/>
+        Patronymic:<input type="text" ng-model="newUser.patronymic"><br/>
+        Role:
+        <select ng-model="newUser.role">
+            <option value="USER">User
+            <option value="ADMIN">Admin
+        </select><br/>
+        <button ng-click="addNewUser()"
+                ng-show="newUser.matchingPassword && (newUser.password === newUser.matchingPassword)">
+            Add new user
+        </button>
+    </div>
 </form>
 <br/>
 <p>2. Update user:</p>
@@ -32,10 +34,10 @@
     <p>Warning! While updating you MUST to choose new password!</p>
     E-mail*:<input type="email" ng-model="userForUpdate.email" required><br/>
     Password:<input type="password" ng-model="userForUpdate.password" required>
-    <field ng-show="userForUpdate.password">
+    <div ng-show="userForUpdate.password">
         Repeat password here:<input type="password"
                                     ng-model="userForUpdate.matchingPassword"
-                                    required></field>
+                                    required></div>
     <br/>
     * - must be unique:<br/>
     Extra data:<br/>
@@ -56,7 +58,7 @@
 <p>3. Delete user:</p>
 <form name="deleteUser">
     Input LOGIN:<input type="text" name="loginToDelete" required><br/>
-    <button ng-click="delete(loginToDelete)">Delete user</button>
+    <button ng-click="delete(loginToDelete)" ng-show="loginToDelete">Delete user</button>
 </form>
 <br/>
 <br/>
