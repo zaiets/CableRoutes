@@ -6,18 +6,20 @@ app.service('joinPointService', function ($http) {
         console.log('joinPointService works... -> getJoinPoints');
         $http.get('/joinPoint')
             .then(function (response) {
-                console.log(response.data);
-                result(response.data);
+                console.log(response);
+                if(response.status == 200) {
+                    result(response.data);
+                }
             });
     };
 
-    this.createOrUpdate = function (uploadUrl, newJoinPoints, result) {
+    this.createOrUpdate = function (uploadUrl, newEntities, result) {
         console.log('joinPointService works... -> createOrUpdate');
-        for (var joinPoint in newJoinPoints) {
-            ($http.put(uploadUrl)
+        for (var key in newEntities) {
+            ($http.put(uploadUrl, newEntities[key])
                 .then(function (response) {
-                    console.log(response.data);
-                    result(response.data);
+                    console.log('On data pushed:' + newEntities[key] + ' server responded: ' + response.status);
+                    if(response.status == 200) result(newEntities[key]);
                 }));
         }
     };

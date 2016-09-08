@@ -1,0 +1,47 @@
+<p>1. Add new Equipments from new file:</p>
+<form ng-model="uploadedFile">
+    Choose Equipments file to parse: <input type="file" name="uploadedFile" file-model="uploadedFile"><br/>
+    <button ng-click="submitEquip()">READ FILE</button>
+</form>
+
+<p>2. Add new Equipment manually:</p>
+<form method="get" ng-model="newEquipment">
+    Name:<input type="text" ng-model="newEquipment.fullName" required><br/>
+    <div ng-show="newEquipment.fullName">
+        Coordinates:<br/>
+        X:<input type="number" ng-model="newEquipment.x" step="0.1" required><br/>
+        Y:<input type="number" ng-model="newEquipment.y" step="0.1" required><br/>
+        Z:<input type="number" ng-model="newEquipment.z" step="0.1" required><br/>
+        Extra Data:<br/>
+        KKS:<input type="text" ng-model="newEquipment.commonKks"><br/>
+        JoinPoint KKS:<input type="text" ng-model="newEquipment.joinPoint"><br/>
+        Extra length:<input type="number" ng-model="newEquipment.cableConnectionAddLength" step="0.1" required><br/>
+        <button ng-show="newEquipment.fullName"
+                ng-click="addEquipment()">Add new
+        </button>
+    </div>
+</form>
+
+<p>3. List of Equipments currently in DB:</p>
+<table border=3 cellspacing=0>
+    <tr bgcolor="#d3d3d3">
+        <td ng-repeat="(key, value) in equipments[0]">{{key}}</td>
+    </tr>
+    <tr ng-repeat="equipment in equipments">
+        <td ng-repeat="(key, value) in equipment">{{value}}</td>
+    </tr>
+</table>
+
+<p>4. List of new Equipments entered/parsed (temporary):</p>
+<div ng-show="newEquipments[0]">
+    * to send this Equipments to DB, press this button:
+    <button ng-click="sendNewEntriesToDatabase()">ACCEPT</button>
+</div>
+<table border=3 cellspacing=0 ng-show="newEquipments[0]">
+    <tr bgcolor="#e0ffff">
+        <td ng-repeat="(key, value) in newEquipments[0]">{{key}}</td>
+    </tr>
+    <tr ng-repeat="newEquipment in newEquipments">
+        <td ng-repeat="(key, value) in newEquipment">{{value}}</td>
+    </tr>
+</table>

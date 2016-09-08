@@ -66,7 +66,7 @@ public class EquipmentDaoImpl extends AbstractDao<String, Equipment> implements 
     @SuppressWarnings("unchecked")
     public List<Equipment> getAll(){
         logger.info("Reading all equipments");
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("NUMBER_IN_JOURNAL"));
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("commonKks"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Equipment> equipments = (List<Equipment>) criteria.list();
         for(Equipment equipment : equipments){
@@ -80,8 +80,8 @@ public class EquipmentDaoImpl extends AbstractDao<String, Equipment> implements 
     public List<Equipment> readAllByJoinPoint(JoinPoint joinPoint) {
         List<Equipment> equipments = new ArrayList<>();
         logger.info("Reading all equipments by join point {}", joinPoint.getUniqueName());
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("KKS"));
-        criteria.add(Restrictions.like("JOIN_POINT_KKS", joinPoint.getUniqueName()));
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("commonKks"));
+        criteria.add(Restrictions.like("joinPointKks", joinPoint.getUniqueName()));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         equipments.addAll((List<Equipment>) criteria.list());
         for(Equipment equipment : equipments){
@@ -95,8 +95,8 @@ public class EquipmentDaoImpl extends AbstractDao<String, Equipment> implements 
     public List<Equipment> readAllByKks(String kks) {
         List<Equipment> equipments = new ArrayList<>();
         logger.info("Reading all equipments by KKS {}", kks);
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("FULL_NAME"));
-        criteria.add(Restrictions.like("KKS", kks));
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("fullName"));
+        criteria.add(Restrictions.like("commonKks", kks));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         equipments.addAll((List<Equipment>) criteria.list());
         for(Equipment equipment : equipments){
@@ -110,15 +110,15 @@ public class EquipmentDaoImpl extends AbstractDao<String, Equipment> implements 
     public List<Equipment> readAllByXyz(Double x, Double y, Double z, boolean includeNull) {
         List<Equipment> equipments = new ArrayList<>();
         logger.info("Reading all equipments by coordinates {}, {}, {}", x, y, z);
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("FULL_NAME"));
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("fullName"));
         if (includeNull) {
-            criteria.add(Restrictions.eq("X", x));
-            criteria.add(Restrictions.eq("Y", y));
-            criteria.add(Restrictions.eq("Z", z));
+            criteria.add(Restrictions.eq("x", x));
+            criteria.add(Restrictions.eq("y", y));
+            criteria.add(Restrictions.eq("z", z));
         } else {
-            if (x != null) criteria.add(Restrictions.eq("X", x));
-            if (y != null) criteria.add(Restrictions.eq("Y", y));
-            if (z != null) criteria.add(Restrictions.eq("Z", z));
+            if (x != null) criteria.add(Restrictions.eq("x", x));
+            if (y != null) criteria.add(Restrictions.eq("y", y));
+            if (z != null) criteria.add(Restrictions.eq("z", z));
         }
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         equipments.addAll((List<Equipment>) criteria.list());

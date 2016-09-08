@@ -11,18 +11,17 @@ app.controller('joinPointController', function ($scope, multipartFormService, jo
 
     $scope.addJoinPoint = function () {
         console.log('joinPointController works... -> addNewJoinPoint ');
-        var joinPoint = angular.copy($scope.newJoinPoint);
-        $scope.newJoinPoints.push(joinPoint);
-        console.log(joinPoint);
+        var entity = angular.copy($scope.newJoinPoint);
+        $scope.newJoinPoints.push(entity);
+        console.log(entity);
     };
 
     $scope.sendNewEntriesToDatabase = function () {
         console.log('joinPointController works... -> sendNewEntriesToDatabase');
         var uploadUrl = '/joinPoint';
-        joinPointService.createOrUpdate(uploadUrl, $scope.newJoinPoints, function (result) {
-            var joinPointsList = angular.copy($scope.joinPoints);
-            joinPointsList.concat(result);
-            $scope.joinPoints = joinPointsList;
+        joinPointService.createOrUpdate(uploadUrl, $scope.newJoinPoints, function (entity) {
+            $scope.joinPoints.push(entity);
+            $scope.newJoinPoints.slice($scope.newJoinPoints.indexOf(entity), 1);
         });
 
     };
