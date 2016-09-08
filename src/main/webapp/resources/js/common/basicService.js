@@ -16,7 +16,7 @@ app.service('basicService', function ($http) {
         $http.get('/logout')
             .then(function (response) {
                 console.log(response.data);
-                document.location.assign(response.data).when(window.location.reload());
+                location.reload();
             });
     };
 

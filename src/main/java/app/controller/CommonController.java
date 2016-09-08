@@ -135,14 +135,14 @@ public class CommonController {
      * This method handles logout requests.
      */
     @RequestMapping(value="/logout", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> logoutPage (HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity<Void> logoutPage (HttpServletRequest request, HttpServletResponse response){
         logger.info("CommonController called for logoutPage()");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null){
             persistentTokenBasedRememberMeServices.logout(request, response, auth);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
-        return new ResponseEntity<>("/login", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /**
