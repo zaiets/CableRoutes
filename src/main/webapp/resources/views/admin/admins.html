@@ -3,24 +3,55 @@
     Login*:<input type="text" ng-model="newUser.login" required><br/>
     E-mail*:<input type="email" ng-model="newUser.email" required><br/>
     Password:<input type="password" ng-model="newUser.password" required>
-    <field ng-show="newUser.password">  Repeat password here:<input type="password" ng-model="newUser.matchingPassword" required></field>
+    <field ng-show="newUser.password">
+        Repeat password here:<input type="password" ng-model="newUser.matchingPassword"
+                                    required></field>
     <br/>
     * - must be unique:<br/>
-    Additional data:<br/>
+    Extra data:<br/>
     First Name:<input type="text" ng-model="newUser.firstName"><br/>
     Last Name:<input type="text" ng-model="newUser.lastName"><br/>
     Patronymic:<input type="text" ng-model="newUser.patronymic"><br/>
-    Role:   <select ng-model="newUser.role">
-                <option value="USER">User
-                <option value="ADMIN">Admin
-            </select><br/>
-    <button ng-click="addNewUser()" ng-show="newUser.matchingPassword && (newUser.password === newUser.matchingPassword)">
+    Role:
+    <select ng-model="newUser.role">
+        <option value="USER">User
+        <option value="ADMIN">Admin
+    </select><br/>
+    <button ng-click="addNewUser()"
+            ng-show="newUser.matchingPassword && (newUser.password === newUser.matchingPassword)">
         Add new user
     </button>
 </form>
 <br/>
 <p>2. Update user:</p>
-<br/>
+<form name="getUserForUpdate">
+    Input LOGIN:<input type="text" name="loginToUpdate" ng-model="userForUpdate.login" required><br/>
+    <button ng-click="getAndShowUser()" ng-show="userForUpdate.login">Get user to update</button>
+</form>
+<form name="updateUserForm" ng-model="userForUpdate" ng-show="userForUpdate.email">
+    <p>Warning! While updating you MUST to choose new password!</p>
+    E-mail*:<input type="email" ng-model="userForUpdate.email" required><br/>
+    Password:<input type="password" ng-model="userForUpdate.password" required>
+    <field ng-show="userForUpdate.password">
+        Repeat password here:<input type="password"
+                                    ng-model="userForUpdate.matchingPassword"
+                                    required></field>
+    <br/>
+    * - must be unique:<br/>
+    Extra data:<br/>
+    First Name:<input type="text" ng-model="userForUpdate.firstName"><br/>
+    Last Name:<input type="text" ng-model="userForUpdate.lastName"><br/>
+    Patronymic:<input type="text" ng-model="userForUpdate.patronymic"><br/>
+    Role:
+    <select ng-model="userForUpdate.role">
+        <option value="USER">User
+        <option value="ADMIN">Admin
+    </select><br/>
+    <button ng-click="updateUser()"
+            ng-show="userForUpdate.matchingPassword && (userForUpdate.password === userForUpdate.matchingPassword)">
+        Update user
+    </button>
+</form>
 <br/>
 <p>3. Delete user:</p>
 <form name="deleteUser">

@@ -63,12 +63,13 @@ public class CommonController {
 
     //GET USER
     @RequestMapping(value = "/admin/user/{login}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> getUser (@PathVariable("login") String login) {
+    public ResponseEntity<UserDto> getUser (@PathVariable("login") String login) {
         User user = userService.findByLogin(login);
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        UserDto userDto = ModelVsDtoConverter.transformUser(user, user.getUserProfile().getRole());
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     //GET ALL USERS (ADMIN)
@@ -79,14 +80,14 @@ public class CommonController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         List<UserDto> userDtoList = new ArrayList<>();
-        userList.stream().forEachOrdered(u -> userDtoList.add(ModelVsDtoConverter.transformUser(u, u.getUserProfile().getRole(), passwordEncoder.encode(u.getPassword()))));
+        userList.stream().forEachOrdered(u -> userDtoList.add(ModelVsDtoConverter.transformUser(u, u.getUserProfile().getRole())));
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
 
     //UPDATE USER (ADMIN)
     @RequestMapping(value = "/admin/user/{login}", method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> updateUser(@PathVariable("login") String login, @RequestBody @Valid UserDto userDto) {
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateUser(@PathVariable("login") String login, @RequestBody @Valid UserDto userDto) {
 
         User currentUser = userService.findByLogin(login);
 

@@ -17,14 +17,15 @@ public final class ModelVsDtoConverter {
     private ModelVsDtoConverter() {
     }
 
-    public static UserDto transformUser(User user, Role role, String encodedPassword) {
+    public static UserDto transformUser(User user, Role role) {
         UserDto userDto = new UserDto();
         userDto.setLogin(user.getLogin());
         userDto.setEmail(user.getEmail());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setPatronymic(user.getPatronymic());
-        userDto.setPassword(encodedPassword);
+        userDto.setPassword(user.getPassword());
+        userDto.setMatchingPassword(user.getPassword());
         userDto.setRole(role.name());
         return userDto;
     }
