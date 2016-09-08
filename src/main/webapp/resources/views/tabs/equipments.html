@@ -41,7 +41,7 @@
     <tr bgcolor="#e0ffff">
         <td ng-repeat="(key, value) in newEquipments[0]">{{key}}</td>
     </tr>
-    <tr ng-repeat="newEquipment in newEquipments">
+    <tr ng-repeat="newEquipment in newEquipments track by $index">
         <td ng-repeat="(key, value) in newEquipment">{{value}}</td>
     </tr>
 </table>
