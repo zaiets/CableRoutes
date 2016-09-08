@@ -19,12 +19,7 @@ app.controller('joinPointController', function ($scope, multipartFormService, jo
     $scope.sendNewEntriesToDatabase = function () {
         console.log('joinPointController works... -> sendNewEntriesToDatabase');
         var uploadUrl = '/joinPoint';
-        joinPointService.createOrUpdate(uploadUrl, $scope.newJoinPoints, function (entity) {
-            console.log('clearing ' + entity);
-            $scope.joinPoints.push(entity);
-            $scope.newJoinPoints.slice($scope.newJoinPoints.indexOf(entity), 1);
-        });
-
+        joinPointService.createOrUpdate(uploadUrl, $scope.newJoinPoints);
     };
 
 

@@ -13,7 +13,7 @@ app.service('equipmentService', function ($http) {
             });
     };
 
-    this.createOrUpdate = function (uploadUrl, newEntities, result) {
+    this.createOrUpdate = function (uploadUrl, newEntities) {
         console.log('EquipmentService works... -> createOrUpdate');
         for (var key in newEntities) {
             var current = angular.copy(newEntities[key]);
@@ -23,9 +23,10 @@ app.service('equipmentService', function ($http) {
             ($http.put(uploadUrl, current)
                 .then(function (response) {
                     console.log('On data pushed:' + current + ' server responded: ' + response.status);
-                    if (response.status == 200) result(current);
                 }));
         }
+        alert('All done!');
+        location.reload();
     };
 
 });
