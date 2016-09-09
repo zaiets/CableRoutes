@@ -7,26 +7,26 @@ app.service('equipmentService', function ($http) {
         $http.get('/equipment')
             .then(function (response) {
                 console.log(response);
-                if(response.status == 200) {
+                if (response.status == 200) {
                     result(response.data);
                 }
             });
     };
 
-    this.createOrUpdate = function (uploadUrl, newEntities) {
+    this.createOrUpdate = function (uploadUrl, newEntities, result) {
         console.log('EquipmentService works... -> createOrUpdate');
+        var rejected = [];
         for (var key in newEntities) {
-            var current = angular.copy(newEntities[key]);
-            if(current.joinPoint){
-                current.joinPoint = $http.get('/joinPoint/' + current.joinPoint);
-            }
-            ($http.put(uploadUrl, current)
+            var current = newEntities[key];
+            $http.put(uploadUrl, current)
                 .then(function (response) {
                     console.log('On data pushed:' + current + ' server responded: ' + response.status);
-                }));
+                    if (response.status != 200) {
+                        rejected.push(current);
+                    }
+                });
+            result(rejected);
         }
-        alert('All done!');
-        location.reload();
     };
 
 });

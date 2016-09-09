@@ -2,7 +2,9 @@ package app.repository.dao.business.implsql;
 
 import app.repository.dao.AbstractDao;
 import app.repository.dao.business.ILineDao;
-import app.repository.entities.business.*;
+import app.repository.entities.business.Cable;
+import app.repository.entities.business.JoinPoint;
+import app.repository.entities.business.Line;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.Order;
@@ -10,11 +12,13 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Transactional
 public class LineDaoImpl extends AbstractDao<Integer, Line> implements ILineDao {
 
     static final Logger logger = LoggerFactory.getLogger(LineDaoImpl.class);

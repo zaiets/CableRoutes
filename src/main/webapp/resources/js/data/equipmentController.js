@@ -19,9 +19,8 @@ app.controller('equipmentController', function ($scope, multipartFormService, eq
     $scope.sendNewEntriesToDatabase = function () {
         console.log('EquipmentController works... -> sendNewEntriesToDatabase');
         var uploadUrl = '/equipment';
-        equipmentService.createOrUpdate(uploadUrl, $scope.newEquipments, function(entity) {
-            $scope.equipments.push(entity);
-            $scope.newEquipments.slice($scope.newEquipments.indexOf(entity), 1);
+        equipmentService.createOrUpdate(uploadUrl, $scope.newEquipments, function(rejected) {
+            $scope.newEquipments = rejected;
         });
     };
 

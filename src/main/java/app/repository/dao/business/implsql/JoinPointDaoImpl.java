@@ -28,7 +28,7 @@ public class JoinPointDaoImpl extends AbstractDao<String, JoinPoint> implements 
 
     @Override
     public boolean createOrUpdate(JoinPoint joinPoint) {
-        logger.info("Create or update joinPoint {} in DB!", joinPoint.getUniqueName());
+        logger.info("Create or update joinPoint {} in DB!", joinPoint);
         saveOrUpdate(joinPoint);
         return getByKey(joinPoint.getUniqueName()).equals(joinPoint);
     }

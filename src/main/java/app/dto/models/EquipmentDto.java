@@ -10,6 +10,7 @@ public class EquipmentDto {
 	private Double x;
 	private Double y;
 	private Double z;
+	private String joinPointKks;
 	private JoinPointDto joinPoint;
 
 	public EquipmentDto(){}
@@ -81,6 +82,14 @@ public class EquipmentDto {
 		this.joinPoint = joinPoint;
 	}
 
+	public String getJoinPointKks() {
+		return joinPointKks;
+	}
+
+	public void setJoinPointKks(String joinPointKks) {
+		this.joinPointKks = joinPointKks;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -97,6 +106,8 @@ public class EquipmentDto {
 		if (getX() != null ? !getX().equals(that.getX()) : that.getX() != null) return false;
 		if (getY() != null ? !getY().equals(that.getY()) : that.getY() != null) return false;
 		if (getZ() != null ? !getZ().equals(that.getZ()) : that.getZ() != null) return false;
+		if (getJoinPointKks() != null ? !getJoinPointKks().equals(that.getJoinPointKks()) : that.getJoinPointKks() != null)
+			return false;
 		return getJoinPoint() != null ? getJoinPoint().equals(that.getJoinPoint()) : that.getJoinPoint() == null;
 
 	}
@@ -109,6 +120,7 @@ public class EquipmentDto {
 		result = 31 * result + (getX() != null ? getX().hashCode() : 0);
 		result = 31 * result + (getY() != null ? getY().hashCode() : 0);
 		result = 31 * result + (getZ() != null ? getZ().hashCode() : 0);
+		result = 31 * result + (getJoinPointKks() != null ? getJoinPointKks().hashCode() : 0);
 		result = 31 * result + (getJoinPoint() != null ? getJoinPoint().hashCode() : 0);
 		return result;
 	}

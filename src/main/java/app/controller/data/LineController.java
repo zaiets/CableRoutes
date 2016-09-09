@@ -41,7 +41,7 @@ public class LineController {
 
     //CREATE OR UPDATE LINE
     @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateOrUpdate(@RequestBody HttpHeaders headers,
+    public ResponseEntity<Void> createOrUpdate(@RequestBody HttpHeaders headers,
                                                     @RequestBody @Valid LineDto entityDto) {
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
@@ -80,7 +80,5 @@ public class LineController {
         }
         return new ResponseEntity<>(entityDtoList, headers, HttpStatus.OK);
     }
-
-    //else TODO?
 
 }

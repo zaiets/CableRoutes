@@ -11,11 +11,13 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Transactional
 public class EquipmentDaoImpl extends AbstractDao<String, Equipment> implements IEquipmentDao {
 
     static final Logger logger = LoggerFactory.getLogger(EquipmentDaoImpl.class);
@@ -29,7 +31,7 @@ public class EquipmentDaoImpl extends AbstractDao<String, Equipment> implements 
 
     @Override
     public boolean createOrUpdate(Equipment equipment) {
-        logger.info("Create or update equipment {} in DB!", equipment.getUniqueName());
+        logger.info("Create or update equipment {} in DB!", equipment);
         saveOrUpdate(equipment);
         return getByKey(equipment.getUniqueName()).equals(equipment);
     }

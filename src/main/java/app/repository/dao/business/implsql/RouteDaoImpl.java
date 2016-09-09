@@ -12,11 +12,13 @@ import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@Transactional
 public class RouteDaoImpl extends AbstractDao<String, Route> implements IRouteDao {
 
     static final Logger logger = LoggerFactory.getLogger(RouteDaoImpl.class);

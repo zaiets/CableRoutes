@@ -39,8 +39,8 @@ public class JoinPointController {
     }
 
     //CREATE OR UPDATE JOINPOINT
-    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateOrUpdate(@RequestBody @Valid JoinPointDto entityDto) {
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createOrUpdate(@RequestBody @Valid JoinPointDto entityDto) {
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

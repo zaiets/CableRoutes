@@ -2,6 +2,9 @@ package app.controller.data;
 
 import app.dto.models.EquipmentDto;
 import app.service.entities.IEquipmentService;
+import app.service.entities.IJoinPointService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,8 +21,12 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/equipment")
 public class EquipmentController {
+    static final Logger logger = LoggerFactory.getLogger(EquipmentController.class);
+
     @Autowired
     IEquipmentService service;
+    @Autowired
+    IJoinPointService joinPointService;
 
     //CREATE ONE EQUIPMENT
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
@@ -42,8 +49,12 @@ public class EquipmentController {
     }
 
     //CREATE OR UPDATE EQUIPMENT
-    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateOrUpdate(@RequestBody @Valid EquipmentDto entityDto) {
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createOrUpdate(@RequestBody @Valid EquipmentDto entityDto) {
+        logger.info("updateOrUpdate -> {}" + entityDto);
+        if (entityDto.getJoinPointKks() != null) {
+            entityDto.setJoinPoint(joinPointService.read(entityDto.getJoinPointKks()));
+        }
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

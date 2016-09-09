@@ -79,6 +79,7 @@ public final class ModelVsDtoConverter {
         equipmentDto.setFullName(equipment.getFullName());
         equipmentDto.setCommonKks(equipment.getCommonKks());
         equipmentDto.setJoinPoint(transformJoinPoint(equipment.getJoinPoint()));
+        equipmentDto.setJoinPointKks(equipment.getJoinPoint().getKksName());
         equipmentDto.setCableConnectionAddLength(equipment.getCableConnectionAddLength());
         equipmentDto.setX(equipment.getX());
         equipmentDto.setY(equipment.getY());
@@ -90,11 +91,13 @@ public final class ModelVsDtoConverter {
         Equipment equipment = new Equipment();
         equipment.setFullName(equipmentDto.getFullName());
         equipment.setCommonKks(equipmentDto.getCommonKks());
-        equipment.setJoinPoint(transformJoinPointDto(equipmentDto.getJoinPoint()));
         equipment.setCableConnectionAddLength(equipmentDto.getCableConnectionAddLength());
         equipment.setX(equipmentDto.getX());
         equipment.setY(equipmentDto.getY());
         equipment.setZ(equipmentDto.getZ());
+        if (equipmentDto.getJoinPoint() != null) {
+            equipment.setJoinPoint(transformJoinPointDto(equipmentDto.getJoinPoint()));
+        }
         return equipment;
     }
 
