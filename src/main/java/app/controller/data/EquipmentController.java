@@ -40,9 +40,10 @@ public class EquipmentController {
     }
 
     //GET EQUIPMENT
-    @RequestMapping(value = "/{kks}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EquipmentDto> read (@PathVariable("kks") String kks) {
-        EquipmentDto currentDto = service.read(kks);
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<EquipmentDto> read (@PathVariable("name") String name) {
+        EquipmentDto currentDto = service.read(name);
+        logger.info("found entity: " + currentDto);
         if (currentDto == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

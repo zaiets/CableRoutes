@@ -6,8 +6,23 @@ app.controller('joinPointController', function ($scope, entityService, multipart
         $scope.joinPoints = data;
     });
 
-    $scope.newJoinPoint = {};
+    $scope.newJoinPoint = {
+        kksName: undefined,
+        x: undefined,
+        y: undefined,
+        z: undefined
+    };
     $scope.newJoinPoints = [];
+
+    $scope.getAndShow = function () {
+        console.log('getAndShow works...' + $scope.newJoinPoint.kksName);
+        entityService.get('/joinPoint/' + $scope.newJoinPoint.kksName, function (data) {
+            console.log(data);
+            if (data) {
+                $scope.newJoinPoint = data;
+            }
+        })
+    };
 
     $scope.addJoinPoint = function () {
         console.log('addNewJoinPoint works...');

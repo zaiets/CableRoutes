@@ -3,13 +3,11 @@ app.service('entityService', function ($http) {
     console.log('core app.entityService initialized');
 
     this.get = function (targetUrl, result) {
-        console.log('getEntities works...');
+        console.log('get works...');
         $http.get(targetUrl)
             .then(function (response) {
-                console.log(response);
-                if (response.status == 200) {
-                    result(response.data);
-                }
+                console.log('server responded status ' + response.status);
+                if (response.status == 200) result(response.data);
             });
     };
 
@@ -17,8 +15,8 @@ app.service('entityService', function ($http) {
         console.log('createOrUpdate works...');
         for (var key in newEntities) {
             $http.put(uploadUrl, newEntities[key])
-                .success(function (response) {
-                    console.log('On data pushed:' + newEntities[key] + ' server responded: ' + response.status);
+                .success(function () {
+                    console.log('On data pushed:' + newEntities[key] + ' success');
                 })
         }
         alert('OK');

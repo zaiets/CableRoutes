@@ -45,24 +45,24 @@ public class EquipmentServiceImpl implements IEquipmentService {
     }
 
     @Override
-    public EquipmentDto read(String kks) {
-        logger.info("EquipmentService is reading equipment by kks: {}", kks);
-        return transformEquipment(equipmentDao.read(kks));
+    public EquipmentDto read(String name) {
+        logger.info("EquipmentService is reading equipment by name: {}", name);
+        return transformEquipment(equipmentDao.read(name));
     }
 
     @Override
-    public boolean update(String kks, EquipmentDto equipmentDto) {
+    public boolean update(String name, EquipmentDto equipmentDto) {
         logger.info("EquipmentService is updating equipment: {}", equipmentDto.getFullName());
         Equipment equipment = transformEquipmentDto(equipmentDto);
         if (equipment.getCommonKks() == null || equipment.getCommonKks().equals("")) {
             equipment.setCommonKks(ExcelUtils.extractKKS(equipment.getFullName()));
         }
-        return equipmentDao.update(kks, equipment);
+        return equipmentDao.update(name, equipment);
     }
 
     @Override
-    public boolean delete(String kks) {
-        return equipmentDao.delete(kks);
+    public boolean delete(String name) {
+        return equipmentDao.delete(name);
     }
 
     @Override

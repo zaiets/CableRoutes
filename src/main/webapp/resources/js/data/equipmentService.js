@@ -8,11 +8,11 @@ app.service('equipmentService', function ($http) {
         for (var key in newEntities) {
             var current = newEntities[key];
             $http.put(uploadUrl, current)
-                .success(function (response) {
-                    console.log('On data pushed:' + current + ' server responded: ' + response.status);
+                .success(function () {
+                    console.log('On data pushed:' + current + ' success');
                 })
-                .error(function (response) {
-                    console.log('On data pushed:' + current + ' server responded: ' + response.status);
+                .error(function () {
+                    console.log('On data pushed:' + current + ' rejected');
                     rejected.push(current);
                 });
         }

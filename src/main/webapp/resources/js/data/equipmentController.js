@@ -6,8 +6,27 @@ app.controller('equipmentController', function ($scope, entityService, multipart
         $scope.equipments = data;
     });
 
-    $scope.newEquipment = {};
+    $scope.newEquipment = {
+        fullName: undefined,
+        commonKks: undefined,
+        x: undefined,
+        y: undefined,
+        z: undefined,
+        joinPoint: undefined,
+        joinPointKks: this.joinPoint? this.joinPoint.kksName : undefined,
+        cableConnectionAddLength: 0
+    };
     $scope.newEquipments = [];
+
+    $scope.getAndShow = function () {
+        console.log('getAndShow works...' + $scope.newEquipment.fullName);
+        entityService.get('/equipment/' + $scope.newEquipment.fullName, function (data) {
+            console.log(data);
+            if (data) {
+                $scope.newEquipment = data;
+            }
+        })
+    };
 
     $scope.addEquipment = function () {
         console.log('addNewEquipment works...');
@@ -22,6 +41,10 @@ app.controller('equipmentController', function ($scope, entityService, multipart
         equipmentService.createOrUpdate(uploadUrl, $scope.newEquipments, function(rejected) {
             console.log('DB rejected: ' + rejected);
             $scope.newEquipments = rejected;
+            entityService.get('/equipment', function (data) {
+                console.log('getEquipments works...');
+                $scope.equipments = data;
+            });
         });
     };
 

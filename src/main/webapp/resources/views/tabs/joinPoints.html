@@ -4,15 +4,16 @@
     <button ng-click="submit()">READ FILE</button>
 </form>
 
-<p>2. Add new Join Points manually:</p>
+<p>2. Add or update Join Points manually:</p>
 <form method="get" ng-model="newJoinPoint">
-    KKS:<input type="text" ng-model="newJoinPoint.kksName" required><br/>
+    KKS:<input type="text" ng-model="newJoinPoint.kksName" required>
+    <button ng-click="getAndShow()" ng-show="newJoinPoint.kksName">Get or new</button><br/>
     <div ng-show="newJoinPoint.kksName">Coordinates:<br/>
         X:<input type="number" ng-model="newJoinPoint.x" step="0.1" required><br/>
         Y:<input type="number" ng-model="newJoinPoint.y" step="0.1" required><br/>
         Z:<input type="number" ng-model="newJoinPoint.z" step="0.1" required><br/>
-        <button ng-show="newJoinPoint.kksName"
-                ng-click="addJoinPoint()">Add new
+        <button ng-show="newJoinPoint.x && newJoinPoint.y && newJoinPoint.z"
+                ng-click="addJoinPoint()">Create of update
         </button>
     </div>
 </form>
