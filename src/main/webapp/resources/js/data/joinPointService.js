@@ -2,9 +2,9 @@ app.service('joinPointService', function ($http) {
 
     console.log('core app.joinPointService initialized');
 
-    this.getJoinPoints = function (result) {
-        console.log('joinPointService works... -> getJoinPoints');
-        $http.get('/joinPoint')
+    this.get = function (uploadUrl, result) {
+        console.log('getEntities works...');
+        $http.get(uploadUrl)
             .then(function (response) {
                 console.log(response);
                 if (response.status == 200) {
@@ -14,14 +14,23 @@ app.service('joinPointService', function ($http) {
     };
 
     this.createOrUpdate = function (uploadUrl, newEntities) {
-        console.log('joinPointService works... -> createOrUpdate');
+        console.log('createOrUpdate works...');
         for (var key in newEntities) {
             ($http.put(uploadUrl, newEntities[key])
                 .then(function (response) {
                     console.log('On data pushed:' + newEntities[key] + ' server responded: ' + response.status);
                 }));
         }
-        alert('All done!');
+        alert('Work done!');
+        location.reload();
+    };
+
+    this.delete = function (uploadUrl) {
+        console.log('delete works...' + uploadUrl);
+        $http.delete(uploadUrl)
+                .then(function (response) {
+                    console.log('server responded: ' + response.status);
+                });
         location.reload();
     };
 

@@ -17,7 +17,13 @@
     </div>
 </form>
 
-<p>3. List of Join Points currently in DB:</p>
+<p>3. Delete Join Point:</p>
+<form method="get">
+    Input KKS of one Join Point to delete: <input type="text" name="kks" required><br/>
+    <button ng-show="kks" ng-click="deleteJoinPoint(kks)">Delete JP </button>
+</form>
+
+<p>4. List of Join Points currently in DB:</p>
 <table border=3 cellspacing=0>
     <tr bgcolor="#d3d3d3">
         <td ng-repeat="(key, value) in joinPoints[0]">{{key}}</td>
@@ -27,7 +33,7 @@
     </tr>
 </table>
 
-<p>4. List of new Join Points entered/parsed (temporary):</p>
+<p>5. List of new Join Points entered/parsed (temporary):</p>
 <div ng-show="newJoinPoints[0]">
     * to send this Join Points to DB, press this button:
     <button ng-click="sendNewEntriesToDatabase()">ACCEPT</button>

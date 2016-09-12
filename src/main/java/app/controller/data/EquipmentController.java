@@ -1,6 +1,7 @@
 package app.controller.data;
 
 import app.dto.models.EquipmentDto;
+import app.dto.models.JoinPointDto;
 import app.service.entities.IEquipmentService;
 import app.service.entities.IJoinPointService;
 import org.slf4j.Logger;
@@ -51,9 +52,13 @@ public class EquipmentController {
     //CREATE OR UPDATE EQUIPMENT
     @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createOrUpdate(@RequestBody @Valid EquipmentDto entityDto) {
-        logger.info("updateOrUpdate -> {}" + entityDto);
+        logger.info("updateOrUpdate -> {}" + entityDto.getFullName());
         if (entityDto.getJoinPointKks() != null) {
-            entityDto.setJoinPoint(joinPointService.read(entityDto.getJoinPointKks()));
+            JoinPointDto currentJoinPoint = joinPointService.read(entityDto.getJoinPointKks());
+            if (currentJoinPoint == null) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+            entityDto.setJoinPoint(currentJoinPoint);
         }
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);

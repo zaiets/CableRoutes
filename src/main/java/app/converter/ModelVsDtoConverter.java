@@ -18,6 +18,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static UserDto transformUser(User user, Role role) {
+        if (user == null) return null;
         UserDto userDto = new UserDto();
         userDto.setLogin(user.getLogin());
         userDto.setEmail(user.getEmail());
@@ -32,6 +33,7 @@ public final class ModelVsDtoConverter {
 
 
     public static CableDto transformCable(Cable cable) {
+        if (cable == null) return null;
         CableDto cableDto = new CableDto();
         cableDto.setKksName(cable.getKksName());
         cableDto.setJournal(cable.getJournalName());
@@ -55,6 +57,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static Cable transformCableDto(CableDto cableDto) {
+        if (cableDto == null) return null;
         Cable cable = new Cable();
         cable.setKksName(cableDto.getKksName());
         cable.setJournalName(cableDto.getJournal());
@@ -71,10 +74,11 @@ public final class ModelVsDtoConverter {
             routeDtoList.forEach(o -> routeList.add(transformRouteDto(o)));
             cable.setRoutesList(routeList);
         }
-        return null;
+        return cable;
     }
 
     public static EquipmentDto transformEquipment(Equipment equipment) {
+        if (equipment == null) return null;
         EquipmentDto equipmentDto = new EquipmentDto();
         equipmentDto.setFullName(equipment.getFullName());
         equipmentDto.setCommonKks(equipment.getCommonKks());
@@ -88,6 +92,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static Equipment transformEquipmentDto(EquipmentDto equipmentDto) {
+        if (equipmentDto == null) return null;
         Equipment equipment = new Equipment();
         equipment.setFullName(equipmentDto.getFullName());
         equipment.setCommonKks(equipmentDto.getCommonKks());
@@ -102,6 +107,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static JoinPointDto transformJoinPoint(JoinPoint joinPoint) {
+        if (joinPoint == null) return null;
         JoinPointDto joinPointDto = new JoinPointDto();
         joinPointDto.setKksName(joinPoint.getKksName());
         joinPointDto.setX(joinPoint.getX());
@@ -111,6 +117,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static JoinPoint transformJoinPointDto(JoinPointDto joinPointDto) {
+        if (joinPointDto == null) return null;
         JoinPoint joinPoint = new JoinPoint();
         joinPoint.setKksName(joinPointDto.getKksName());
         joinPoint.setX(joinPointDto.getX());
@@ -120,6 +127,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static JournalDto transformJournal(Journal journal, List<CableDto> cableDtos) {
+        if (journal == null) return null;
         JournalDto journalDto = new JournalDto();
         journalDto.setKksName(journal.getKksName());
         journalDto.setFile(journal.getFile());
@@ -128,6 +136,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static Journal transformJournalDto(JournalDto journalDto) {
+        if (journalDto == null) return null;
         Journal journal = new Journal();
         journal.setKksName(journalDto.getKksName());
         journal.setFile(journalDto.getFile());
@@ -135,6 +144,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static LineDto transformLine(Line line) {
+        if (line == null) return null;
         LineDto lineDto = new LineDto();
         lineDto.setId(line.getId());
         lineDto.setEndPoint(transformJoinPoint(line.getEndPoint()));
@@ -150,6 +160,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static Line transformLineDto(LineDto lineDto) {
+        if (lineDto == null) return null;
         Line line = new Line();
         line.setId(lineDto.getId());
         line.setEndPoint(transformJoinPointDto(lineDto.getEndPoint()));
@@ -165,6 +176,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static RouteDto transformRoute(Route route) {
+        if (route == null) return null;
         RouteDto routeDto = new RouteDto();
         routeDto.setKksName(route.getKksName());
         routeDto.setFirstEnd(transformJoinPoint(route.getFirstEnd()));
@@ -177,6 +189,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static Route transformRouteDto(RouteDto routeDto) {
+        if (routeDto == null) return null;
         Route route = new Route();
         route.setKksName(routeDto.getKksName());
         route.setFirstEnd(transformJoinPointDto(routeDto.getFirstEnd()));
@@ -189,6 +202,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static RouteTypeDto transformRouteType(RouteType routeType) {
+        if (routeType == null) return null;
         RouteTypeDto routeTypeDto = new RouteTypeDto();
         routeTypeDto.setMarker(routeType.getMarker());
         routeTypeDto.setName(routeType.getName());
@@ -196,6 +210,7 @@ public final class ModelVsDtoConverter {
     }
 
     public static RouteType transformRouteTypeDto(RouteTypeDto routeTypeDto) {
+        if (routeTypeDto == null) return null;
         RouteType routeType = new RouteType();
         routeType.setMarker(routeTypeDto.getMarker());
         routeType.setName(routeTypeDto.getName());
