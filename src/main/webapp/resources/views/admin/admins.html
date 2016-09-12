@@ -58,7 +58,7 @@
 <br/>
 <p>3. Delete user:</p>
 <form name="deleteUser">
-    Input LOGIN:<input type="text" name="loginToDelete" required><br/>
+    Input LOGIN:<input type="text" ng-model="loginToDelete" required><br/>
     <button ng-click="delete(loginToDelete)" ng-show="loginToDelete">Delete user</button>
 </form>
 <br/>

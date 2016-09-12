@@ -20,6 +20,7 @@ app.controller('equipmentController', function ($scope, entityService, multipart
         console.log('sendNewEntriesToDatabase works...');
         var uploadUrl = '/equipment';
         equipmentService.createOrUpdate(uploadUrl, $scope.newEquipments, function(rejected) {
+            console.log('DB rejected: ' + rejected);
             $scope.newEquipments = rejected;
         });
     };

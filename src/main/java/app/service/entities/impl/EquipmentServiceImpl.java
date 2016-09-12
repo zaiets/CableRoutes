@@ -5,6 +5,7 @@ import app.dto.models.JoinPointDto;
 import app.repository.dao.business.IEquipmentDao;
 import app.repository.entities.business.Equipment;
 import app.service.entities.IEquipmentService;
+import app.service.functionality.excelworkers.ExcelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +27,21 @@ public class EquipmentServiceImpl implements IEquipmentService {
     @Override
     public boolean create(EquipmentDto equipmentDto) {
         logger.info("EquipmentService is creating new equipment: {}", equipmentDto.getFullName());
-        return equipmentDao.create(transformEquipmentDto(equipmentDto));
+        Equipment equipment = transformEquipmentDto(equipmentDto);
+        if (equipment.getCommonKks() == null || equipment.getCommonKks().equals("")) {
+            equipment.setCommonKks(ExcelUtils.extractKKS(equipment.getFullName()));
+        }
+        return equipmentDao.create(equipment);
     }
 
     @Override
     public boolean createOrUpdate(EquipmentDto equipmentDto) {
         logger.info("EquipmentService is creating new equipment: {}", equipmentDto.getFullName());
-        return equipmentDao.createOrUpdate(transformEquipmentDto(equipmentDto));
+        Equipment equipment = transformEquipmentDto(equipmentDto);
+        if (equipment.getCommonKks() == null || equipment.getCommonKks().equals("")) {
+            equipment.setCommonKks(ExcelUtils.extractKKS(equipment.getFullName()));
+        }
+        return equipmentDao.createOrUpdate(equipment);
     }
 
     @Override
@@ -44,7 +53,11 @@ public class EquipmentServiceImpl implements IEquipmentService {
     @Override
     public boolean update(String kks, EquipmentDto equipmentDto) {
         logger.info("EquipmentService is updating equipment: {}", equipmentDto.getFullName());
-        return equipmentDao.update(kks, transformEquipmentDto(equipmentDto));
+        Equipment equipment = transformEquipmentDto(equipmentDto);
+        if (equipment.getCommonKks() == null || equipment.getCommonKks().equals("")) {
+            equipment.setCommonKks(ExcelUtils.extractKKS(equipment.getFullName()));
+        }
+        return equipmentDao.update(kks, equipment);
     }
 
     @Override

@@ -16,25 +16,25 @@ app.service('entityService', function ($http) {
     this.createOrUpdate = function (uploadUrl, newEntities) {
         console.log('createOrUpdate works...');
         for (var key in newEntities) {
-            ($http.put(uploadUrl, newEntities[key])
-                .then(function (response) {
-                    if (response.status == 200) {
-                        console.log('On data pushed:' + newEntities[key] + ' server responded: ' + response.status);
-                        location.reload();
-                    }
-                }));
+            $http.put(uploadUrl, newEntities[key])
+                .success(function (response) {
+                    console.log('On data pushed:' + newEntities[key] + ' server responded: ' + response.status);
+                })
         }
+        alert('OK');
+        location.reload();
     };
+
 
     this.delete = function (uploadUrl) {
         console.log('delete works...' + uploadUrl);
         $http.delete(uploadUrl)
-            .then(function (response) {
-                if (response.status == 200) {
-                    console.log('server responded: ' + response.status);
-                    location.reload();
-                }
+            .success(function (response) {
+                console.log('server responded: ' + response.status);
             });
+        alert('OK');
+        location.reload();
     };
 
-});
+})
+;

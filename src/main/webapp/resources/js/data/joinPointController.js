@@ -18,7 +18,7 @@ app.controller('joinPointController', function ($scope, entityService, multipart
 
     $scope.sendNewEntriesToDatabase = function () {
         console.log('sendNewEntriesToDatabase works...');
-        entityService.createOrUpdate('/joinPoint', $scope.newJoinPoints);
+        entityService.createOrUpdate('/joinPoint', $scope.newJoinPoints)
     };
 
 
