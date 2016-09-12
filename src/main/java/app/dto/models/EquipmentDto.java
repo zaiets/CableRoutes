@@ -15,7 +15,7 @@ public class EquipmentDto {
 
 	public EquipmentDto(){}
 
-	public EquipmentDto(String fullName, String commonKks, Integer cableConnectionAddLength,
+	public EquipmentDto(String commonKks, String fullName, Integer cableConnectionAddLength,
 						Double x, Double y, Double z, JoinPointDto joinPoint) {
 		this.fullName = fullName;
 		this.commonKks = commonKks;

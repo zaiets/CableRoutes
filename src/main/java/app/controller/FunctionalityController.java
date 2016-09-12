@@ -64,7 +64,7 @@ public class FunctionalityController {
         return new ResponseEntity<>(journalDtoList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/parse/equipment", method = RequestMethod.POST,
+    @RequestMapping(value = "/parse/equipments", method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EquipmentDto>> parseNewEquipmentDataFile(@RequestParam("uploadedFile") MultipartFile fileRef) {
         logger.info("Requested to read Equipment file");

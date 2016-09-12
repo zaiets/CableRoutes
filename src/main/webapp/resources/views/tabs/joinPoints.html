@@ -18,8 +18,8 @@
 </form>
 
 <p>3. Delete Join Point:</p>
-<form method="get">
-    Input KKS of one Join Point to delete: <input type="text" name="kks" required><br/>
+<form method="get" ng-model="kks">
+    Input KKS of one Join Point to delete: <input type="text" ng-model="kks" required><br/>
     <button ng-show="kks" ng-click="deleteJoinPoint(kks)">Delete JP </button>
 </form>
 

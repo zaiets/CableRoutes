@@ -1,8 +1,8 @@
-app.controller('equipmentController', function ($scope, multipartFormService, equipmentService) {
+app.controller('equipmentController', function ($scope, entityService, multipartFormService, equipmentService) {
     $scope.equipments = [];
 
-    equipmentService.getEquipments(function (data) {
-        console.log('EquipmentController works... -> getEquipments');
+    entityService.get('/equipment', function (data) {
+        console.log('getEquipments works...');
         $scope.equipments = data;
     });
 
@@ -10,28 +10,31 @@ app.controller('equipmentController', function ($scope, multipartFormService, eq
     $scope.newEquipments = [];
 
     $scope.addEquipment = function () {
-        console.log('EquipmentController works... -> addNewEquipment');
+        console.log('addNewEquipment works...');
         var entity = angular.copy($scope.newEquipment);
         $scope.newEquipments.push(entity);
         console.log(entity);
     };
 
     $scope.sendNewEntriesToDatabase = function () {
-        console.log('EquipmentController works... -> sendNewEntriesToDatabase');
+        console.log('sendNewEntriesToDatabase works...');
         var uploadUrl = '/equipment';
         equipmentService.createOrUpdate(uploadUrl, $scope.newEquipments, function(rejected) {
             $scope.newEquipments = rejected;
         });
     };
 
-
     $scope.uploadedFile = {};
 
-    $scope.submit = function () {
-        console.log('EquipmentController works... -> submit file for parsing');
-        var uploadUrl = '/functionality/parse/equipments';
-        multipartFormService.post(uploadUrl, $scope.uploadedFile, function (result) {
+    $scope.submitEquip = function () {
+        console.log('submitEquip file for parsing works...');
+        multipartFormService.post('/functionality/parse/equipments', $scope.uploadedFile, function (result) {
             $scope.newEquipments = result;
         })
+    };
+
+    $scope.deleteEquipment = function (equipName) {
+        console.log('deleteEquipment  works...' + equipName);
+        entityService.delete('/equipment/' + equipName)
     };
 });

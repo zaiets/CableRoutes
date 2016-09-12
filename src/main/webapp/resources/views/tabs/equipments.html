@@ -22,17 +22,24 @@
     </div>
 </form>
 
-<p>3. List of Equipments currently in DB:</p>
+<p>3. Delete Equipment:</p>
+<form method="get" ng-model="kks">
+    Input Unique Name of one Equipment to delete: <input type="text" ng-model="equipName" required><br/>
+    <button ng-show="equipName" ng-click="deleteEquipment(equipName)">Delete Equip</button>
+</form>
+
+<p>4. List of Equipments currently in DB:</p>
 <table border=3 cellspacing=0>
     <tr bgcolor="#d3d3d3">
         <td ng-repeat="(key, value) in equipments[0]">{{key}}</td>
     </tr>
     <tr ng-repeat="equipment in equipments">
-        <td ng-repeat="(key, value) in equipment">{{value}}</td>
+        <td ng-if=key!='joinPoint' ng-repeat="(key, value) in equipment">{{value}}</td>
+        <td ng-if=key=='joinPoint' ng-repeat="(key, value) in equipment">{{value.kksName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</td>
     </tr>
 </table>
 
-<p>4. List of new Equipments entered/parsed (temporary):</p>
+<p>5. List of new Equipments entered/parsed (temporary):</p>
 <div ng-show="newEquipments[0]">
     * to send this Equipments to DB, press this button:
     <button ng-click="sendNewEntriesToDatabase()">ACCEPT</button>
@@ -42,6 +49,7 @@
         <td ng-repeat="(key, value) in newEquipments[0]">{{key}}</td>
     </tr>
     <tr ng-repeat="newEquipment in newEquipments track by $index">
-        <td ng-repeat="(key, value) in newEquipment">{{value}}</td>
+        <td ng-if=key!='joinPoint' ng-repeat="(key, value) in newEquipment">{{value}}</td>
+        <td ng-if=key=='joinPoint' ng-repeat="(key, value) in newEquipment">{{value.kksName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</td>
     </tr>
 </table>

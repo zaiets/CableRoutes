@@ -79,6 +79,4 @@ public class JoinPointController {
         return new ResponseEntity<>(entityDtoList, HttpStatus.OK);
     }
 
-    //else TODO?
-
 }

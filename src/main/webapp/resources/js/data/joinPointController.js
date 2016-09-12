@@ -1,7 +1,7 @@
-app.controller('joinPointController', function ($scope, multipartFormService, joinPointService) {
+app.controller('joinPointController', function ($scope, entityService, multipartFormService) {
     $scope.joinPoints = [];
 
-    joinPointService.get('/joinPoint', function (data) {
+    entityService.get('/joinPoint', function (data) {
         console.log('getJoinPoints works...');
         $scope.joinPoints = data;
     });
@@ -16,14 +16,9 @@ app.controller('joinPointController', function ($scope, multipartFormService, jo
         console.log(entity);
     };
 
-    $scope.deleteJoinPoint = function (kks) {
-        console.log('deleteJoinPoint  works...' + kks);
-        joinPointService.delete('/joinPoint/' + kks)
-    };
-
     $scope.sendNewEntriesToDatabase = function () {
         console.log('sendNewEntriesToDatabase works...');
-        joinPointService.createOrUpdate('/joinPoint', $scope.newJoinPoints);
+        entityService.createOrUpdate('/joinPoint', $scope.newJoinPoints);
     };
 
 
@@ -34,5 +29,10 @@ app.controller('joinPointController', function ($scope, multipartFormService, jo
         multipartFormService.post('/functionality/parse/joinPoints', $scope.uploadedFile, function (result) {
             $scope.newJoinPoints = result;
         })
+    };
+
+    $scope.deleteJoinPoint = function (kks) {
+        console.log('deleteJoinPoint  works...' + kks);
+        entityService.delete('/joinPoint/' + kks)
     };
 });
