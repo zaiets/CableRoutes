@@ -5,15 +5,14 @@
     <div ng-show="newRouteType.marker">
         Description:<input type="text" ng-model="newRouteType.name"><br/>
     </div>
-    <button ng-show="newRouteType.name" ng-click="addOrUpdate()">Create or update</button>
+    <button ng-show="newRouteType.name" ng-click="addNewToTemp()">Create or update</button>
 </form>
 
 <p>2. List of new Route Types entered/parsed (temporary):</p>
 <div ng-show="newRouteTypes[0]">
     * to send this Route Types to DB, press this button:
-    <button ng-click="sendNewEntriesToDatabase()">ACCEPT</button>
+    <button ng-click="sendNewEntriesToDatabase()">ACCEPT</button><br/>
 </div>
-
 <table border=3 cellspacing=0 ng-show="newRouteType[0]">
     <tr bgcolor="#e0ffff">
         <td ng-repeat="(key, value) in newRouteType[0]">{{key}}</td>
@@ -24,17 +23,17 @@
 </table>
 
 <p>3. Delete Route Type:</p>
-<form method="get" ng-model="kks">
+<form method="get" ng-model="marker">
     KKS: <input type="text" ng-model="marker" required><br/>
-    <button ng-show="kks" ng-click="deleteFromDB(marker)">Delete</button>
+    <button ng-show="marker" ng-click="deleteFromDB(marker)">Delete</button>
 </form>
 
-<p>5. List of Join Points currently in DB:</p>
+<p>4. List of Route Types currently in DB:</p>
 <table border=3 cellspacing=0>
     <tr bgcolor="#d3d3d3">
-        <td ng-repeat="(key, value) in joinPoints[0]">{{key}}</td>
+        <td ng-repeat="(key, value) in routeTypes[0]">{{key}}</td>
     </tr>
-    <tr ng-repeat="joinPoint in joinPoints">
-        <td ng-repeat="(key, value) in joinPoint">{{value}}</td>
+    <tr ng-repeat="routeType in routeTypes">
+        <td ng-repeat="(key, value) in routeType">{{value}}</td>
     </tr>
 </table>

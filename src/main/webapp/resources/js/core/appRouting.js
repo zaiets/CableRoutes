@@ -16,6 +16,10 @@ app.config(function ($routeProvider) {
             templateUrl: '/resources/views/tabs/routes.html',
             controller: 'routeController'
         })
+        .when("/routeTypes", {
+            templateUrl: '/resources/views/tabs/routeTypes.html',
+            controller: 'routeTypeController'
+        })
         .when("/journals", {
             templateUrl: '/resources/views/tabs/journals.html',
             controller: 'journalController'
