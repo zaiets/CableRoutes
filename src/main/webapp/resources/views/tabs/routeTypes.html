@@ -13,9 +13,9 @@
     * to send this Route Types to DB, press this button:
     <button ng-click="sendNewEntriesToDatabase()">ACCEPT</button><br/>
 </div>
-<table border=3 cellspacing=0 ng-show="newRouteType[0]">
+<table border=3 cellspacing=0 ng-show="newRouteTypes[0]">
     <tr bgcolor="#e0ffff">
-        <td ng-repeat="(key, value) in newRouteType[0]">{{key}}</td>
+        <td ng-repeat="(key, value) in newRouteTypes[0]">{{key}}</td>
     </tr>
     <tr ng-repeat="newRouteType in newRouteTypes track by $index">
         <td ng-repeat="(key, value) in newRouteType">{{value}}</td>
