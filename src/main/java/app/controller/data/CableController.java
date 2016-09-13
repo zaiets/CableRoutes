@@ -27,8 +27,9 @@ public class CableController {
     ICableService service;
 
     //CREATE ONE CABLE
-    @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@Valid CableDto entityDto) {
+        logger.info("create {}", entityDto);
         boolean isCreated = service.create(entityDto);
         if (!isCreated) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -38,17 +39,19 @@ public class CableController {
 
     //GET CABLE
     @RequestMapping(value = "/{kks}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CableDto> read (@PathVariable("kks") String kks) {
-        CableDto currentCableDto = service.read(kks);
-        if (currentCableDto == null) {
+    public ResponseEntity<CableDto> read(@PathVariable("kks") String kks) {
+        CableDto currentDto = service.read(kks);
+        logger.info("found entity: ", currentDto);
+        if (currentDto == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(currentCableDto, HttpStatus.OK);
+        return new ResponseEntity<>(currentDto, HttpStatus.OK);
     }
 
     //CREATE OR UPDATE CABLE
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createOrUpdate(@RequestBody @Valid CableDto entityDto) {
+        logger.info("createOrUpdate: {}", entityDto);
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -59,6 +62,7 @@ public class CableController {
     //UPDATE CABLE
     @RequestMapping(value = "/{kks}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateCable(@PathVariable("kks") String kks, @RequestBody @Valid CableDto entityDto) {
+        logger.info("update: {}", kks);
         if (service.update(kks, entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -69,6 +73,7 @@ public class CableController {
     //DELETE CABLE
     @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable("kks") String kks) {
+        logger.info("delete: {}", kks);
         if (service.delete(kks)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -80,21 +85,19 @@ public class CableController {
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CableDto>> listAll(@RequestBody HttpHeaders headers) {
         List<CableDto> entityDtoList = service.getAll();
-        if(entityDtoList.isEmpty()){
+        logger.info("get all items");
+        if (entityDtoList.isEmpty()) {
             return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(entityDtoList, headers, HttpStatus.OK);
     }
 
-//    List<CableDto> readAllByTwoEquipments(EquipmentDto eq1, EquipmentDto eq2);
-//
-//    List<CableDto> readAllByEquipment(EquipmentDto eq);
-//
-//    List<CableDto> readAllByJournal(String journalKks);
-//
-//    List<CableDto> readAllByJoinPoint(JoinPointDto point);
-//
-//    List<CableDto> readAllByTwoJoinPoints(JoinPointDto start, JoinPointDto end);
-//
-//    TODO for full functionality
+    /*
+    List of already available service methods:
+    List<CableDto> readAllByTwoEquipments(EquipmentDto eq1, EquipmentDto eq2);
+    List<CableDto> readAllByEquipment(EquipmentDto eq);
+    List<CableDto> readAllByJournal(String journalKks);
+    List<CableDto> readAllByJoinPoint(JoinPointDto point);
+    List<CableDto> readAllByTwoJoinPoints(JoinPointDto start, JoinPointDto end);
+    */
 }

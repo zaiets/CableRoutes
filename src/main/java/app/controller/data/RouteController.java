@@ -28,6 +28,7 @@ public class RouteController {
     //CREATE ONE ROUTE
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@Valid RouteDto entityDto) {
+        logger.info("create {}", entityDto);
         boolean isCreated = service.create(entityDto);
         if (!isCreated) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -39,6 +40,7 @@ public class RouteController {
     @RequestMapping(value = "/{kks}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RouteDto> read (@PathVariable("kks") String kks) {
         RouteDto currentDto = service.read(kks);
+        logger.info("found entity: ", currentDto);
         if (currentDto == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -48,7 +50,7 @@ public class RouteController {
     //CREATE OR UPDATE ROUTE
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createOrUpdate(@RequestBody @Valid RouteDto entityDto) {
-        logger.info("createOrUpdate -> {}" + entityDto);
+        logger.info("createOrUpdate: {}", entityDto);
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -58,8 +60,8 @@ public class RouteController {
 
     //UPDATE ROUTE
     @RequestMapping(value = "/{kks}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> update(@PathVariable("kks") String kks,
-                                            @RequestBody @Valid RouteDto entityDto) {
+    public ResponseEntity<Void> update(@PathVariable("kks") String kks, @RequestBody @Valid RouteDto entityDto) {
+        logger.info("update: {}", kks);
         if (service.update(kks, entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -70,6 +72,7 @@ public class RouteController {
     //DELETE ROUTE
     @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable("kks") String kks) {
+        logger.info("delete: {}", kks);
         if (service.delete(kks)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -80,6 +83,7 @@ public class RouteController {
     //GET ALL ROUTES
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RouteDto>> listAll() {
+        logger.info("get all items");
         List<RouteDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -32,6 +32,7 @@ public class EquipmentController {
     //CREATE ONE EQUIPMENT
     @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@Valid EquipmentDto entityDto) {
+        logger.info("create {}", entityDto);
         boolean isCreated = service.create(entityDto);
         if (!isCreated) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -43,7 +44,7 @@ public class EquipmentController {
     @RequestMapping(value = "/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EquipmentDto> read (@PathVariable("name") String name) {
         EquipmentDto currentDto = service.read(name);
-        logger.info("found entity: " + currentDto);
+        logger.info("found entity: ", currentDto);
         if (currentDto == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -53,7 +54,7 @@ public class EquipmentController {
     //CREATE OR UPDATE EQUIPMENT
     @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createOrUpdate(@RequestBody @Valid EquipmentDto entityDto) {
-        logger.info("createOrUpdate -> {}" + entityDto.getFullName());
+        logger.info("createOrUpdate: {}", entityDto);
         if (entityDto.getJoinPointKks() != null) {
             JoinPointDto currentJoinPoint = joinPointService.read(entityDto.getJoinPointKks());
             if (currentJoinPoint == null) {
@@ -69,10 +70,10 @@ public class EquipmentController {
     }
 
     //UPDATE EQUIPMENT
-    @RequestMapping(value = "/{kks}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> update(@PathVariable("kks") String kks,
-                                            @RequestBody @Valid EquipmentDto entityDto) {
-        if (service.update(kks, entityDto)) {
+    @RequestMapping(value = "/{name}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> update(@PathVariable("name") String name, @RequestBody @Valid EquipmentDto entityDto) {
+        logger.info("update: {}", name);
+        if (service.update(name, entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -80,9 +81,10 @@ public class EquipmentController {
     }
 
     //DELETE EQUIPMENT
-    @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> delete(@PathVariable("kks") String kks) {
-        if (service.delete(kks)) {
+    @RequestMapping(value = "/{name}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> delete(@PathVariable("name") String name) {
+        logger.info("delete: {}", name);
+        if (service.delete(name)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -92,6 +94,7 @@ public class EquipmentController {
     //GET ALL EQUIPMENTS
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EquipmentDto>> listAll() {
+        logger.info("get all items");
         List<EquipmentDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
