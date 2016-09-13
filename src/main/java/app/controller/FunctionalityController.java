@@ -44,7 +44,7 @@ public class FunctionalityController {
 
     @RequestMapping(value = "/parse/journals", method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<JournalDto>> parseNewJournalFiles(@RequestParam("uploadedFilesList") List<MultipartFile> filesRef) {
+    public ResponseEntity<List<JournalDto>> parseNewJournalFiles(@RequestParam("uploadedFiles") List<MultipartFile> filesRef) {
         logger.info("Requested to read journal files");
         List<File> fileList = new ArrayList<>();
         filesRef.forEach(file -> fileList.add(readUploadedToTempFile(file)));

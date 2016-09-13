@@ -1,6 +1,6 @@
 <p>1. Add new Journals from file:</p>
-<form ng-model="uploadedFile">
-    Choose Journal file to parse: <input type="file" multiple name="uploadedFile" file-model="uploadedFile"><br/>
+<form ng-model="uploadedFiles">
+    Choose Journal file to parse: <input type="file" multiple name="uploadedFiles" file-model="uploadedFiles"><br/>
     <button ng-click="submit()">READ FILES</button>
 </form>
 
@@ -9,7 +9,7 @@
     Name:<input type="text" ng-model="newCable.kksName" required>
     <button ng-click="getAndShow()" ng-show="newCable.kksName">Get if exists</button>
     <br/>
-    <div ng-show="newCable.journal">
+    <div ng-show="newCable.kksName">
         Data:<br/>
         journalKks: <input type="text" ng-model="newCable.journal" required><br/>
         numberInJournal: <input type="number" ng-model="newCable.numberInJournal" required><br/>
