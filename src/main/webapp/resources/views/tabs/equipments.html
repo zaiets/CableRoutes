@@ -4,11 +4,11 @@
     <button ng-click="submitEquip()">READ FILE</button>
 </form>
 
-<p>2. Add or update new Equipment manually:</p>
+<p>2. Add or update Equipment manually:</p>
 <form method="get" ng-model="newEquipment">
     Name:<input type="text" ng-model="newEquipment.fullName" required>
     <button ng-click="getAndShow()" ng-show="newEquipment.fullName">Get or new</button><br/>
-    <div ng-show="newEquipment.kksName">
+    <div ng-show="newEquipment.fullName">
         Coordinates:<br/>
         X:<input type="number" ng-model="newEquipment.x" step="0.1"><br/>
         Y:<input type="number" ng-model="newEquipment.y" step="0.1"><br/>
