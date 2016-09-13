@@ -22,7 +22,6 @@ import static app.service.functionality.excelworkers.ExcelUtils.*;
 @Component
 public final class JournalsToExcelWriter {
 
-    @Autowired
     static final Logger logger = LoggerFactory.getLogger(JournalsToExcelWriter.class);
 
     public static final int START_CELL_IN_TEMPLATE_FOR_CALC = 16;
