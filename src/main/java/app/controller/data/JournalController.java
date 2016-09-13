@@ -73,7 +73,7 @@ public class JournalController {
     }
 
     //GET ALL JOURNALS
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<JournalDto>> listAll() {
         List<JournalDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){

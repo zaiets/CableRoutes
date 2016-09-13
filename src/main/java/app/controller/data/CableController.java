@@ -73,7 +73,7 @@ public class CableController {
     }
 
     //GET ALL CABLES
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CableDto>> listAll(@RequestBody HttpHeaders headers) {
         List<CableDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
@@ -81,11 +81,6 @@ public class CableController {
         }
         return new ResponseEntity<>(entityDtoList, headers, HttpStatus.OK);
     }
-
-
-//    boolean createOrUpdate(T t);
-//
-//
 
 //    List<CableDto> readAllByTwoEquipments(EquipmentDto eq1, EquipmentDto eq2);
 //

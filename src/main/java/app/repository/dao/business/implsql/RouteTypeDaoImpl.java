@@ -62,7 +62,7 @@ public class RouteTypeDaoImpl extends AbstractDao<String, RouteType> implements 
     @SuppressWarnings("unchecked")
     public List<RouteType> getAll(){
         logger.info("Reading all routeTypes");
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("MARKER"));
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("marker"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return (List<RouteType>) criteria.list();
     }

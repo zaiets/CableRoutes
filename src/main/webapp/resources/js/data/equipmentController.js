@@ -6,7 +6,7 @@ app.controller('equipmentController', function ($scope, entityService, multipart
         $scope.equipments = data;
     });
 
-    $scope.newEquipment = {
+    $scope.newRoute = {
         fullName: undefined,
         commonKks: undefined,
         x: undefined,
@@ -16,31 +16,31 @@ app.controller('equipmentController', function ($scope, entityService, multipart
         joinPointKks: this.joinPoint? this.joinPoint.kksName : undefined,
         cableConnectionAddLength: 0
     };
-    $scope.newEquipments = [];
+    $scope.newRoutes = [];
 
     $scope.getAndShow = function () {
-        console.log('getAndShow works...' + $scope.newEquipment.fullName);
-        entityService.get('/equipment/' + $scope.newEquipment.fullName, function (data) {
+        console.log('getAndShow works...' + $scope.newRoute.fullName);
+        entityService.get('/equipment/' + $scope.newRoute.fullName, function (data) {
             console.log(data);
             if (data) {
-                $scope.newEquipment = data;
+                $scope.newRoute = data;
             }
         })
     };
 
     $scope.addNewToTemp = function () {
         console.log('addNewItem to temp collection works...');
-        var entity = angular.copy($scope.newEquipment);
-        $scope.newEquipments.push(entity);
+        var entity = angular.copy($scope.newRoute);
+        $scope.newRoutes.push(entity);
         console.log(entity);
     };
 
     $scope.sendNewEntriesToDatabase = function () {
         console.log('sendNewEntriesToDatabase works...');
         var uploadUrl = '/equipment';
-        equipmentService.createOrUpdate(uploadUrl, $scope.newEquipments, function(rejected) {
+        equipmentService.createOrUpdate(uploadUrl, $scope.newRoutes, function(rejected) {
             console.log('DB rejected: ' + rejected);
-            $scope.newEquipments = rejected;
+            $scope.newRoutes = rejected;
             entityService.get('/equipment', function (data) {
                 console.log('getEquipments works...');
                 $scope.equipments = data;
@@ -50,10 +50,10 @@ app.controller('equipmentController', function ($scope, entityService, multipart
 
     $scope.uploadedFile = {};
 
-    $scope.submitEquip = function () {
+    $scope.submit = function () {
         console.log('submit file for parsing works...');
         multipartFormService.post('/functionality/parse/equipments', $scope.uploadedFile, function (result) {
-            $scope.newEquipments = result;
+            $scope.newRoutes = result;
         })
     };
 

@@ -73,7 +73,7 @@ public class RouteTypeController {
     }
 
     //GET ALL ROUTETYPES
-    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RouteTypeDto>> listAll() {
         List<RouteTypeDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
