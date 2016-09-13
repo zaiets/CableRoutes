@@ -29,7 +29,7 @@ public class LineController {
     ILineService service;
 
     //CREATE ONE LINE
-    @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@RequestBody @Valid LineDto entityDto) {
         logger.info("create {}", entityDto);
         boolean isCreated = service.create(entityDto);

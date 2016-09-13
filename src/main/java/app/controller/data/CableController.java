@@ -5,7 +5,6 @@ import app.service.entities.ICableService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ public class CableController {
     ICableService service;
 
     //CREATE ONE CABLE
-    @RequestMapping(value = "/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@Valid CableDto entityDto) {
         logger.info("create {}", entityDto);
         boolean isCreated = service.create(entityDto);
@@ -83,13 +82,13 @@ public class CableController {
 
     //GET ALL CABLES
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CableDto>> listAll(@RequestBody HttpHeaders headers) {
+    public ResponseEntity<List<CableDto>> listAll() {
         List<CableDto> entityDtoList = service.getAll();
         logger.info("get all items");
         if (entityDtoList.isEmpty()) {
-            return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(entityDtoList, headers, HttpStatus.OK);
+        return new ResponseEntity<>(entityDtoList, HttpStatus.OK);
     }
 
     /*

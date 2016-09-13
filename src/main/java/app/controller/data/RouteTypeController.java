@@ -26,7 +26,7 @@ public class RouteTypeController {
     IRouteTypeService service;
 
     //CREATE ONE ROUTETYPE
-    @RequestMapping(value = "/", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@Valid RouteTypeDto entityDto) {
         logger.info("create {}", entityDto);
         boolean isCreated = service.create(entityDto);
