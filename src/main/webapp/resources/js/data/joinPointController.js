@@ -19,7 +19,7 @@ app.controller('joinPointController', function ($scope, entityService, multipart
         entityService.get('/joinPoint/' + $scope.newJoinPoint.kksName, function (data) {
             console.log(data);
             if (data) {
-                $scope.newJoinPoints = data;
+                $scope.newJoinPoint = data;
             }
         })
     };

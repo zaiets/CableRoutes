@@ -20,9 +20,9 @@ app.config(function ($routeProvider) {
             templateUrl: '/resources/views/tabs/routeTypes.html',
             controller: 'routeTypeController'
         })
-        .when("/journals", {
-            templateUrl: '/resources/views/tabs/journals.html',
-            controller: 'journalController'
+        .when("/cables", {
+            templateUrl: '/resources/views/tabs/cables.html',
+            controller: 'cableController'
         })
         .when("/functionality", {
             templateUrl: '/resources/views/tabs/functionality.html',

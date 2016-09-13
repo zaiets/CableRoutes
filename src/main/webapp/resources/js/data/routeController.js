@@ -16,7 +16,7 @@ app.controller('routeController', function ($scope, entityService, multipartForm
         joinPointFirst: undefined,
         joinPointFirstKks: this.joinPointFirst? this.joinPointFirst.kksName : undefined,
         joinPointSecond: undefined,
-        joinPointSecondKks: this.joinPointSecond? this.joinPointSecond.kksName : undefined,
+        joinPointSecondKks: this.joinPointSecond? this.joinPointSecond.kksName : undefined
     };
     $scope.newRoutes = [];
 
@@ -25,7 +25,7 @@ app.controller('routeController', function ($scope, entityService, multipartForm
         entityService.get('/route/' + $scope.newRoute.kksName, function (data) {
             console.log(data);
             if (data) {
-                $scope.newEquipment = data;
+                $scope.newRoute = data;
             }
         })
     };

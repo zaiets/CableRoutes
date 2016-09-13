@@ -60,7 +60,7 @@ public class JournalDaoImpl extends AbstractDao<String, Journal> implements IJou
     @SuppressWarnings("unchecked")
     public List<Journal> getAll() {
         logger.info("Reading all journals");
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("KKS"));
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("kksName"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return (List<Journal>) criteria.list();
     }
