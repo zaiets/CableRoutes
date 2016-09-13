@@ -1,4 +1,4 @@
-app.controller('routeController', function ($scope, entityService, multipartFormService) {
+app.controller('routeController', function ($scope, entityService, multipartFormService, routeService) {
     $scope.routes = [];
 
     entityService.get('/route', function (data) {
@@ -25,7 +25,7 @@ app.controller('routeController', function ($scope, entityService, multipartForm
         entityService.get('/route/' + $scope.newRoute.kksName, function (data) {
             console.log(data);
             if (data) {
-                $scope.newRoute = data;
+                $scope.newEquipment = data;
             }
         })
     };
@@ -40,7 +40,14 @@ app.controller('routeController', function ($scope, entityService, multipartForm
     $scope.sendNewEntriesToDatabase = function () {
         console.log('sendNewEntriesToDatabase works...');
         var uploadUrl = '/route';
-        entityService.createOrUpdate(uploadUrl, $scope.newRoutes);
+        routeService.createOrUpdate(uploadUrl, $scope.newRoutes, function(rejected) {
+            console.log('DB rejected: ' + rejected);
+            $scope.newRoutes = rejected;
+            entityService.get('/route', function (data) {
+                console.log('getAll works...');
+                $scope.routes = data;
+            });
+        });
     };
 
     $scope.uploadedFile = {};

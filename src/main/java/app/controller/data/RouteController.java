@@ -48,6 +48,7 @@ public class RouteController {
     //CREATE OR UPDATE ROUTE
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createOrUpdate(@RequestBody @Valid RouteDto entityDto) {
+        logger.info("createOrUpdate -> {}" + entityDto);
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

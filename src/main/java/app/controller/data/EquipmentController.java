@@ -53,7 +53,7 @@ public class EquipmentController {
     //CREATE OR UPDATE EQUIPMENT
     @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createOrUpdate(@RequestBody @Valid EquipmentDto entityDto) {
-        logger.info("updateOrUpdate -> {}" + entityDto.getFullName());
+        logger.info("createOrUpdate -> {}" + entityDto.getFullName());
         if (entityDto.getJoinPointKks() != null) {
             JoinPointDto currentJoinPoint = joinPointService.read(entityDto.getJoinPointKks());
             if (currentJoinPoint == null) {

@@ -6,7 +6,7 @@ app.controller('joinPointController', function ($scope, entityService, multipart
         $scope.joinPoints = data;
     });
 
-    $scope.newRouteType = {
+    $scope.newJoinPoint = {
         kksName: undefined,
         x: undefined,
         y: undefined,
@@ -15,18 +15,18 @@ app.controller('joinPointController', function ($scope, entityService, multipart
     $scope.newJoinPoints = [];
 
     $scope.getAndShow = function () {
-        console.log('getAndShow works...' + $scope.newRouteType.kksName);
-        entityService.get('/joinPoint/' + $scope.newRouteType.kksName, function (data) {
+        console.log('getAndShow works...' + $scope.newJoinPoint.kksName);
+        entityService.get('/joinPoint/' + $scope.newJoinPoint.kksName, function (data) {
             console.log(data);
             if (data) {
-                $scope.newRouteType = data;
+                $scope.newJoinPoints = data;
             }
         })
     };
 
     $scope.addNewToTemp = function () {
         console.log('addNewItem to temp collection works...');
-        var entity = angular.copy($scope.newRouteType);
+        var entity = angular.copy($scope.newJoinPoint);
         $scope.newJoinPoints.push(entity);
         console.log(entity);
     };
