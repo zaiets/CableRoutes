@@ -6,7 +6,7 @@
 
 <p>2. Add or update Cable manually:</p>
 <form method="get" ng-model="newCable">
-    Name:<input type="text" ng-model="newCable.kksName" required>
+    KKS:<input type="text" ng-model="newCable.kksName" required>
     <button ng-click="getAndShow()" ng-show="newCable.kksName">Get if exists</button>
     <br/>
     <div ng-show="newCable.kksName">
@@ -15,10 +15,10 @@
         numberInJournal: <input type="number" ng-model="newCable.numberInJournal" required><br/>
         cableType: <input type="text" ng-model="newCable.cableType"><br/>
         cableDimensions: <input type="text" ng-model="newCable.cableDimensions"><br/>
-        startName:<input type="text" ng-model="newCable.startName" required><br/>
-        endName:<input type="text" ng-model="newCable.endName" required><br/>
-        reserving:<input type="text" ng-model="newCable.reserving"><br/>
-        length:<input type="number" ng-model="newCable.length" step="0.1"><br/>
+        startName: <input type="text" ng-model="newCable.startName" required><br/>
+        endName: <input type="text" ng-model="newCable.endName" required><br/>
+        reserving: <input type="text" ng-model="newCable.reserving"><br/>
+        length: <input type="number" ng-model="newCable.length" step="0.1"><br/>
         <button ng-show="newCable.startName && newCable.endName"
                 ng-click="addNewToTemp()">Create or update
         </button>
@@ -29,9 +29,10 @@
 <form method="get">
     Choose mode: Cable<input type="radio" ng-model="deleteMode" value="cable">
     Journal<input type="radio" ng-model="deleteMode" value="journal"><br/>
-    KKS: <input type="text" ng-show="deleteMode" ng-model="kks" required><br/>
-    <button ng-show="kks && deleteMode=='cable'" ng-click="deleteCableFromDB(kks)">Delete Cable</button>
-    <button ng-show="kks && deleteMode=='journal'" ng-click="deleteJournalFromDB(kks)">Delete Journal</button>
+    <div ng-show="deleteMode">KKS: <input type="text" ng-model="kks" required><br/>
+        <button ng-show="kks && deleteMode=='cable'" ng-click="deleteCableFromDB(kks)">Delete Cable</button>
+        <button ng-show="kks && deleteMode=='journal'" ng-click="deleteJournalFromDB(kks)">Delete Journal</button>
+    </div>
 </form>
 
 <p>4. List of Cables entered (temporary):</p>

@@ -50,8 +50,8 @@ app.controller('cableController', function ($scope, entityService, multipartForm
     };
 
     $scope.getAndShow = function () {
-        console.log('getAndShow works...' + $scope.tempCables.kksName);
-        entityService.get('/route/' + $scope.tempCables.kksName, function (data) {
+        console.log('getAndShow works...' + $scope.newCable.kksName);
+        entityService.get('/cable/' + $scope.newCable.kksName, function (data) {
             console.log(data);
             if (data) {
                 $scope.newCable = data;
