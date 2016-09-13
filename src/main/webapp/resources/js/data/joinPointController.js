@@ -2,11 +2,11 @@ app.controller('joinPointController', function ($scope, entityService, multipart
     $scope.joinPoints = [];
 
     entityService.get('/joinPoint', function (data) {
-        console.log('getJoinPoints works...');
+        console.log('get all items works...');
         $scope.joinPoints = data;
     });
 
-    $scope.newJoinPoint = {
+    $scope.newRouteType = {
         kksName: undefined,
         x: undefined,
         y: undefined,
@@ -15,18 +15,18 @@ app.controller('joinPointController', function ($scope, entityService, multipart
     $scope.newJoinPoints = [];
 
     $scope.getAndShow = function () {
-        console.log('getAndShow works...' + $scope.newJoinPoint.kksName);
-        entityService.get('/joinPoint/' + $scope.newJoinPoint.kksName, function (data) {
+        console.log('getAndShow works...' + $scope.newRouteType.kksName);
+        entityService.get('/joinPoint/' + $scope.newRouteType.kksName, function (data) {
             console.log(data);
             if (data) {
-                $scope.newJoinPoint = data;
+                $scope.newRouteType = data;
             }
         })
     };
 
-    $scope.addJoinPoint = function () {
-        console.log('addNewJoinPoint works...');
-        var entity = angular.copy($scope.newJoinPoint);
+    $scope.addNewToTemp = function () {
+        console.log('addNewItem to temp collection works...');
+        var entity = angular.copy($scope.newRouteType);
         $scope.newJoinPoints.push(entity);
         console.log(entity);
     };
@@ -47,7 +47,7 @@ app.controller('joinPointController', function ($scope, entityService, multipart
     };
 
     $scope.deleteFromDB = function (kks) {
-        console.log('deleteJoinPoint  works...' + kks);
+        console.log('deleteFromDB  works...' + kks);
         entityService.delete('/joinPoint/' + kks)
     };
 });

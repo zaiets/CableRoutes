@@ -2,7 +2,7 @@ app.controller('equipmentController', function ($scope, entityService, multipart
     $scope.equipments = [];
 
     entityService.get('/equipment', function (data) {
-        console.log('getEquipments works...');
+        console.log('get all items works...');
         $scope.equipments = data;
     });
 
@@ -28,8 +28,8 @@ app.controller('equipmentController', function ($scope, entityService, multipart
         })
     };
 
-    $scope.addEquipment = function () {
-        console.log('addNewEquipment works...');
+    $scope.addNewToTemp = function () {
+        console.log('addNewItem to temp collection works...');
         var entity = angular.copy($scope.newEquipment);
         $scope.newEquipments.push(entity);
         console.log(entity);
@@ -51,14 +51,14 @@ app.controller('equipmentController', function ($scope, entityService, multipart
     $scope.uploadedFile = {};
 
     $scope.submitEquip = function () {
-        console.log('submitEquip file for parsing works...');
+        console.log('submit file for parsing works...');
         multipartFormService.post('/functionality/parse/equipments', $scope.uploadedFile, function (result) {
             $scope.newEquipments = result;
         })
     };
 
     $scope.deleteFromDB = function (equipName) {
-        console.log('deleteEquipment  works...' + equipName);
+        console.log('deleteFromDB  works...' + equipName);
         entityService.delete('/equipment/' + equipName)
     };
 });
