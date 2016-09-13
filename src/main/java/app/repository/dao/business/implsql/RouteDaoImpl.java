@@ -71,7 +71,7 @@ public class RouteDaoImpl extends AbstractDao<String, Route> implements IRouteDa
     @SuppressWarnings("unchecked")
     public List<Route> getAll(){
         logger.info("Reading all routes");
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("KKS"));
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("kksName"));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Route> routes = (List<Route>) criteria.list();
         for(Route route : routes){
@@ -87,8 +87,8 @@ public class RouteDaoImpl extends AbstractDao<String, Route> implements IRouteDa
     @SuppressWarnings("unchecked")
     public List<Route> readAllByRouteType(RouteType routeType) {
         logger.info("Reading all routes by route type", routeType.toString());
-        Criteria criteria = createEntityCriteria().addOrder(Order.asc("KKS"));
-        criteria.add(Restrictions.eq("ROUTE_TYPE_MARKER", routeType.getMarker()));
+        Criteria criteria = createEntityCriteria().addOrder(Order.asc("kksName"));
+        criteria.add(Restrictions.eq("routeType", routeType.getMarker()));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         List<Route> routes = (List<Route>) criteria.list();
         for(Route route : routes){
@@ -104,12 +104,12 @@ public class RouteDaoImpl extends AbstractDao<String, Route> implements IRouteDa
     public List<Route> readAllByJoinPoint(JoinPoint joinPoint) {
         logger.info("Reading all routes by joinPoint", joinPoint.getUniqueName());
         List<Route> routes = new ArrayList<>();
-        Criteria criteria1 = createEntityCriteria().addOrder(Order.asc("KKS"));
-        criteria1.add(Restrictions.eq("FIRST_JOIN_POINT_KKS", joinPoint.getUniqueName()));
+        Criteria criteria1 = createEntityCriteria().addOrder(Order.asc("kksName"));
+        criteria1.add(Restrictions.eq("firstEnd", joinPoint.getUniqueName()));
         criteria1.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         routes.addAll((List<Route>) criteria1.list());
-        Criteria criteria2 = createEntityCriteria().addOrder(Order.asc("KKS"));
-        criteria2.add(Restrictions.eq("SECOND_JOIN_POINT_KKS", joinPoint.getUniqueName()));
+        Criteria criteria2 = createEntityCriteria().addOrder(Order.asc("kksName"));
+        criteria2.add(Restrictions.eq("secondEnd", joinPoint.getUniqueName()));
         criteria2.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         routes.addAll((List<Route>) criteria2.list());
         for(Route route : routes){
@@ -125,14 +125,14 @@ public class RouteDaoImpl extends AbstractDao<String, Route> implements IRouteDa
     public List<Route> readAllByTwoJoinPoints(JoinPoint point1, JoinPoint point2) {
         logger.info("Reading all routes between joinPoint {} and {}", point1.getUniqueName(), point2.getUniqueName());
         List<Route> routes = new ArrayList<>();
-        Criteria criteria1 = createEntityCriteria().addOrder(Order.asc("KKS"));
-        criteria1.add(Restrictions.eq("FIRST_JOIN_POINT_KKS", point1.getUniqueName()));
-        criteria1.add(Restrictions.eq("SECOND_JOIN_POINT_KKS", point2.getUniqueName()));
+        Criteria criteria1 = createEntityCriteria().addOrder(Order.asc("kksName"));
+        criteria1.add(Restrictions.eq("firstEnd", point1.getUniqueName()));
+        criteria1.add(Restrictions.eq("secondEnd", point2.getUniqueName()));
         criteria1.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         routes.addAll((List<Route>) criteria1.list());
-        Criteria criteria2 = createEntityCriteria().addOrder(Order.asc("KKS"));
-        criteria2.add(Restrictions.eq("SECOND_JOIN_POINT_KKS", point1.getUniqueName()));
-        criteria2.add(Restrictions.eq("FIRST_JOIN_POINT_KKS", point2.getUniqueName()));
+        Criteria criteria2 = createEntityCriteria().addOrder(Order.asc("kksName"));
+        criteria2.add(Restrictions.eq("secondEnd", point1.getUniqueName()));
+        criteria2.add(Restrictions.eq("firstEnd", point2.getUniqueName()));
         criteria2.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         routes.addAll((List<Route>) criteria2.list());
         for(Route route : routes){

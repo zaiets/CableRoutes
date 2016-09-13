@@ -1,0 +1,65 @@
+<p>1. Add new Routes from new file:</p>
+<form ng-model="uploadedFile">
+    Choose Equipments file to parse: <input type="file" name="uploadedFile" file-model="uploadedFile"><br/>
+    <button ng-click="submit()">READ FILE</button>
+</form>
+
+<p>2. Add or update Route manually:</p>
+<form method="get" ng-model="newRoute">
+    Name:<input type="text" ng-model="newRoute.kksName" required>
+    <button ng-click="getAndShow()" ng-show="newRoute.kksName">Get if exists</button><br/>
+    <div ng-show="newRoute.kksName">
+        Data:<br/>
+        Route Type Marker:<input type="text" ng-model="newRoute.routeTypeMarker"><br/>
+        Length:<input type="number" ng-model="newRoute.length" step="0.1"><br/>
+        Height:<input type="number" ng-model="newRoute.height" step="0.1"><br/>
+        Shelves Count:<input type="number" ng-model="newRoute.shelvesCount" step="0.1"><br/>
+        First JoinPoint KKS:<input type="text" ng-model="newRoute.joinPointFirstKks"><br/>
+        Second JoinPoint KKS:<input type="text" ng-model="newRoute.joinPointSecondKks"><br/>
+        <button ng-show="newRoute.joinPointFirstKks && newRoute.joinPointSecondKks"
+                ng-click="addNewToTemp()">Create or update
+        </button>
+    </div>
+</form>
+
+<p>3. List of new Routes entered/parsed (temporary):</p>
+<div ng-show="newRoutes[0]">
+    * to send this Routes to DB, press this button:
+    <button ng-click="sendNewEntriesToDatabase()">ACCEPT</button>
+</div>
+<table border=3 cellspacing=0 ng-show="newRoutes[0]">
+    <tr bgcolor="#e0ffff">
+        <td ng-repeat="(key, value) in newRoutes[0]">{{key}}</td>
+    </tr>
+    <tr ng-repeat="newRoute in newRoutes track by $index">
+        <td ng-if=key!='joinPoint'||'routeType' ng-repeat="(key, value) in newRoute">{{value}}</td>
+        <td ng-if=key=='joinPoint' ng-repeat="(key, value) in newRoute">
+            <div ng-show=value!=null>{{value.kksName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</div>
+        </td>
+        <td ng-if=key=='routeType' ng-repeat="(key, value) in newRoute">
+            <div ng-show=value!=null>Type: {{value.marker}}, {{value.name}}</div>
+        </td>
+    </tr>
+</table>
+
+<p>4. Delete Route:</p>
+<form method="get" ng-model="kks">
+    Name: <input type="text" ng-model="kks" required><br/>
+    <button ng-show="kks" ng-click="deleteFromDB(kks)">Delete</button>
+</form>
+
+<p>5. List of Routes currently in DB:</p>
+<table border=3 cellspacing=0>
+    <tr bgcolor="#d3d3d3">
+        <td ng-repeat="(key, value) in routes[0]">{{key}}</td>
+    </tr>
+    <tr ng-repeat="equipment in equipments">
+        <td ng-if=key!='joinPoint'||'routeType' ng-repeat="(key, value) in route">{{value}}</td>
+        <td ng-if=key=='joinPoint' ng-repeat="(key, value) in route">
+            <div ng-show=value!=null>{{value.kksName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</div>
+        </td>
+        <td ng-if=key=='routeType' ng-repeat="(key, value) in route">
+            <div ng-show=value!=null>Type: {{value.marker}}, {{value.name}}</div>
+        </td>
+    </tr>
+</table>
