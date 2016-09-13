@@ -41,9 +41,9 @@ app.controller('cableController', function ($scope, entityService, multipartForm
         numberInJournal: undefined,
         cableType: undefined,
         cableDimensions: undefined,
-        startName: undefined,
+        startName: this.start? this.start.fullName : undefined,
         start: undefined,
-        endName: undefined,
+        endName: this.end? this.end.fullName : undefined,
         end: undefined,
         reserving: undefined,
         length: undefined

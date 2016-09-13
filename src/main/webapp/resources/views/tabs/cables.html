@@ -9,14 +9,14 @@
     Name:<input type="text" ng-model="newCable.kksName" required>
     <button ng-click="getAndShow()" ng-show="newCable.kksName">Get if exists</button>
     <br/>
-    <div ng-show="newCable.kksName">
+    <div ng-show="newCable.journal">
         Data:<br/>
-        journalKks: <input type="text" ng-model="newCable.journal"><br/>
-        numberInJournal: <input type="number" ng-model="newCable.numberInJournal"><br/>
+        journalKks: <input type="text" ng-model="newCable.journal" required><br/>
+        numberInJournal: <input type="number" ng-model="newCable.numberInJournal" required><br/>
         cableType: <input type="text" ng-model="newCable.cableType"><br/>
         cableDimensions: <input type="text" ng-model="newCable.cableDimensions"><br/>
-        startName:<input type="text" ng-model="newCable.startName"><br/>
-        endName:<input type="text" ng-model="newCable.endName"><br/>
+        startName:<input type="text" ng-model="newCable.startName" required><br/>
+        endName:<input type="text" ng-model="newCable.endName" required><br/>
         reserving:<input type="text" ng-model="newCable.reserving"><br/>
         length:<input type="number" ng-model="newCable.length" step="0.1"><br/>
         <button ng-show="newCable.startName && newCable.endName"

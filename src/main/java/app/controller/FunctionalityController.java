@@ -59,7 +59,7 @@ public class FunctionalityController {
         }
         if (journalDtoList == null || journalDtoList.isEmpty()) {
             logger.warn("Unable to parse journal files");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(journalDtoList, HttpStatus.OK);
     }
