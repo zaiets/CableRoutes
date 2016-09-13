@@ -1,0 +1,86 @@
+<p>1. Add new Journals from file:</p>
+<form ng-model="uploadedFile">
+    Choose Journal file to parse: <input type="file" multiple name="uploadedFile" file-model="uploadedFile"><br/>
+    <button ng-click="submit()">READ FILES</button>
+</form>
+
+<p>2. Add or update Cable manually:</p>
+<form method="get" ng-model="newCable">
+    Name:<input type="text" ng-model="newCable.kksName" required>
+    <button ng-click="getAndShow()" ng-show="newCable.kksName">Get if exists</button>
+    <br/>
+    <div ng-show="newCable.kksName">
+        Data:<br/>
+        journalKks: <input type="text" ng-model="newCable.journal"><br/>
+        numberInJournal: <input type="number" ng-model="newCable.numberInJournal"><br/>
+        cableType: <input type="text" ng-model="newCable.cableType"><br/>
+        cableDimensions: <input type="text" ng-model="newCable.cableDimensions"><br/>
+        startName:<input type="text" ng-model="newCable.startName"><br/>
+        endName:<input type="text" ng-model="newCable.endName"><br/>
+        reserving:<input type="text" ng-model="newCable.reserving"><br/>
+        length:<input type="number" ng-model="newCable.length" step="0.1"><br/>
+        <button ng-show="newCable.startName && newCable.endName"
+                ng-click="addNewToTemp()">Create or update
+        </button>
+    </div>
+</form>
+
+<p>3. Delete Cable or Journal from DB:</p>
+<form method="get">
+    Choose mode: Cable<input type="radio" ng-model="deleteMode" value="cable">
+    Journal<input type="radio" ng-model="deleteMode" value="journal"><br/>
+    KKS: <input type="text" ng-show="deleteMode" ng-model="kks" required><br/>
+    <button ng-show="kks && deleteMode=='cable'" ng-click="deleteCableFromDB(kks)">Delete Cable</button>
+    <button ng-show="kks && deleteMode=='journal'" ng-click="deleteJournalFromDB(kks)">Delete Journal</button>
+</form>
+
+<p>4. List of Cables entered (temporary):</p>
+<div ng-show="tempCables[0]">
+    * to send those to DB, press this button:
+    <button ng-click="sendNewEntriesToDatabase()">ACCEPT</button>
+</div>
+<table border=3 cellspacing=0 ng-show="tempCables[0]">
+    <tr bgcolor="#e0ffff">
+        <td ng-repeat="(key, value) in tempCables[0]">{{key}}</td>
+    </tr>
+    <tr ng-repeat="newCable in tempCables track by $index">
+        <td ng-if=key!='equipment' ng-repeat="(key, value) in cable">{{value}}</td>
+        <td ng-if=key=='equipment' ng-repeat="(key, value) in cable">
+            <div ng-show=value!=null>{{value.fullName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</div>
+        </td>
+    </tr>
+</table>
+
+<p>5. List of Journals parsed (temporary):</p>
+<div ng-show="tempJournals[0]">
+    * to send those to DB, press this button:
+    <button ng-click="sendNewJournalsToDatabase()">ACCEPT</button>
+</div>
+<table border=3 cellspacing=0 ng-repeat="journal in tempJournals">
+    <tr bgcolor="#f0ffff">
+        <td>KKS: {{journal.kksName}}</td>
+        <td>File: {{journal.file}}</td>
+    </tr>
+    <tr bgcolor="#5f9ea0" ng-repeat="cable in journal.cables"></tr>
+    <tr ng-repeat="cable in journal.cables">
+        <td ng-if=key!='equipment' ng-repeat="(key, value) in cable">{{value}}</td>
+        <td ng-if=key=='equipment' ng-repeat="(key, value) in cable">
+            <div ng-show=value!=null>{{value.fullName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</div>
+        </td>
+    </tr>
+</table>
+
+<p>6. List of Journals and Cables currently in DB:</p>
+<table border=3 cellspacing=0 ng-repeat="journal in journals">
+    <tr bgcolor="#d3d3d3">
+        <td>KKS: {{journal.kksName}}</td>
+        <td>File: {{journal.file}}</td>
+    </tr>
+    <tr bgcolor="#add8e6" ng-repeat="cable in journal.cables"></tr>
+    <tr ng-repeat="cable in journal.cables">
+        <td ng-if=key!='equipment' ng-repeat="(key, value) in cable">{{value}}</td>
+        <td ng-if=key=='equipment' ng-repeat="(key, value) in cable">
+            <div ng-show=value!=null>{{value.fullName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</div>
+        </td>
+    </tr>
+</table>
