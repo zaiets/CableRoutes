@@ -43,7 +43,7 @@
 <p>4. Delete Equipment:</p>
 <form method="get" ng-model="kks">
     Name: <input type="text" ng-model="equipName" required><br/>
-    <button ng-show="equipName" ng-click="deleteEquipment(equipName)">Delete Equip</button>
+    <button ng-show="equipName" ng-click="deleteFromDB(equipName)">Delete</button>
 </form>
 
 <p>5. List of Equipments currently in DB:</p>

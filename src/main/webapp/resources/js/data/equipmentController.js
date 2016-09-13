@@ -57,7 +57,7 @@ app.controller('equipmentController', function ($scope, entityService, multipart
         })
     };
 
-    $scope.deleteEquipment = function (equipName) {
+    $scope.deleteFromDB = function (equipName) {
         console.log('deleteEquipment  works...' + equipName);
         entityService.delete('/equipment/' + equipName)
     };

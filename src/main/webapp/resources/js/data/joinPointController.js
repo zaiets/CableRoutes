@@ -46,7 +46,7 @@ app.controller('joinPointController', function ($scope, entityService, multipart
         })
     };
 
-    $scope.deleteJoinPoint = function (kks) {
+    $scope.deleteFromDB = function (kks) {
         console.log('deleteJoinPoint  works...' + kks);
         entityService.delete('/joinPoint/' + kks)
     };
