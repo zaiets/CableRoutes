@@ -7,13 +7,13 @@
 <p>2. Add or update Join Points manually:</p>
 <form method="get" ng-model="newJoinPoint">
     KKS:<input type="text" ng-model="newJoinPoint.kksName" required>
-    <button ng-click="getAndShow()" ng-show="newJoinPoint.kksName">Get or new</button><br/>
+    <button ng-click="getAndShow()" ng-show="newJoinPoint.kksName">Get if exists</button><br/>
     <div ng-show="newJoinPoint.kksName">Coordinates:<br/>
         X:<input type="number" ng-model="newJoinPoint.x" step="0.1" required><br/>
         Y:<input type="number" ng-model="newJoinPoint.y" step="0.1" required><br/>
         Z:<input type="number" ng-model="newJoinPoint.z" step="0.1" required><br/>
         <button ng-show="newJoinPoint.x && newJoinPoint.y && newJoinPoint.z"
-                ng-click="addJoinPoint()">Create of update
+                ng-click="addJoinPoint()">Create or update
         </button>
     </div>
 </form>

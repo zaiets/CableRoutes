@@ -170,7 +170,7 @@ public final class DataFromExcelReader {
                     cells.next();
                     int previousLength = getIntCellValue(cells.next());
                     boolean isTraced = false;
-                    List<RouteDto> previouslyDefinedRoutes = parceRoutes(getStringCellValue(cells.next()));
+                    List<RouteDto> previouslyDefinedRoutes = parseRoutes(getStringCellValue(cells.next()));
                     if (previouslyDefinedRoutes != null && !previouslyDefinedRoutes.isEmpty()) {
                         isTraced = true;
                     }
@@ -188,7 +188,7 @@ public final class DataFromExcelReader {
     }
 
 
-    private List<RouteDto> parceRoutes(String routesString) {
+    private List<RouteDto> parseRoutes(String routesString) {
         if (routesString.isEmpty() || routesString.equals("")) return null;
         List<RouteDto> actualRoutes = new ArrayList<>();
         String[] fragments = routesString.split(";");

@@ -7,7 +7,7 @@
 <p>2. Add or update Equipment manually:</p>
 <form method="get" ng-model="newEquipment">
     Name:<input type="text" ng-model="newEquipment.fullName" required>
-    <button ng-click="getAndShow()" ng-show="newEquipment.fullName">Get or new</button><br/>
+    <button ng-click="getAndShow()" ng-show="newEquipment.fullName">Get if exists</button><br/>
     <div ng-show="newEquipment.fullName">
         Coordinates:<br/>
         X:<input type="number" ng-model="newEquipment.x" step="0.1"><br/>
@@ -18,7 +18,7 @@
         JoinPoint KKS:<input type="text" ng-model="newEquipment.joinPointKks"><br/>
         Extra length:<input type="number" ng-model="newEquipment.cableConnectionAddLength" step="0.1"><br/>
         <button ng-show="newEquipment.fullName"
-                ng-click="addEquipment()">Add new
+                ng-click="addEquipment()">Create or update
         </button>
     </div>
 </form>
