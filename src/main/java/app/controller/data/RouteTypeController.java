@@ -36,7 +36,7 @@ public class RouteTypeController {
     public ResponseEntity<RouteTypeDto> read (@PathVariable("marker") String marker) {
         RouteTypeDto currentDto = service.read(marker);
         if (currentDto == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(currentDto, HttpStatus.OK);
     }
@@ -47,7 +47,7 @@ public class RouteTypeController {
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -58,7 +58,7 @@ public class RouteTypeController {
         if (service.update(marker, entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -77,7 +77,7 @@ public class RouteTypeController {
     public ResponseEntity<List<RouteTypeDto>> listAll() {
         List<RouteTypeDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(entityDtoList, HttpStatus.OK);
     }
