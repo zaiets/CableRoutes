@@ -5,10 +5,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ROUTE_TYPE")
 public class RouteType implements INamedByUniqueName {
-    @Id
+    @Basic
     @Column(name = "NAME")
     private String name;
-    @Basic
+    @Id
     @Column(name = "MARKER", nullable = false, unique = true)
     private String marker;
 

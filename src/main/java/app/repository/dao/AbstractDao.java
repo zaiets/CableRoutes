@@ -45,7 +45,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         try {
         getSession().persist(entity);
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.warn(e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         try {
             getSession().saveOrUpdate(entity);
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.warn(e.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         try {
             getSession().update(entity);
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.warn(e.getMessage());
         }
     }
 
@@ -69,7 +69,7 @@ public abstract class AbstractDao<PK extends Serializable, T> {
         try {
             getSession().delete(entity);
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            logger.warn(e.getMessage());
         }
     }
 
