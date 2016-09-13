@@ -2,6 +2,8 @@ package app.controller.data;
 
 import app.dto.models.LineDto;
 import app.service.entities.ILineService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/line")
 public class LineController {
+    static final Logger logger = LoggerFactory.getLogger(LineController.class);
+
     @Autowired
     ILineService service;
 
@@ -34,19 +38,19 @@ public class LineController {
     public ResponseEntity<LineDto> read (@RequestBody HttpHeaders headers, @PathVariable("id") int id) {
         LineDto currentDto = service.read(id);
         if (currentDto == null) {
-            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(currentDto, headers, HttpStatus.OK);
     }
 
     //CREATE OR UPDATE LINE
-    @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createOrUpdate(@RequestBody HttpHeaders headers,
                                                     @RequestBody @Valid LineDto entityDto) {
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(headers, HttpStatus.CONFLICT);
         }
     }
 
@@ -57,7 +61,7 @@ public class LineController {
         if (service.update(id, entityDto)) {
             return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(headers, HttpStatus.CONFLICT);
         }
     }
 
@@ -65,9 +69,9 @@ public class LineController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@RequestBody HttpHeaders headers, @PathVariable("id") int id) {
         if (service.delete(id)) {
-            return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(headers, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
         }
     }
 
@@ -76,7 +80,7 @@ public class LineController {
     public ResponseEntity<List<LineDto>> listAll(@RequestBody HttpHeaders headers) {
         List<LineDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
-            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(entityDtoList, headers, HttpStatus.OK);
     }

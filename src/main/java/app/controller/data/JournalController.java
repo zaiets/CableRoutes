@@ -2,6 +2,8 @@ package app.controller.data;
 
 import app.dto.models.JournalDto;
 import app.service.entities.IJournalService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +20,8 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/journal")
 public class JournalController {
+    static final Logger logger = LoggerFactory.getLogger(JournalController.class);
+
     @Autowired
     IJournalService service;
 
@@ -36,18 +40,18 @@ public class JournalController {
     public ResponseEntity<JournalDto> read (@PathVariable("kks") String kks) {
         JournalDto currentDto = service.read(kks);
         if (currentDto == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(currentDto, HttpStatus.OK);
     }
 
     //CREATE OR UPDATE JOURNAL
-    @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createOrUpdate(@RequestBody @Valid JournalDto entityDto) {
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -58,7 +62,7 @@ public class JournalController {
         if (service.update(kks, entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -66,9 +70,9 @@ public class JournalController {
     @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable("kks") String kks) {
         if (service.delete(kks)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
@@ -77,7 +81,7 @@ public class JournalController {
     public ResponseEntity<List<JournalDto>> listAll() {
         List<JournalDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(entityDtoList, HttpStatus.OK);
     }

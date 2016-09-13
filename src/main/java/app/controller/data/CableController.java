@@ -2,6 +2,8 @@ package app.controller.data;
 
 import app.dto.models.CableDto;
 import app.service.entities.ICableService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,8 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/cable")
 public class CableController {
+    static final Logger logger = LoggerFactory.getLogger(CableController.class);
+
     @Autowired
     ICableService service;
 
@@ -37,18 +41,18 @@ public class CableController {
     public ResponseEntity<CableDto> read (@PathVariable("kks") String kks) {
         CableDto currentCableDto = service.read(kks);
         if (currentCableDto == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(currentCableDto, HttpStatus.OK);
     }
 
     //CREATE OR UPDATE CABLE
-    @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createOrUpdate(@RequestBody @Valid CableDto entityDto) {
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -58,7 +62,7 @@ public class CableController {
         if (service.update(kks, entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
@@ -66,9 +70,9 @@ public class CableController {
     @RequestMapping(value = "/{kks}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable("kks") String kks) {
         if (service.delete(kks)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 
@@ -77,7 +81,7 @@ public class CableController {
     public ResponseEntity<List<CableDto>> listAll(@RequestBody HttpHeaders headers) {
         List<CableDto> entityDtoList = service.getAll();
         if(entityDtoList.isEmpty()){
-            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(headers, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(entityDtoList, headers, HttpStatus.OK);
     }
@@ -92,5 +96,5 @@ public class CableController {
 //
 //    List<CableDto> readAllByTwoJoinPoints(JoinPointDto start, JoinPointDto end);
 //
-// TODO?
+//    TODO for full functionality
 }

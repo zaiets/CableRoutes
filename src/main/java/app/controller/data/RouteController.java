@@ -2,6 +2,8 @@ package app.controller.data;
 
 import app.dto.models.RouteDto;
 import app.service.entities.IRouteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +20,8 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/route")
 public class RouteController {
+    static final Logger logger = LoggerFactory.getLogger(RouteController.class);
+
     @Autowired
     IRouteService service;
 
@@ -42,7 +46,7 @@ public class RouteController {
     }
 
     //CREATE OR UPDATE ROUTE
-    @RequestMapping(value = "/", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createOrUpdate(@RequestBody @Valid RouteDto entityDto) {
         if (service.createOrUpdate(entityDto)) {
             return new ResponseEntity<>(HttpStatus.OK);
