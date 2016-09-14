@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="CABLE")
+
 public class Cable extends Line implements INamedByUniqueName {
     @Column(name = "KKS", unique = true)
     private String kksName;
