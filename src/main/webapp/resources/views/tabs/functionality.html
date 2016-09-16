@@ -1,0 +1,113 @@
+<p>1. Example files of real model:</p>
+<a target="_blank" href="https://drive.google.com/drive/folders/0B28t6zmWW7TCZnhPRU1QTllObWs?usp=sharing">
+    Link to Google drive storage >>
+</a>
+
+<p>2. Define closest Points using x-y-z coordinates for all equipments in database (if undefined).</p>
+<button ng-click="defineEquipmentsWithNewPoints()">Get result</button>
+<div ng-show="equipmentsWithNewPoints[0]">
+    Result:
+    <table border=3 cellspacing=0>
+        <tr bgcolor="#e0ffff">
+            <td ng-repeat="(key, value) in equipmentsWithNewPoints[0]">{{key}}</td>
+        </tr>
+        <tr ng-repeat="equipment in equipmentsWithNewPoints track by $index">
+            <td ng-if=key!='joinPoint' ng-repeat="(key, value) in equipment">{{value}}</td>
+            <td ng-if=key=='joinPoint' ng-repeat="(key, value) in equipment">
+                <div ng-show=value!=null>{{value.kksName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</div>
+            </td>
+        </tr>
+    </table>
+    <button ng-click="putEquipmentsWithNewPointsToDB()">Accept</button>
+</div>
+
+<p>3. Trace cables and define lengths (you must have working model, check data):</p>
+List of Journals: <input type="radio" ng-model="traceMode" value="journals">
+List of Cables: <input type="radio" ng-model="traceMode" value="cables">
+All cables: <input type="radio" ng-model="traceMode" value="all"><br/>
+<div ng-show="traceMode==journals" ng-model="journalListToTrace">
+    Check journals to trace:
+        <table border=3 cellspacing=0 ng-repeat="journal in journals">
+            <tr bgcolor="#d3d3d3">
+                <td>KKS</td>
+                <td>File name</td>
+                <td>Number of files</td>
+            </tr>
+            <tr bgcolor="#d3d3d3">
+                <td>{{journal.kksName}}</td>
+                <td>{{journal.file}}</td>
+                <td>{{journal.cables.length}}</td>
+            </tr>
+        </table>
+    <button ng-disabled="!journalListToTrace[0]" ng-click="traceJournals()">Trace it</button>
+</div>
+<div ng-show="traceMode==cables">
+    Check cables to trace:
+    <table border=3 cellspacing=0 ng-repeat="journal in getAllJournals()">
+        <tr bgcolor="#d3d3d3">
+            <td>KKS: {{journal.kksName}}</td>
+            <td>File: {{journal.file}}</td>
+        </tr>
+        <tr bgcolor="#add8e6" ng-repeat="cable in journal.cables"></tr>
+        <tr ng-repeat="cable in journal.cables">
+            <td ng-if=key!='equipment' ng-repeat="(key, value) in cable">{{value}}</td>
+            <td ng-if=key=='equipment' ng-repeat="(key, value) in cable">
+                <div ng-show=value!=null>{{value.fullName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</div>
+            </td>
+        </tr>
+    </table>
+    <button ng-disabled="!cableListToTrace[0]" ng-click="traceCables()">Trace it</button>
+</div>
+<div ng-show="traceMode==all">
+    <button ng-click="traceAll()">Trace all</button>
+</div>
+<div ng-show="tracedCables[0]">
+    Result:
+    <table border=3 cellspacing=0 ng-show="tracingResultCables">
+        <tr bgcolor="#e0ffff">
+            <td ng-repeat="(key, value) in tracingResultCables[0]">{{key}}</td>
+        </tr>
+        <tr ng-repeat="cable in tracingResultCables track by $index">
+            <td ng-if=key!='equipment' ng-repeat="(key, value) in cable">{{value}}</td>
+            <td ng-if=key=='equipment' ng-repeat="(key, value) in cable">
+                <div ng-show=value!=null>{{value.fullName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</div>
+            </td>
+        </tr>
+    </table>
+    <button ng-show="tracingResultCables" ng-click="putTracedCablesToDB()">Accept</button>
+</div>
+
+<p>4. Get excel files (traced or calculated):</p>
+Only traced: <input type="radio" ng-model="extractMode" value="traced">
+With calculation: <input type="radio" ng-model="extractMode" value="calculated">
+<form name="export" method="get" ng-show="extractMode">
+    <input name="pathName" type="text" ng-model="pathName" required />
+    <span class="error" ng-show="export.fileName.$error.required">Filename is required!</span>
+    <button type="submit" ng-disabled="pathName" ng-show="extractMode==calculated"
+            ng-action="export('/generate/calculated')">Export traced</button>
+    <button type="submit" ng-disabled="pathName" ng-show="extractMode==traced"
+            ng-action="export('/generate/traced')">Export calculated</button>
+</form>
+
+
+
+<!--@RequestMapping(value = "/trace/cable", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
+<!--public ResponseEntity<List<CableDto>> traceCablesAndDefineLengths(@RequestBody @NotNull List<String> cablesKksList) {-->
+
+<!--@RequestMapping(value = "/trace/journal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
+<!--public ResponseEntity<List<CableDto>> traceJournalsAndDefineLengths(@RequestBody @NotNull List<String> journalsKksList) {-->
+
+
+<!--@RequestMapping(value = "/define/pointsbyequips", method = RequestMethod.PUT,-->
+<!--consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)-->
+<!--public ResponseEntity<List<EquipmentDto>> defineEquipmentsClosestPoints(@RequestBody @NotNull List<EquipmentDto> equipments) {-->
+
+<!--@RequestMapping(value = "/define/equipsinjournal", method = RequestMethod.PUT,-->
+<!--consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)-->
+<!--public ResponseEntity<List<EquipmentDto>> defineNewEquipmentsInJournals(@RequestBody @NotNull List<JournalDto> journalDtoList) {-->
+
+<!--@RequestMapping(value = "/generate/traced", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
+<!--public ResponseEntity<List<File>> generateJournalInExcelFormatTraced(@RequestBody @NotNull List<String> journalNames) {-->
+
+<!--@RequestMapping(value = "/generate/calculated", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
+<!--public ResponseEntity<List<File>> generateJournalInExcelFormatCalculated(@RequestBody @NotNull List<String> journalNames) {-->
