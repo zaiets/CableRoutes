@@ -27,7 +27,7 @@ List of Cables: <input type="radio" ng-model="traceMode" value="cables">
 All cables: <input type="radio" ng-model="traceMode" value="all"><br/>
 <div ng-show="traceMode==journals" ng-model="journalListToTrace">
     Check journals to trace:
-        <table border=3 cellspacing=0 ng-repeat="journal in journals">
+        <table border=3 cellspacing=0 ng-repeat="journal in getAllJournals()">
             <tr bgcolor="#d3d3d3">
                 <td>KKS</td>
                 <td>File name</td>
@@ -63,18 +63,18 @@ All cables: <input type="radio" ng-model="traceMode" value="all"><br/>
 </div>
 <div ng-show="tracedCables[0]">
     Result:
-    <table border=3 cellspacing=0 ng-show="tracingResultCables">
+    <table border=3 cellspacing=0>
         <tr bgcolor="#e0ffff">
-            <td ng-repeat="(key, value) in tracingResultCables[0]">{{key}}</td>
+            <td ng-repeat="(key, value) in tracedCables[0]">{{key}}</td>
         </tr>
-        <tr ng-repeat="cable in tracingResultCables track by $index">
+        <tr ng-repeat="cable in tracedCables track by $index">
             <td ng-if=key!='equipment' ng-repeat="(key, value) in cable">{{value}}</td>
             <td ng-if=key=='equipment' ng-repeat="(key, value) in cable">
                 <div ng-show=value!=null>{{value.fullName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</div>
             </td>
         </tr>
     </table>
-    <button ng-show="tracingResultCables" ng-click="putTracedCablesToDB()">Accept</button>
+    <button ng-click="putTracedCablesToDB()">Accept</button>
 </div>
 
 <p>4. Get excel files (traced or calculated):</p>
@@ -88,26 +88,3 @@ With calculation: <input type="radio" ng-model="extractMode" value="calculated">
     <button type="submit" ng-disabled="pathName" ng-show="extractMode==traced"
             ng-action="export('/generate/traced')">Export calculated</button>
 </form>
-
-
-
-<!--@RequestMapping(value = "/trace/cable", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
-<!--public ResponseEntity<List<CableDto>> traceCablesAndDefineLengths(@RequestBody @NotNull List<String> cablesKksList) {-->
-
-<!--@RequestMapping(value = "/trace/journal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
-<!--public ResponseEntity<List<CableDto>> traceJournalsAndDefineLengths(@RequestBody @NotNull List<String> journalsKksList) {-->
-
-
-<!--@RequestMapping(value = "/define/pointsbyequips", method = RequestMethod.PUT,-->
-<!--consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)-->
-<!--public ResponseEntity<List<EquipmentDto>> defineEquipmentsClosestPoints(@RequestBody @NotNull List<EquipmentDto> equipments) {-->
-
-<!--@RequestMapping(value = "/define/equipsinjournal", method = RequestMethod.PUT,-->
-<!--consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)-->
-<!--public ResponseEntity<List<EquipmentDto>> defineNewEquipmentsInJournals(@RequestBody @NotNull List<JournalDto> journalDtoList) {-->
-
-<!--@RequestMapping(value = "/generate/traced", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
-<!--public ResponseEntity<List<File>> generateJournalInExcelFormatTraced(@RequestBody @NotNull List<String> journalNames) {-->
-
-<!--@RequestMapping(value = "/generate/calculated", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
-<!--public ResponseEntity<List<File>> generateJournalInExcelFormatCalculated(@RequestBody @NotNull List<String> journalNames) {-->
