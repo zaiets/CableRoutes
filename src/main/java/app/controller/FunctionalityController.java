@@ -80,7 +80,7 @@ public class FunctionalityController {
         }
         if (equipmentDtoList == null) {
             logger.warn("Unable to parse Equipment files");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(equipmentDtoList, HttpStatus.OK);
     }
@@ -101,7 +101,7 @@ public class FunctionalityController {
         }
         if (joinPointDtoList == null) {
             logger.warn("Unable to parse joinPoint files");
-            new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(joinPointDtoList, HttpStatus.OK);
     }
@@ -122,7 +122,7 @@ public class FunctionalityController {
         }
         if (routeDtoList == null) {
             logger.warn("Unable to parse Route files");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(routeDtoList, HttpStatus.OK);
     }
@@ -142,7 +142,7 @@ public class FunctionalityController {
         });
         if (cableDtoList.isEmpty()) {
             logger.warn("Unable to trace all received cables");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         List<CableDto> result = functionalityService.traceCablesAndDefineLengths(cableDtoList);
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -162,7 +162,7 @@ public class FunctionalityController {
         });
         if (journalDtoList.isEmpty()) {
             logger.warn("Unable to trace all received journals");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         List<CableDto> result = functionalityService.traceJournalsAndDefineLengths(journalDtoList);
         return new ResponseEntity<>(result, HttpStatus.OK);

@@ -44,7 +44,7 @@
     <tr bgcolor="#e0ffff">
         <td ng-repeat="(key, value) in tempCables[0]">{{key}}</td>
     </tr>
-    <tr ng-repeat="newCable in tempCables track by $index">
+    <tr ng-repeat="cable in tempCables track by $index">
         <td ng-if=key!='equipment' ng-repeat="(key, value) in cable">{{value}}</td>
         <td ng-if=key=='equipment' ng-repeat="(key, value) in cable">
             <div ng-show=value!=null>{{value.fullName}}, X={{value.x}}, Y={{value.y}}, Z={{value.z}}</div>
