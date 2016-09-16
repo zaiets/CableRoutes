@@ -22,9 +22,8 @@
 </div>
 
 <p>3. Trace cables and define lengths (you must have working model, check data):</p>
-List of Journals: <input type="radio" ng-model="traceMode" value="journals">
-List of Cables: <input type="radio" ng-model="traceMode" value="cables">
-All cables: <input type="radio" ng-model="traceMode" value="all"><br/>
+List of Journals: <input type="radio" ng-model="traceMode" value="journals"><br/>
+List of Cables: <input type="radio" ng-model="traceMode" value="cables"><br/>
 <div ng-show="traceMode==journals" ng-model="journalListToTrace">
     Check journals to trace:
         <table border=3 cellspacing=0 ng-repeat="journal in getAllJournals()">
@@ -58,9 +57,7 @@ All cables: <input type="radio" ng-model="traceMode" value="all"><br/>
     </table>
     <button ng-disabled="!cableListToTrace[0]" ng-click="traceCables()">Trace it</button>
 </div>
-<div ng-show="traceMode==all">
-    <button ng-click="traceAll()">Trace all</button>
-</div>
+<br/>
 <div ng-show="tracedCables[0]">
     Result:
     <table border=3 cellspacing=0>

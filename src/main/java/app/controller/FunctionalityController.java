@@ -177,7 +177,7 @@ public class FunctionalityController {
             equipmentDtoList = functionalityService.defineEquipmentsClosestPoints(equipments);
         } catch (Exception ex) {
             logger.warn("Unable to define journalDtoList closest points, reason: {}", ex.getLocalizedMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(equipmentDtoList, HttpStatus.OK);
 
@@ -192,7 +192,7 @@ public class FunctionalityController {
             equipmentDtoList = functionalityService.defineNewEquipmentsInJournals(journalDtoList);
         } catch (Exception ex) {
             logger.warn("Unable to define equipments in journals, reason: {}", ex.getLocalizedMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(equipmentDtoList, HttpStatus.OK);
     }
@@ -205,7 +205,7 @@ public class FunctionalityController {
             files = functionalityService.generateJournalInExcelFormatTraced(journalNames);
         } catch (Exception ex) {
             logger.warn("Unable to generate files (xlsx) of traced journals, reason: {}", ex.getLocalizedMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
         //TODO file converter and transfer??
@@ -221,7 +221,7 @@ public class FunctionalityController {
             files = functionalityService.generateJournalInExcelFormatCalculated(journalNames);
         } catch (Exception ex) {
             logger.warn("Unable to generate files (xlsx) of calculated journals, reason: {}", ex.getLocalizedMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
         //TODO file converter and transfer??

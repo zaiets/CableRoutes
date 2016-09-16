@@ -1,5 +1,6 @@
-app.controller('functionalityController', function ($scope, entityService, functionalityService) {
+app.controller('functionalityController', function ($scope, entityService, cableService, equipmentService, functionalityService) {
     $scope.export = function(url) {
+        console.log('export to url: ' + url);
         var form = document.createElement("form");
         form.setAttribute("action", url);
         form.setAttribute("method", "get");
@@ -13,36 +14,52 @@ app.controller('functionalityController', function ($scope, entityService, funct
     };
 
     $scope.defineEquipmentsWithNewPoints = function () {
-
+        functionalityService.defineEquipmentsWithNewPoints(function(data) {
+            console.log('defineEquipmentsWithNewPoints works...');
+            $scope.equipmentsWithNewPoints = data;
+        })
     };
 
     $scope.equipmentsWithNewPoints = [];
 
     $scope.putEquipmentsWithNewPointsToDB = function () {
-
+        equipmentService.update('/equipment', function(data) {
+            console.log('putEquipmentsWithNewPointsToDB works...');
+            $scope.equipmentsWithNewPoints = data;
+        })
     };
 
     $scope.getAllJournals = function(){
-
+        console.log('get all items works...');
+        entityService.get('/journal', function (data) {
+            return data;
+        });
     };
 
     $scope.journalListToTrace = [];
+
     $scope.traceJournals = function(){
-
+        console.log('traceJournals works...');
+        functionalityService.traceJournals(journalListToTrace, function (data) {
+            tracedCables.push(data);
+        })
     };
+
     $scope.cableListToTrace = [];
+
     $scope.traceCables = function(){
-
+        console.log('traceCables works...');
+        functionalityService.traceCables(cableListToTrace, function (data) {
+            tracedCables.push(data);
+        })
     };
-    $scope.traceAll = function(){
-
-    };
-
-
 
     $scope.tracedCables = [];
     $scope.putTracedCablesToDB = function() {
-
+        cableService.update('/cable', function(data) {
+            console.log('putTracedCablesToDB works...');
+            $scope.tracedCables = data;
+        })
     }
 
 
@@ -50,18 +67,6 @@ app.controller('functionalityController', function ($scope, entityService, funct
 
 
 
-
-
-<!--@RequestMapping(value = "/trace/cable", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
-<!--public ResponseEntity<List<CableDto>> traceCablesAndDefineLengths(@RequestBody @NotNull List<String> cablesKksList) {-->
-
-<!--@RequestMapping(value = "/trace/journal", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
-<!--public ResponseEntity<List<CableDto>> traceJournalsAndDefineLengths(@RequestBody @NotNull List<String> journalsKksList) {-->
-
-
-<!--@RequestMapping(value = "/define/pointsbyequips", method = RequestMethod.PUT,-->
-<!--consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)-->
-<!--public ResponseEntity<List<EquipmentDto>> defineEquipmentsClosestPoints(@RequestBody @NotNull List<EquipmentDto> equipments) {-->
 
 <!--@RequestMapping(value = "/define/equipsinjournal", method = RequestMethod.PUT,-->
 <!--consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)-->
