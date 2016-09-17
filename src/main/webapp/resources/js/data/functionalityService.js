@@ -1,6 +1,6 @@
 app.service('functionalityService', function ($http) {
-    this.equipmentsWithNewPoints = function(result) {
-        console.log('get works...');
+    this.defineEquipmentsWithNewPoints = function(result) {
+        console.log('defineEquipmentsWithNewPoints works...');
         $http.put('/define/pointsbyequips')
             .then(function (response) {
                 console.log('server responded status ' + response.status);

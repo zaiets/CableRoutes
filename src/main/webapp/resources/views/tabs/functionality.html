@@ -24,9 +24,9 @@
 <p>3. Trace cables and define lengths (you must have working model, check data):</p>
 List of Journals: <input type="radio" ng-model="traceMode" value="journals"><br/>
 List of Cables: <input type="radio" ng-model="traceMode" value="cables"><br/>
-<div ng-show="traceMode==journals" ng-model="journalListToTrace">
+<div ng-show="traceMode=='journals'" ng-model="journalListToTrace">
     Check journals to trace:
-        <table border=3 cellspacing=0 ng-repeat="journal in getAllJournals()">
+        <table border=3 cellspacing=0 ng-repeat="journal in allJournals">
             <tr bgcolor="#d3d3d3">
                 <td>KKS</td>
                 <td>File name</td>
@@ -40,9 +40,9 @@ List of Cables: <input type="radio" ng-model="traceMode" value="cables"><br/>
         </table>
     <button ng-disabled="!journalListToTrace[0]" ng-click="traceJournals()">Trace it</button>
 </div>
-<div ng-show="traceMode==cables">
+<div ng-show="traceMode=='cables'">
     Check cables to trace:
-    <table border=3 cellspacing=0 ng-repeat="journal in getAllJournals()">
+    <table border=3 cellspacing=0 ng-repeat="journal in allJournals">
         <tr bgcolor="#d3d3d3">
             <td>KKS: {{journal.kksName}}</td>
             <td>File: {{journal.file}}</td>
@@ -78,10 +78,8 @@ List of Cables: <input type="radio" ng-model="traceMode" value="cables"><br/>
 Only traced: <input type="radio" ng-model="extractMode" value="traced">
 With calculation: <input type="radio" ng-model="extractMode" value="calculated">
 <form name="export" method="get" ng-show="extractMode">
-    <input name="pathName" type="text" ng-model="pathName" required />
-    <span class="error" ng-show="export.fileName.$error.required">Filename is required!</span>
-    <button type="submit" ng-disabled="pathName" ng-show="extractMode==calculated"
+    <button type="submit" ng-disabled="pathName" ng-show="extractMode=='calculated'"
             ng-action="export('/generate/calculated')">Export traced</button>
-    <button type="submit" ng-disabled="pathName" ng-show="extractMode==traced"
+    <button type="submit" ng-disabled="pathName" ng-show="extractMode=='traced'"
             ng-action="export('/generate/traced')">Export calculated</button>
 </form>

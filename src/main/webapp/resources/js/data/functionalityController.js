@@ -1,5 +1,5 @@
 app.controller('functionalityController', function ($scope, entityService, cableService, equipmentService, functionalityService) {
-    $scope.export = function(url) {
+    $scope.export = function (url) {
         console.log('export to url: ' + url);
         var form = document.createElement("form");
         form.setAttribute("action", url);
@@ -14,7 +14,7 @@ app.controller('functionalityController', function ($scope, entityService, cable
     };
 
     $scope.defineEquipmentsWithNewPoints = function () {
-        functionalityService.defineEquipmentsWithNewPoints(function(data) {
+        functionalityService.defineEquipmentsWithNewPoints(function (data) {
             console.log('defineEquipmentsWithNewPoints works...');
             $scope.equipmentsWithNewPoints = data;
         })
@@ -23,22 +23,22 @@ app.controller('functionalityController', function ($scope, entityService, cable
     $scope.equipmentsWithNewPoints = [];
 
     $scope.putEquipmentsWithNewPointsToDB = function () {
-        equipmentService.update('/equipment', function(data) {
+        equipmentService.update('/equipment', function (data) {
             console.log('putEquipmentsWithNewPointsToDB works...');
             $scope.equipmentsWithNewPoints = data;
         })
     };
 
-    $scope.getAllJournals = function(){
+    $scope.allJournals = [];
+
+    entityService.get('/journal', function (data) {
         console.log('get all items works...');
-        entityService.get('/journal', function (data) {
-            return data;
-        });
-    };
+        if (data) allJournals.apply(data);
+    });
 
     $scope.journalListToTrace = [];
 
-    $scope.traceJournals = function(){
+    $scope.traceJournals = function () {
         console.log('traceJournals works...');
         functionalityService.traceJournals(journalListToTrace, function (data) {
             tracedCables.push(data);
@@ -47,7 +47,7 @@ app.controller('functionalityController', function ($scope, entityService, cable
 
     $scope.cableListToTrace = [];
 
-    $scope.traceCables = function(){
+    $scope.traceCables = function () {
         console.log('traceCables works...');
         functionalityService.traceCables(cableListToTrace, function (data) {
             tracedCables.push(data);
@@ -55,8 +55,8 @@ app.controller('functionalityController', function ($scope, entityService, cable
     };
 
     $scope.tracedCables = [];
-    $scope.putTracedCablesToDB = function() {
-        cableService.update('/cable', function(data) {
+    $scope.putTracedCablesToDB = function () {
+        cableService.update('/cable', function (data) {
             console.log('putTracedCablesToDB works...');
             $scope.tracedCables = data;
         })
@@ -66,14 +66,7 @@ app.controller('functionalityController', function ($scope, entityService, cable
 });
 
 
-
-
+//todo this in cables/journal parsing part
 <!--@RequestMapping(value = "/define/equipsinjournal", method = RequestMethod.PUT,-->
 <!--consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)-->
 <!--public ResponseEntity<List<EquipmentDto>> defineNewEquipmentsInJournals(@RequestBody @NotNull List<JournalDto> journalDtoList) {-->
-
-<!--@RequestMapping(value = "/generate/traced", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
-<!--public ResponseEntity<List<File>> generateJournalInExcelFormatTraced(@RequestBody @NotNull List<String> journalNames) {-->
-
-<!--@RequestMapping(value = "/generate/calculated", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)-->
-<!--public ResponseEntity<List<File>> generateJournalInExcelFormatCalculated(@RequestBody @NotNull List<String> journalNames) {-->
