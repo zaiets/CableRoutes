@@ -79,7 +79,7 @@ Only traced: <input type="radio" ng-model="extractMode" value="traced">
 With calculation: <input type="radio" ng-model="extractMode" value="calculated">
 <form name="export" method="get" ng-show="extractMode">
     <button type="submit" ng-disabled="pathName" ng-show="extractMode=='calculated'"
-            ng-action="export('/generate/calculated')">Export traced</button>
+            ng-action="export('/functionality/generate/calculated')">Export traced</button>
     <button type="submit" ng-disabled="pathName" ng-show="extractMode=='traced'"
-            ng-action="export('/generate/traced')">Export calculated</button>
+            ng-action="export('/functionality/generate/traced')">Export calculated</button>
 </form>
