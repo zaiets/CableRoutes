@@ -33,7 +33,7 @@ public class JoinPointDaoTest {
     @Before
     public void beforeTest() {
         testEntity = new JoinPoint();
-        testEntity.setKksName("TestPoint#1");
+        testEntity.setKksName("Point_Test_1");
         testEntity.setX(-1);
         testEntity.setY(2);
         testEntity.setZ(3.5);
@@ -46,9 +46,30 @@ public class JoinPointDaoTest {
     }
 
     @Test
-    public void create() {
-        JoinPoint joinPoint;
-        Assert.fail("TODO implement");
+    public void create1() {
+        JoinPoint joinPoint = new JoinPoint();
+        joinPoint.setX(10);
+        joinPoint.setY(10);
+        joinPoint.setZ(10);
+        joinPoint.setKksName("Point_Test_4");
+        Assert.assertTrue(joinPointDao.create(joinPoint));
+    }
+    @Test
+    public void create2() {
+        Assert.assertTrue(joinPointDao.create(testEntity));
+        Assert.assertTrue(joinPointDao.create(testEntity));
+    }
+    @Test(expected = Exception.class)
+    public void create3() {
+        JoinPoint joinPoint = new JoinPoint();
+        joinPoint.setX(10);
+        joinPoint.setY(10);
+        joinPoint.setZ(10);
+        Assert.assertFalse(joinPointDao.create(joinPoint));
+    }
+    @Test(expected = Exception.class)
+    public void create4() {
+        Assert.assertFalse(joinPointDao.create(null));
     }
 
     @Test

@@ -11,7 +11,7 @@ public class JoinPointDaoImplStub implements IJoinPointDao{
 
     {
         jp = new JoinPoint();
-        jp.setKksName("TestPoint#1");
+        jp.setKksName("Point_Test_1");
         jp.setX(-1);
         jp.setY(2);
         jp.setZ(3.5);
