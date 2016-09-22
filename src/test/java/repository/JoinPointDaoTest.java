@@ -1,14 +1,35 @@
 package repository;
 
 import app.repository.dao.business.IJoinPointDao;
-import app.repository.dao.business.implsql.JoinPointDaoImpl;
 import app.repository.entities.business.JoinPoint;
+import configuration.HibernateConfigurationTest;
+import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
+@WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {HibernateConfigurationTest.class})
+@Rollback
+@Transactional
 public class JoinPointDaoTest {
-    JoinPoint testEntity;
+
+    private JoinPoint testEntity;
+
+    @Autowired
+    private IJoinPointDao joinPointDao;
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
     @Before
     public void beforeTest() {
         testEntity = new JoinPoint();
@@ -16,18 +37,17 @@ public class JoinPointDaoTest {
         testEntity.setX(-1);
         testEntity.setY(2);
         testEntity.setZ(3.5);
-
     }
 
     @Test
     public void readByXyz() {
-        IJoinPointDao dao = new JoinPointDaoImpl();
-        Assert.assertEquals(testEntity, dao.readByXyz(-1, 2, 3.5));
-        Assert.assertEquals(null, dao.readByXyz(1, 2, 3.5));
+        Assert.assertEquals(testEntity, joinPointDao.readByXyz(-1, 2, 3.5));
+        Assert.assertNull(joinPointDao.readByXyz(1, 2, 3.5));
     }
 
     @Test
-    public void create(JoinPoint joinPoint) {
+    public void create() {
+        JoinPoint joinPoint;
         Assert.fail("TODO implement");
     }
 

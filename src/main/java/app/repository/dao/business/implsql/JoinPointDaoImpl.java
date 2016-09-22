@@ -71,9 +71,9 @@ public class JoinPointDaoImpl extends AbstractDao<String, JoinPoint> implements 
     public JoinPoint readByXyz(double x, double y, double z) {
         logger.info("Reading joinPoint by coordinates {}, {}, {}", x, y, z);
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.eq("X", x));
-        criteria.add(Restrictions.eq("Y", y));
-        criteria.add(Restrictions.eq("Z", z));
+        criteria.add(Restrictions.eq("x", x));
+        criteria.add(Restrictions.eq("y", y));
+        criteria.add(Restrictions.eq("z", z));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return (JoinPoint)criteria.uniqueResult();
     }

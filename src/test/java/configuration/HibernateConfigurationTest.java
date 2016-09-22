@@ -1,37 +1,42 @@
-package app.configuration;
+package configuration;
 
+import app.configuration.AppConfig;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
 
+
 @Configuration
+@WebAppConfiguration
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"app.**"})
-@PropertySource(value = { "classpath:props/database.properties" })
-public class HibernateConfiguration {
+@ContextConfiguration(loader = AnnotationConfigWebContextLoader.class,
+        classes = {AppConfig.class})
+@PropertySource(value = "classpath:database_test.properties")
+@ComponentScan(basePackages = "app.repository.*", excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class)})
+public class HibernateConfigurationTest {
 
     @Autowired
     private Environment environment;
 
-    @Bean(name = "sessionFactory")
+    @Bean(name = "testSessionFactory")
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("app/repository/entities");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
-     }
+    }
 
     @Bean
     public DataSource dataSource() {
@@ -51,12 +56,11 @@ public class HibernateConfiguration {
         return properties;
     }
 
-	@Bean
+    @Bean
     @Autowired
     public HibernateTransactionManager transactionManager(SessionFactory s) {
-       HibernateTransactionManager txManager = new HibernateTransactionManager();
-       txManager.setSessionFactory(s);
-       return txManager;
+        HibernateTransactionManager txManager = new HibernateTransactionManager();
+        txManager.setSessionFactory(s);
+        return txManager;
     }
 }
-
