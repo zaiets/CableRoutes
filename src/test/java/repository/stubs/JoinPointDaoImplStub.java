@@ -11,10 +11,10 @@ public class JoinPointDaoImplStub implements IJoinPointDao{
 
     {
         jp = new JoinPoint();
-        jp.setKksName("Point_Test_1");
-        jp.setX(-1);
-        jp.setY(2);
-        jp.setZ(3.5);
+        jp.setKksName("Point_Stub");
+        jp.setX(11);
+        jp.setY(11);
+        jp.setZ(11);
     }
 
     @Override

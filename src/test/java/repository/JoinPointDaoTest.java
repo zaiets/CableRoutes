@@ -15,6 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {HibernateConfigurationTest.class})
@@ -51,7 +53,7 @@ public class JoinPointDaoTest {
         joinPoint.setX(10);
         joinPoint.setY(10);
         joinPoint.setZ(10);
-        joinPoint.setKksName("Point_Test_4");
+        joinPoint.setKksName("Point_Create");
         Assert.assertTrue(joinPointDao.create(joinPoint));
     }
     @Test
@@ -73,32 +75,46 @@ public class JoinPointDaoTest {
     }
 
     @Test
-    public void createOrUpdate() {
-        Assert.fail("TODO implement");
-        JoinPoint entity;
+    public void createOrUpdate1() {
+        JoinPoint joinPoint = new JoinPoint();
+        joinPoint.setX(10);
+        joinPoint.setY(10);
+        joinPoint.setZ(10);
+        joinPoint.setKksName("Point_CreateOrUpdate");
+        Assert.assertTrue(joinPointDao.createOrUpdate(joinPoint));
+        joinPoint.setX(15);
+        joinPointDao.createOrUpdate(joinPoint);
+        Assert.assertTrue(joinPointDao.read("Point_CreateOrUpdate").equals(joinPoint));
+    }
+    @Test(expected = Exception.class)
+    public void createOrUpdate2() {
+        Assert.assertFalse(joinPointDao.createOrUpdate(null));
     }
 
     @Test
     public void read() {
-        Assert.fail("TODO implement");
-        String uniqueName;
+        Assert.assertTrue(joinPointDao.read("Point_Test_1").equals(testEntity));
+        Assert.assertNull(joinPointDao.read("Some_undefined_point"));
     }
 
     @Test
     public void update() {
-        Assert.fail("TODO implement");
-        String uniqueName;
-        JoinPoint entity;
+        testEntity.setX(15);
+        joinPointDao.update("Point_Test_1", testEntity);
+        Assert.assertTrue(joinPointDao.read("Point_Test_1").equals(testEntity));
+        Assert.assertFalse(joinPointDao.update("Point_Test_2", testEntity));
     }
 
     @Test
     public void delete() {
-        Assert.fail("TODO implement");
-        String uniqueName;
+        Assert.assertTrue(joinPointDao.delete("Point_Test_1"));
+        Assert.assertNull(joinPointDao.read("Point_Test_1"));
     }
 
     @Test
     public void getAll() {
-        Assert.fail("TODO implement");
+        List<JoinPoint> points = joinPointDao.getAll();
+        Assert.assertTrue(points.contains(testEntity));
+        Assert.assertTrue(points.size() == 3);
     }
 }
