@@ -24,9 +24,9 @@
     <button ng-click="sendNewEntriesToDatabase()">ACCEPT</button>
 </div>
 
-<table border=3 cellspacing=0 ng-show="newJoinPoints[0]">
+<table class="data_table new_data_table" ng-show="newJoinPoints[0]">
     <tr bgcolor="#e0ffff">
-        <td ng-repeat="(key, value) in newJoinPoints[0]">{{key}}</td>
+        <th ng-repeat="(key, value) in newJoinPoints[0]">{{key}}</th>
     </tr>
     <tr ng-repeat="newJoinPoint in newJoinPoints track by $index">
         <td ng-repeat="(key, value) in newJoinPoint">{{value}}</td>
@@ -40,9 +40,9 @@
 </form>
 
 <p>5. List of Join Points currently in DB:</p>
-<table border=3 cellspacing=0>
-    <tr bgcolor="#d3d3d3">
-        <td ng-repeat="(key, value) in joinPoints[0]">{{key}}</td>
+<table class="data_table">
+    <tr>
+        <th ng-repeat="(key, value) in joinPoints[0]">{{key}}</th>
     </tr>
     <tr ng-repeat="joinPoint in joinPoints">
         <td ng-repeat="(key, value) in joinPoint">{{value}}</td>
