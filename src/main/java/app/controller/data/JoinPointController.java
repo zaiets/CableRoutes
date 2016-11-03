@@ -20,7 +20,7 @@ public class JoinPointController {
     static final Logger logger = LoggerFactory.getLogger(JoinPointController.class);
 
     @Autowired
-    IJoinPointService service;
+    private IJoinPointService service;
 
     //CREATE ONE JOINPOINT
     @RequestMapping(method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_VALUE)

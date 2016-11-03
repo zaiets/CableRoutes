@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-@Service("userService")
+@Service
 @Transactional
 public class UserServiceImpl implements IUserService {
 

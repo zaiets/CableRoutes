@@ -1,4 +1,4 @@
-package repository.stubs;
+package app.repository.stub;
 
 import app.repository.dao.business.IJoinPointDao;
 import app.repository.entities.business.JoinPoint;

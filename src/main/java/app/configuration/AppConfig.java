@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "app.**")
+@ComponentScan(basePackages = {"app.**"})
 public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Autowired

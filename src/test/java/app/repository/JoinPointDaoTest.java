@@ -1,9 +1,8 @@
-package repository;
+package app.repository;
 
+import app.configuration.HibernateConfigurationTest;
 import app.repository.dao.business.IJoinPointDao;
 import app.repository.entities.business.JoinPoint;
-import configuration.HibernateConfigurationTest;
-import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,9 +27,6 @@ public class JoinPointDaoTest {
 
     @Autowired
     private IJoinPointDao joinPointDao;
-
-    @Autowired
-    private SessionFactory sessionFactory;
 
     @Before
     public void beforeTest() {

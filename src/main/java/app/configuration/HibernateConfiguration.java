@@ -24,7 +24,7 @@ public class HibernateConfiguration {
     @Autowired
     private Environment environment;
 
-    @Bean(name = "sessionFactory")
+    @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());

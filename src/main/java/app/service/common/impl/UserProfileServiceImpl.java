@@ -10,7 +10,7 @@ import app.repository.entities.common.UserProfile;
 import java.util.Set;
 
 
-@Service("userProfileService")
+@Service
 @Transactional
 public class UserProfileServiceImpl implements IUserProfileService {
 	
